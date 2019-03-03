@@ -1,7 +1,6 @@
 package com.shanxiut.scs.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -25,7 +24,7 @@ public class Student extends SuperEntity<Student> {
 
     private String sex;
 
-    private Integer age;
+    private String birthday;
 
 
 

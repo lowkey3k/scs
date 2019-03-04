@@ -4,6 +4,8 @@ import com.shanxiut.scs.param.Term;
 import com.shanxiut.scs.param.TermEnum;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * Description:
  *
@@ -13,5 +15,9 @@ import org.junit.Test;
 public class Main {
     @Test
     public void test(){
+
+        String str="eq_name";
+        String[] strings=str.split("_");
+        System.out.println(Arrays.asList(strings).toString());
     }
 }

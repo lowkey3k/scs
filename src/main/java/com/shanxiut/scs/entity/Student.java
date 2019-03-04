@@ -26,6 +26,8 @@ public class Student extends SuperEntity<Student> {
 
     private String birthday;
 
+    private Integer age;
+
 
 
 }

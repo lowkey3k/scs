@@ -4,18 +4,21 @@ import com.shanxiut.scs.dao.SuperDao;
 import com.shanxiut.scs.entity.SuperEntity;
 import com.shanxiut.scs.param.*;
 import com.shanxiut.scs.service.SuperService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import javax.transaction.NotSupportedException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -38,91 +41,193 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
         return superDao.findAll();
     }
 
+
+    protected Specification buildSpecification(CrudParam param) {
+        Specification specification = (root, query, cb) -> {
+            List<Predicate> predicateList = new ArrayList<>();
+            predicateList.addAll(this.buildSpecificationByPropertyFilter(param.getTerms(), root, cb));
+            return cb.and((Predicate[])predicateList.toArray(new Predicate[predicateList.size()]));
+        };
+        return specification;
+    }
+    protected List<Predicate> buildSpecificationByPropertyFilter(List<Term> terms, Root root, CriteriaBuilder cb) {
+        List<Predicate> predicateList = new ArrayList<>();
+        Iterator var5 = terms.iterator();
+
+        while(var5.hasNext()) {
+            Term term = (Term)var5.next();
+            Predicate predicate = this.buildPredicate(term, root, cb);
+            if (predicate != null) {
+                predicateList.add(predicate);
+            }
+        }
+
+        return predicateList;
+    }
+    protected Predicate buildPredicate(Term term, Root root, CriteriaBuilder cb) {
+
+            boolean nullTerm = term.getColumn()==null&&term.getColumn().equals("");
+            if (nullTerm && term.getTerms().isEmpty()) {
+                return null;
+            } else {
+                Predicate predicate = null;
+                if (!nullTerm) {
+                    predicate = this.buildPredicate(root.get(term.getColumn()), term.getValue(), term.getTermType(), cb);
+                }
+
+                if (!term.getTerms().isEmpty()) {//改过
+                    Iterator var6 = term.getTerms().iterator();
+
+                    while(var6.hasNext()) {
+                        Term innerTerm = (Term)var6.next();
+                        Predicate tmp = this.buildPredicate(innerTerm, root, cb);
+                        if (predicate == null) {
+                            predicate = tmp;
+                        } else {
+                            switch(innerTerm.getType()) {
+                                case and:
+                                    predicate = cb.and(predicate, tmp);
+                                    break;
+                                case or:
+                                    predicate = cb.or(predicate, tmp);
+                            }
+                        }
+                    }
+                }
+
+                return predicate;
+            }
+
+    }
+    protected Predicate buildPredicate(Path propertyPath, Object propertyValue, TermEnum termType, CriteriaBuilder cb) {
+        Object value = propertyValue;
+        Predicate predicate = null;
+        switch(termType) {
+            case eq:
+                predicate = cb.equal(propertyPath, value);
+                break;
+            case like:
+                String likeValue =String.valueOf(value);
+                predicate = cb.like(propertyPath, StringUtils.contains(likeValue, "%") ? likeValue : "%" + likeValue + "%");
+                break;
+            case lte:
+                predicate = cb.le(propertyPath,  Long.parseLong(value+""));
+                break;
+            case lt:
+                predicate = cb.lt(propertyPath,  Long.parseLong(value+""));
+                break;
+            case gte:
+                predicate = cb.ge(propertyPath,  Long.parseLong(value+""));
+                break;
+            case gt:
+                predicate = cb.gt(propertyPath, Long.parseLong(value+""));
+                break;
+            case notnull:
+                predicate = cb.isNotNull(propertyPath);
+                break;
+            case isnull:
+                predicate = cb.isNull(propertyPath);
+                break;
+            case not:
+                predicate = cb.notEqual(propertyPath, value);
+                break;
+            case nlike:
+                predicate = cb.notLike(propertyPath, value+"");
+                break;
+            case in:
+                if (value != null && value instanceof Collection && ((Collection)value).size() > 0) {
+                    predicate = propertyPath.in((Collection)value);
+                }
+                break;
+            case nin:
+                if (value != null && value instanceof Collection && ((Collection)value).size() > 0) {
+                    predicate = cb.not(propertyPath.in((List)value));
+                }
+                break;
+            case btw:
+                predicate = cb.between(propertyPath, (Comparable)((List)value).get(0), (Comparable)((List)value).get(1));
+                break;
+            case nbtw:
+                predicate = cb.not(cb.between(propertyPath, (Comparable)((List)value).get(0), (Comparable)((List)value).get(1)));
+                break;
+            case empty:
+                predicate = cb.isEmpty(propertyPath);
+                break;
+            case nempty:
+                predicate = cb.isNotEmpty(propertyPath);
+                break;
+            default:
+        }
+
+        return predicate;
+    }
+
+
+
     @Override
     public List<E> findAll(CrudParam<? extends Term> param) {
 
 
-        List<E> resultList = null;
+
+
+
+       /* List<E> resultList = null;
         Specification querySpecifi = new Specification<E>() {
             @Override
             public Predicate toPredicate(Root<E> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 
                 List<Predicate> predicates = new ArrayList<>();
-                param.getTerms().forEach(term -> {
+                List<Predicate> orP = new ArrayList<>();
+                List<Predicate> andP = new ArrayList<>();
+                Predicate predicate = null;
+                for (Term term : param.getTerms()) {
                     switch (term.getTermEnum()) {
                         case eq: {
-                            if (term.getType().equals(TermType.and)) {
-                                predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get(term.getColumn()), term.getValue())));
-
-                            } else if (term.getType().equals(TermType.or)) {
-                                predicates.add(criteriaBuilder.or(criteriaBuilder.equal(root.get(term.getColumn()), term.getValue())));
-
-                            }
+                            predicate = criteriaBuilder.equal(root.get(term.getColumn()), term.getValue());
                         }
                         break;
                         case lt: {
-                            if (term.getType().equals(TermType.and)) {
-                                predicates.add(criteriaBuilder.and(criteriaBuilder.lt(root.get(term.getColumn()), (Number) term.getValue())));
-
-                            } else if (term.getType().equals(TermType.or)) {
-                                predicates.add(criteriaBuilder.or(criteriaBuilder.lt(root.get(term.getColumn()), (Number) term.getValue())));
-
-                            }
+                            predicate = criteriaBuilder.lt(root.get(term.getColumn()), (Number) term.getValue());
                         }
                         break;
                         case gt: {
-                            if (term.getType().equals(TermType.and)) {
-                                predicates.add(criteriaBuilder.and(criteriaBuilder.gt(root.get(term.getColumn()), (Number) term.getValue())));
-
-                            } else if (term.getType().equals(TermType.or)) {
-                                predicates.add(criteriaBuilder.or(criteriaBuilder.gt(root.get(term.getColumn()), (Number) term.getValue())));
-
-                            }
+                            predicate = criteriaBuilder.gt(root.get(term.getColumn()), (Number) term.getValue());
                         }
                         break;
                         case lte: {
-                            if (term.getType().equals(TermType.and)) {
-                                predicates.add(criteriaBuilder.and(criteriaBuilder.le(root.get(term.getColumn()), (Number) term.getValue())));
-
-                            } else if (term.getType().equals(TermType.or)) {
-                                predicates.add(criteriaBuilder.or(criteriaBuilder.le(root.get(term.getColumn()), (Number) term.getValue())));
-
-                            }
+                            predicate = criteriaBuilder.le(root.get(term.getColumn()), (Number) term.getValue());
                         }
                         break;
                         case gte: {
-                            if (term.getType().equals(TermType.and)) {
-                                predicates.add(criteriaBuilder.and(criteriaBuilder.ge(root.get(term.getColumn()), (Number) term.getValue())));
-
-                            } else if (term.getType().equals(TermType.or)) {
-                                predicates.add(criteriaBuilder.or(criteriaBuilder.ge(root.get(term.getColumn()), (Number) term.getValue())));
-
-                            }
+                            predicate = criteriaBuilder.ge(root.get(term.getColumn()), (Number) term.getValue());
                         }
                         break;
                         case like: {
-                            if (term.getType().equals(TermType.and)) {
-                                predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get(term.getColumn()), "%" + term.getValue() + "%")));
-
-                            } else if (term.getType().equals(TermType.or)) {
-                                predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get(term.getColumn()), "%" + term.getValue() + "%")));
-
-                            }
+                            predicate = criteriaBuilder.like(root.get(term.getColumn()), "%" + term.getValue() + "%");
                         }
                         break;
                         default:
-                            return;
+                            continue;
                     }
 
+                    if (term.getType().equals(TermType.and)) {
+                        predicate = criteriaBuilder.and(predicate);
+                    }
+                    if (term.getType().equals(TermType.or)) {
+                        predicate = criteriaBuilder.or(predicate);
+                    }
+                    predicates.add(predicate);
 
-                });
-
-
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                }
+                return criteriaBuilder.and((Predicate[])predicates.toArray(new Predicate[predicates.size()]));
             }
         };
-        resultList = this.superDao.findAll(querySpecifi);
-        return resultList;
+
+    */
+        Specification specification = this.buildSpecification(param);
+
+         this.superDao.findAll(specification);
+        return this.superDao.findAll(specification);
     }
 
     @Override

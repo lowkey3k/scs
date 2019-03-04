@@ -4,8 +4,10 @@ import com.shanxiut.scs.dao.SuperDao;
 import com.shanxiut.scs.entity.SuperEntity;
 import com.shanxiut.scs.param.CrudParam;
 import com.shanxiut.scs.param.Term;
+import com.shanxiut.scs.param.TermEnum;
 import com.shanxiut.scs.response.ResponseMessage;
 import com.shanxiut.scs.service.SuperService;
+import com.shanxiut.scs.util.CrudParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,8 @@ public class SuperController<E extends SuperEntity,S extends SuperService> {
 
     @GetMapping
     public List<E> getAll(CrudParam<Term> crudParam, HttpServletRequest request){
+        CrudParamUtil.padding(crudParam,request);
+        crudParam.add(Term.build("studentName", TermEnum.like,"刘"));
         return service.findAll(crudParam);
     }
 

@@ -35,20 +35,32 @@ public class CrudParam<T> {
     }
 
     public CrudParam and(String column, Object value) {
-        return this.add(Term.and(column,value));
+        this.and(column,TermEnum.eq,value);
+        return this;
     }
 
     public CrudParam or(String column, Object value) {
-        return this.or(column,TermEnum.eq,value);
+        this.or(column,TermEnum.eq,value);
+        return this;
     }
 
     public CrudParam and(String column,TermEnum termEnum,Object value){
-        this.terms.add(Term.build(column,termEnum,value));
+        Term term=new Term();
+        term.setColumn(column);
+        term.setValue(value);
+        term.setTermType(termEnum);
+        term.setType(Term.Type.and);
+        this.terms.add(term);
         return this;
     }
 
     public CrudParam or(String column,TermEnum termEnum,Object value){
-        this.terms.add(Term.or(column,termEnum,value));
+        Term term=new Term();
+        term.setColumn(column);
+        term.setValue(value);
+        term.setTermType(termEnum);
+        term.setType(Term.Type.or);
+        this.terms.add(term);
         return this;
     }
 

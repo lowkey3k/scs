@@ -1,15 +1,15 @@
 package com.shanxiut.scs.controller;
 
-import com.shanxiut.scs.dao.SuperDao;
 import com.shanxiut.scs.entity.SuperEntity;
 import com.shanxiut.scs.param.CrudParam;
 import com.shanxiut.scs.param.Term;
+import com.shanxiut.scs.param.TermEnum;
 import com.shanxiut.scs.response.ResponseMessage;
 import com.shanxiut.scs.service.SuperService;
+import com.shanxiut.scs.util.CrudParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.List;
@@ -28,7 +28,9 @@ public class SuperController<E extends SuperEntity,S extends SuperService> {
     protected S service;
 
     @GetMapping
-    public List<E> select(CrudParam<Term> crudParam, HttpServletRequest request){
+    public List<E> getAll(CrudParam<Term> crudParam, HttpServletRequest request){
+        CrudParamUtil.padding(crudParam,request);
+        crudParam.add(Term.build("studentName", TermEnum.like,"刘"));
         return service.findAll(crudParam);
     }
 

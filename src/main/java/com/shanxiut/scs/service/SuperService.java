@@ -1,14 +1,10 @@
 package com.shanxiut.scs.service;
 
-import com.shanxiut.scs.entity.SuperEntity;
 import com.shanxiut.scs.param.CrudParam;
-import com.shanxiut.scs.param.Param;
 import com.shanxiut.scs.param.Term;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 /**

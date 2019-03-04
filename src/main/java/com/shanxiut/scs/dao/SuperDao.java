@@ -1,11 +1,8 @@
 package com.shanxiut.scs.dao;
 
-import com.shanxiut.scs.entity.SuperEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
-
-import java.io.Serializable;
 
 
 /**

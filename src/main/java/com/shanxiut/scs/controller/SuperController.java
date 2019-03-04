@@ -28,7 +28,7 @@ public class SuperController<E extends SuperEntity,S extends SuperService> {
     protected S service;
 
     @GetMapping
-    public List<E> getAll(CrudParam<Term> crudParam, HttpServletRequest request){
+    public List<E> select(CrudParam<Term> crudParam, HttpServletRequest request){
         return service.findAll(crudParam);
     }
 

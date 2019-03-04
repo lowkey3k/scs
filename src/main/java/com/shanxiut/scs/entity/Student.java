@@ -28,4 +28,5 @@ public class Student extends SuperEntity<Student> {
 
 
 
+
 }

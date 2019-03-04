@@ -40,8 +40,6 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
 
     @Override
     public List<E> findAll(CrudParam<? extends Term> param) {
-
-
         List<E> resultList = null;
         Specification querySpecifi = new Specification<E>() {
             @Override

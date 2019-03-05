@@ -2,6 +2,8 @@ package com.shanxiut.scs.controller;
 
 import com.shanxiut.scs.entity.Student;
 import com.shanxiut.scs.service.StudentService;
+import com.shanxiut.scs.service.SuperService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RequestMapping("/student")
 @RestController
-public class StudentController extends SuperController<Student, StudentService> {
+public class StudentController extends SuperController<Student, Long, StudentService> {
+
+   @Autowired
+   private StudentService studentService;
+    @Override
+    public <S extends SuperService<Student, Long>> S getService() {
+        return (S)studentService;
+    }
 
 
 

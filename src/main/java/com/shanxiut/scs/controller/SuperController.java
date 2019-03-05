@@ -30,7 +30,6 @@ public class SuperController<E extends SuperEntity,S extends SuperService> {
     @GetMapping
     public List<E> getAll(CrudParam<Term> crudParam, HttpServletRequest request){
         CrudParamUtil.padding(crudParam,request);
-        crudParam.add(Term.build("studentName", TermEnum.like,"刘"));
         return service.findAll(crudParam);
     }
 

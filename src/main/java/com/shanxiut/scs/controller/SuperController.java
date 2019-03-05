@@ -10,7 +10,6 @@ import com.shanxiut.scs.util.CrudParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.List;
@@ -24,32 +23,31 @@ import java.util.List;
 @RestController
 @RequestMapping
 @SuppressWarnings("all")
-public class SuperController<E extends SuperEntity, S extends SuperService> {
-
-    @Resource
+public class SuperController<E extends SuperEntity,S extends SuperService> {
+    @Autowired
     protected S service;
 
     @GetMapping
-    public List<E> getAll(CrudParam<Term> crudParam, HttpServletRequest request) {
-        CrudParamUtil.padding(crudParam, request);
-        crudParam.add(Term.build("studentName", TermEnum.like, "刘"));
+    public List<E> getAll(CrudParam<Term> crudParam, HttpServletRequest request){
+        CrudParamUtil.padding(crudParam,request);
+        crudParam.add(Term.build("studentName", TermEnum.like,"刘"));
         return service.findAll(crudParam);
     }
 
     @PostMapping
-    public ResponseMessage<?> insert(@RequestBody E e) {
+    public ResponseMessage<?> insert(@RequestBody E e){
         return ResponseMessage.ok(service.insert(e));
     }
 
 
     @DeleteMapping
-    public ResponseMessage delete(Serializable id) {
+    public ResponseMessage delete(Serializable id){
         service.deleteById(id);
         return ResponseMessage.ok();
     }
 
     @PutMapping
-    public ResponseMessage<?> update(E e) {
+    public ResponseMessage<?> update(E e){
         return ResponseMessage.ok(service.updateById(e));
     }
 }

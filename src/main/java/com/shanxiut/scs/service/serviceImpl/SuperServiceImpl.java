@@ -2,9 +2,9 @@ package com.shanxiut.scs.service.serviceImpl;
 
 import com.shanxiut.scs.dao.SuperDao;
 import com.shanxiut.scs.entity.SuperEntity;
-import com.shanxiut.scs.param.CrudParam;
-import com.shanxiut.scs.param.Term;
-import com.shanxiut.scs.param.TermEnum;
+import com.shanxiut.scs.common.param.CrudParam;
+import com.shanxiut.scs.common.param.Term;
+import com.shanxiut.scs.common.param.TermEnum;
 import com.shanxiut.scs.service.SuperService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,10 +172,6 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
     public List<E> findAll(CrudParam<? extends Term> param) {
         List<E> resultList = null;
 
-
-
-
-
        /* List<E> resultList = null;
 >>>>>>> 66a885115777b7b44e670b6ddc058e4627ac5156
         Specification querySpecifi = new Specification<E>() {
@@ -231,7 +227,6 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
 
     */
          Specification specification = this.buildSpecification(param);
-
          this.superDao.findAll(specification);
         return this.superDao.findAll(specification);
     }

@@ -2,31 +2,35 @@ package com.shanxiut.scs.service.serviceImpl;
 
 import com.shanxiut.scs.dao.SuperDao;
 import com.shanxiut.scs.entity.SuperEntity;
-import com.shanxiut.scs.param.*;
+import com.shanxiut.scs.common.param.CrudParam;
+import com.shanxiut.scs.common.param.Term;
+import com.shanxiut.scs.common.param.TermEnum;
 import com.shanxiut.scs.service.SuperService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
-import javax.transaction.NotSupportedException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Description:
  *
  * @Author lht
- * @Date 2019/3/3 下午2:13
+ * @Da
+ * te 2019/3/3 下午2:13
  **/
 public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, PK>, E extends SuperEntity> implements SuperService<E, PK> {
+
     @Autowired
     private Dao superDao;
 
@@ -168,10 +172,6 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
     public List<E> findAll(CrudParam<? extends Term> param) {
         List<E> resultList = null;
 
-
-
-
-
        /* List<E> resultList = null;
 >>>>>>> 66a885115777b7b44e670b6ddc058e4627ac5156
         Specification querySpecifi = new Specification<E>() {
@@ -226,8 +226,7 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
         };
 
     */
-        Specification specification = this.buildSpecification(param);
-
+         Specification specification = this.buildSpecification(param);
          this.superDao.findAll(specification);
         return this.superDao.findAll(specification);
     }

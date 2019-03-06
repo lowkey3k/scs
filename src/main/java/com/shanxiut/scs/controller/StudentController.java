@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RequestMapping("/student")
 @RestController
-public class StudentController extends SuperController<Student, StudentService> {
-
+public class StudentController extends AbstractCrudController<Student,Long, StudentService> {
 
 }

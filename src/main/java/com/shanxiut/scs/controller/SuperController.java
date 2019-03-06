@@ -1,17 +1,14 @@
 package com.shanxiut.scs.controller;
 
-import com.shanxiut.scs.entity.SuperEntity;
-import com.shanxiut.scs.param.CrudParam;
-import com.shanxiut.scs.param.Term;
-import com.shanxiut.scs.param.TermEnum;
+import com.shanxiut.scs.annotation.AccessLogger;
+import com.shanxiut.scs.common.param.CrudParam;
+import com.shanxiut.scs.common.param.Term;
 import com.shanxiut.scs.response.ResponseMessage;
 import com.shanxiut.scs.service.SuperService;
-import com.shanxiut.scs.util.CrudParamUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.shanxiut.scs.common.util.CrudParamUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -23,30 +20,35 @@ import java.util.List;
 @RestController
 @RequestMapping
 @SuppressWarnings("all")
-public class SuperController<E extends SuperEntity,S extends SuperService> {
-    @Autowired
-    protected S service;
+public abstract class SuperController<E, PK> {
+
+    public abstract SuperService<E, PK> getService();
+
 
     @GetMapping
-    public List<E> getAll(CrudParam<Term> crudParam, HttpServletRequest request){
-        CrudParamUtil.padding(crudParam,request);
-        return service.findAll(crudParam);
+    @AccessLogger("List结果查询")
+    public ResponseMessage<List<E>> getAll(CrudParam<Term> crudParam, HttpServletRequest request) {
+        CrudParamUtil.padding(crudParam, request);
+        return ResponseMessage.ok(this.getService().findAll(crudParam));
     }
 
     @PostMapping
-    public ResponseMessage<?> insert(@RequestBody E e){
-        return ResponseMessage.ok(service.insert(e));
+    @AccessLogger("插入")
+    public ResponseMessage<E> insert(@RequestBody E e) {
+        return ResponseMessage.ok(this.getService().insert(e));
     }
 
 
     @DeleteMapping
-    public ResponseMessage delete(Serializable id){
-        service.deleteById(id);
+    @AccessLogger("根据id删除")
+    public ResponseMessage delete(@PathVariable PK id) {
+        getService().deleteById(id);
         return ResponseMessage.ok();
     }
 
     @PutMapping
-    public ResponseMessage<?> update(E e){
-        return ResponseMessage.ok(service.updateById(e));
+    @AccessLogger("通过id更新")
+    public ResponseMessage<?> update(@RequestBody E e) {
+        return ResponseMessage.ok(getService().updateById(e));
     }
 }

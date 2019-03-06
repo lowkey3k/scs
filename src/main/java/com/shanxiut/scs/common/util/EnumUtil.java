@@ -1,6 +1,4 @@
-package com.shanxiut.scs.util;
-
-import com.shanxiut.scs.param.TermEnum;
+package com.shanxiut.scs.common.util;
 
 /**
  * Description:

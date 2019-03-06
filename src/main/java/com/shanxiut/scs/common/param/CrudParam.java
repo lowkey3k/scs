@@ -1,4 +1,4 @@
-package com.shanxiut.scs.param;
+package com.shanxiut.scs.common.param;
 
 import lombok.Data;
 
@@ -35,16 +35,16 @@ public class CrudParam<T> {
     }
 
     public CrudParam and(String column, Object value) {
-        this.and(column,TermEnum.eq,value);
+        this.and(column, TermEnum.eq,value);
         return this;
     }
 
     public CrudParam or(String column, Object value) {
-        this.or(column,TermEnum.eq,value);
+        this.or(column, TermEnum.eq,value);
         return this;
     }
 
-    public CrudParam and(String column,TermEnum termEnum,Object value){
+    public CrudParam and(String column, TermEnum termEnum, Object value){
         Term term=new Term();
         term.setColumn(column);
         term.setValue(value);
@@ -54,7 +54,7 @@ public class CrudParam<T> {
         return this;
     }
 
-    public CrudParam or(String column,TermEnum termEnum,Object value){
+    public CrudParam or(String column, TermEnum termEnum, Object value){
         Term term=new Term();
         term.setColumn(column);
         term.setValue(value);

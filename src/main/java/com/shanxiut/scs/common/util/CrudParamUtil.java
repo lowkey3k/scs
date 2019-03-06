@@ -1,12 +1,14 @@
-package com.shanxiut.scs.util;
+package com.shanxiut.scs.common.util;
 
-import com.shanxiut.scs.param.CrudParam;
-import com.shanxiut.scs.param.Term;
-import com.shanxiut.scs.param.TermEnum;
-import com.shanxiut.scs.param.TermType;
+import com.shanxiut.scs.common.param.CrudParam;
+import com.shanxiut.scs.common.param.Term;
+import com.shanxiut.scs.common.param.TermEnum;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author LiHaitao

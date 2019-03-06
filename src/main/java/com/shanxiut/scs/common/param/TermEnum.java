@@ -1,4 +1,4 @@
-package com.shanxiut.scs.param;
+package com.shanxiut.scs.common.param;
 
 import java.util.HashMap;
 import java.util.Map;

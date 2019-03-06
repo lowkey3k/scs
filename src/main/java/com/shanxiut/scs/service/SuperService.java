@@ -1,7 +1,7 @@
 package com.shanxiut.scs.service;
 
-import com.shanxiut.scs.param.CrudParam;
-import com.shanxiut.scs.param.Term;
+import com.shanxiut.scs.common.param.CrudParam;
+import com.shanxiut.scs.common.param.Term;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,7 +21,7 @@ public interface SuperService<E,PK> {
 
     List<E>  findAll();
 
-    List<E> findAll(CrudParam<? extends Term> param);
+    List<E> findAll(CrudParam<Term> param);
 
 
     Page<E> selectPage(Pageable pageable);

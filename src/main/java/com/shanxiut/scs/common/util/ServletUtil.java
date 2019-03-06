@@ -1,12 +1,9 @@
-package com.shanxiut.scs.util;
-
-import org.apache.commons.lang.Validate;
+package com.shanxiut.scs.common.util;
 
 import javax.servlet.ServletRequest;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * @author LiHaitao

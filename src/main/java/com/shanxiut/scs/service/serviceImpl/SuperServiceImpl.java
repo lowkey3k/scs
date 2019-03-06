@@ -46,6 +46,8 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
     }
 
 
+
+
     protected Specification buildSpecification(CrudParam param) {
         Specification specification = (root, query, cb) -> {
             List<Predicate> predicateList = new ArrayList<>();
@@ -169,7 +171,7 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
 
 
     @Override
-    public List<E> findAll(CrudParam<? extends Term> param) {
+    public List<E> findAll(CrudParam<Term> param) {
         List<E> resultList = null;
 
        /* List<E> resultList = null;

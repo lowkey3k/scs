@@ -1,7 +1,5 @@
 package com.shanxiut.scs;
 
-import com.shanxiut.scs.param.Term;
-import com.shanxiut.scs.param.TermEnum;
 import org.junit.Test;
 
 import java.util.Arrays;

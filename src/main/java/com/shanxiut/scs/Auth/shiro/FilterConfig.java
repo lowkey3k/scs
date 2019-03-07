@@ -1,8 +1,8 @@
-package com.shanxiut.scs.shiro;
+package com.shanxiut.scs.Auth.shiro;
 
 import com.alibaba.druid.support.http.WebStatFilter;
-import com.shanxiut.scs.xss.RequestFilter;
-import com.shanxiut.scs.xss.XssFilter;
+import com.shanxiut.scs.common.xss.RequestFilter;
+import com.shanxiut.scs.common.xss.XssFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

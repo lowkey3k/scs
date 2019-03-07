@@ -1,4 +1,4 @@
-package com.shanxiut.scs.shiro;
+package com.shanxiut.scs.Auth.shiro;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,10 +18,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 * @UpdateRemark:
 * @Version:        1.0.0
 */
-public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher {
+public class PasswordRetryLimit extends HashedCredentialsMatcher {
 	private Cache<String, AtomicInteger> passwordRetryCache;
 
-	public RetryLimitHashedCredentialsMatcher(CacheManager cacheManager) {
+	public PasswordRetryLimit(CacheManager cacheManager) {
 		passwordRetryCache = cacheManager.getCache("passwordRetryCache");
 	}
 
@@ -34,15 +34,14 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 			retryCount = new AtomicInteger(0);
 			passwordRetryCache.put(username, retryCount);
 		}
+		boolean matches = super.doCredentialsMatch(token, info);
+		if (matches) {
+			// 清除重试次数
+			passwordRetryCache.remove(username);
+		}
 		if (retryCount.incrementAndGet() > 5) {
 			//重试次数大于5
 			throw new ExcessiveAttemptsException();
-		}
-
-		boolean matches = super.doCredentialsMatch(token, info);
-		if (matches) {
-			// 清楚重试次数
-			passwordRetryCache.remove(username);
 		}
 		return matches;
 	}

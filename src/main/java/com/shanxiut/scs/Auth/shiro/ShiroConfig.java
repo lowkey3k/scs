@@ -1,4 +1,4 @@
-package com.shanxiut.scs.shiro;
+package com.shanxiut.scs.Auth.shiro;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -48,7 +48,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean  = new ShiroFilterFactoryBean();
 
         // SecurityManager
-        shiroFilterFactoryBean.setSecurityManager(securityManager);
+        shiroFilterFactoryBean.setSecurityManager(securityManager());
 
        /* // 登陆页面
         shiroFilterFactoryBean.setLoginUrl("/admin/login.html");
@@ -71,11 +71,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/500.html", "perms");
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/admin/mylogin", "anon");
-        filterChainDefinitionMap.put("/admin/register.html", "anon"); // 注册界面
-        filterChainDefinitionMap.put("/admin/register", "anon"); // 注册提交数据
-        filterChainDefinitionMap.put("/admin/sencCode", "anon"); // 发送邮箱验证码
-        filterChainDefinitionMap.put("/admin/isUsername/**", "anon"); // 判断用户名是否存在
-        filterChainDefinitionMap.put("/admin/isEmail/**", "anon"); // 判断邮箱是否存在
 */
 //        filterChainDefinitionMap.put("/**", "authc");
         /**
@@ -83,6 +78,8 @@ public class ShiroConfig {
          * authc: 需要认证才能进行访问;
          * user:配置记住我或认证通过可以访问；
          */
+//        filterChainDefinitionMap.put("/student", "user"); // 判断邮箱是否存在
+
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -99,7 +96,7 @@ public class ShiroConfig {
 
         DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
         //设置自定义realm
-        securityManager.setRealm(shiroRealm());
+        securityManager.setRealm(oAuth2Realm());
         //设置缓存
         securityManager.setCacheManager(ehCacheManager());
         //设置记住我管理器
@@ -116,7 +113,7 @@ public class ShiroConfig {
     * @UpdateRemark:
     */
     @Bean
-    public OAuth2Realm shiroRealm() {
+    public OAuth2Realm oAuth2Realm() {
         OAuth2Realm realm = new OAuth2Realm();
         realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
@@ -147,6 +144,7 @@ public class ShiroConfig {
         SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
         //<!-- 记住我cookie生效时间30天 ,单位秒;-->
         simpleCookie.setMaxAge(259200);
+        simpleCookie.setHttpOnly(true);
         return simpleCookie;
     }
 
@@ -182,9 +180,9 @@ public class ShiroConfig {
    */
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher(){
-        HashedCredentialsMatcher hashedCredentialsMatcher = new RetryLimitHashedCredentialsMatcher(ehCacheManager());
-        hashedCredentialsMatcher.setHashAlgorithmName("salt");
-        hashedCredentialsMatcher.setHashIterations(3);
+        HashedCredentialsMatcher hashedCredentialsMatcher = new PasswordRetryLimit(ehCacheManager());
+        hashedCredentialsMatcher.setHashAlgorithmName("MD5");
+        hashedCredentialsMatcher.setHashIterations(1);
         return hashedCredentialsMatcher;
     }
 
@@ -241,6 +239,7 @@ public class ShiroConfig {
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
+/*
     @Bean
     public KickoutSessionControlFilter 	kickoutSessionControlFilter(){
         KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
@@ -258,5 +257,6 @@ public class ShiroConfig {
         kickoutSessionControlFilter.setKickoutUrl("/login");
         return kickoutSessionControlFilter;
     }
+*/
 
 }

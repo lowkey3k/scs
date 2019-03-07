@@ -3,7 +3,7 @@ package com.shanxiut.scs.annotation;
 import java.lang.annotation.*;
 
 /**
- * @Description AccessLogger:
+ * @Description Accesslog:
  * @Author LiHaitao
  * @Date 2018/12/21 15:37
  * @UpdateUser

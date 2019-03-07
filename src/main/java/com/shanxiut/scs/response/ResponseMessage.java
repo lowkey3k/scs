@@ -39,6 +39,7 @@ public class ResponseMessage<T> implements Serializable {
         ResponseMessage<T> msg = new ResponseMessage();
         msg.status(status);
         msg.code(code);
+        msg.setMessage(message);
         return msg.putTimeStamp();
     }
     public static <T> ResponseMessage<T> error(int status, String code, String message) {

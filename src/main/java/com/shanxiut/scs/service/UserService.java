@@ -1,6 +1,6 @@
 package com.shanxiut.scs.service;
 
-import com.shanxiut.scs.entity.User;
+import com.shanxiut.scs.Auth.entity.User;
 
 /**
  * Description:

@@ -1,4 +1,4 @@
-package com.shanxiut.scs.xss;
+package com.shanxiut.scs.common.xss;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;

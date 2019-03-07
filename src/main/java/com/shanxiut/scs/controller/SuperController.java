@@ -1,6 +1,7 @@
 package com.shanxiut.scs.controller;
 
 import com.shanxiut.scs.annotation.AccessLogger;
+import com.shanxiut.scs.annotation.Authorize;
 import com.shanxiut.scs.common.param.CrudParam;
 import com.shanxiut.scs.common.param.Term;
 import com.shanxiut.scs.response.ResponseMessage;
@@ -27,6 +28,7 @@ public abstract class SuperController<E, PK> {
 
     @GetMapping
     @AccessLogger("List结果查询")
+    @Authorize(resources = "QUERY")
     public ResponseMessage<List<E>> getAll(CrudParam<Term> crudParam, HttpServletRequest request) {
         CrudParamUtil.padding(crudParam, request);
         return ResponseMessage.ok(this.getService().findAll(crudParam));

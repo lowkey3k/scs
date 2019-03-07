@@ -1,4 +1,4 @@
-package com.shanxiut.scs.xss;
+package com.shanxiut.scs.common.xss;
 
 
 import org.apache.commons.lang.StringUtils;

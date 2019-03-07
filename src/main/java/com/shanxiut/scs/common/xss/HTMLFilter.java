@@ -1,4 +1,4 @@
-package com.shanxiut.scs.xss;
+package com.shanxiut.scs.common.xss;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

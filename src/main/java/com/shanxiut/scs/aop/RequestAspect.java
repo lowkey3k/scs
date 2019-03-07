@@ -18,28 +18,27 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
-* @Description:
-* @Author:         Lihaitao
-* @Date:       2019/3/6 16:03
-* @UpdateUser:
-* @UpdateRemark:
-*/
+ * @Description:
+ * @Author: Lihaitao
+ * @Date: 2019/3/6 16:03
+ * @UpdateUser:
+ * @UpdateRemark:
+ */
 @Component
 @Aspect
+@SuppressWarnings("all")
 public class RequestAspect {
     /**
      * 1）execution(* *(..))
-     //表示匹配所有方法
-     2）execution(public * com. example.controller.*(..))
-     //表示匹配com. example.controller中所有的public方法
-     3）execution(* com. example.controller..*.*(..))
-     //表示匹配com. example.controller包及其子包下的所有方法
-     ---------------------
+     * //表示匹配所有方法
+     * 2）execution(public * com. example.controller.*(..))
+     * //表示匹配com. example.controller中所有的public方法
+     * 3）execution(* com. example.controller..*.*(..))
+     * //表示匹配com. example.controller包及其子包下的所有方法
+     * ---------------------
      */
 
     private final static Logger logger = LoggerFactory.getLogger(RequestAspect.class);
@@ -50,7 +49,7 @@ public class RequestAspect {
 
 
     @Pointcut("@annotation(com.shanxiut.scs.annotation.AccessLogger)")
-    public void logRequest(){
+    public void logRequest() {
 
     }
 
@@ -61,14 +60,14 @@ public class RequestAspect {
 
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
-        AccessLogger requestAnnotation=method.getAnnotation(AccessLogger.class);
-        Long beginTime=System.currentTimeMillis();
+        AccessLogger requestAnnotation = method.getAnnotation(AccessLogger.class);
+        Long beginTime = System.currentTimeMillis();
         //执行方法
         Object result = point.proceed();
         //执行时长(毫秒)
         long time = System.currentTimeMillis() - beginTime;
 
-        logger.info("请求模块={}",requestAnnotation.value());
+        logger.info("请求模块={}", requestAnnotation.value());
         //url
         logger.info("请求url={}", request.getRequestURI());
 
@@ -83,12 +82,12 @@ public class RequestAspect {
 
         //param
         logger.info("参数={}", point.getArgs());
-        AccessLog accessLog=new AccessLog();
-        accessLog.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        AccessLog accessLog = new AccessLog();
+        accessLog.setCreateTimeStr(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         accessLog.setIp(request.getRemoteAddr());
         accessLog.setCreateTimes(System.currentTimeMillis());
         accessLog.setMethod(point.getSignature().getDeclaringTypeName() + "." + point.getSignature().getName());
-        String params= Arrays.toString(point.getArgs());
+        String params = Arrays.toString(point.getArgs());
         accessLog.setParams(params);
         accessLog.setOperation(requestAnnotation.value());
         accessLog.setUrl(request.getRequestURI());
@@ -98,27 +97,28 @@ public class RequestAspect {
 
         return result;
     }
-    public void saveAccessLog(AccessLog accessLog){
+
+    public void saveAccessLog(AccessLog accessLog) {
         accessLogService.insert(accessLog);
     }
 
 
-
-
-    @After("logRequest()")
-    public void doAfter(){
-        logger.info("---------------请求以后-------------");
-    }
-
-    @AfterReturning(returning="obj", pointcut = "logRequest()")
-    public void doAfterReturnig(Object obj){
-        logger.info("reponse={}", obj);
-    }
-
-    @AfterThrowing(value = "logRequest()",throwing = "exception")
-    public void afterThrowingAdvice(JoinPoint joinPoint,NullPointerException exception){
-        logger.info("- - - - - 异常通知 - - - - -{}",exception.getMessage());
-    }
+//    @After("logRequest()")
+//    public void doAfter() {
+//        logger.info("---------------请求以后-------------");
+//    }
+//
+//    @AfterReturning(returning = "obj", pointcut = "logRequest()")
+//    public void doAfterReturnig(Object obj) {
+//        logger.info("reponse={}", obj);
+//    }
+//
+//    @AfterThrowing(value = "logRequest()", throwing = "exception")
+//    public void afterThrowingAdvice(JoinPoint joinPoint, NullPointerException exception) {
+//        logger.info("- - - - - 异常通知 - - - - -{}", exception.getMessage());
+//    }
+//
+//
     /**
      * 定义切入点的时候需要一个包含名字和任意参数的签名，还有一个切入点表达式，如execution(public * com.example.aop...(..))
 
@@ -137,11 +137,9 @@ public class RequestAspect {
 
      2）within：用于匹配连接点所在的Java类或者包。
      //匹配Person类中的所有方法
-     @Pointcut(“within(com.cjm.model.Person)”)
-     public void before(){}
+     @Pointcut(“within(com.cjm.model.Person)”) public void before(){}
      //匹配com.cjm包及其子包中所有类中的所有方法
-     @Pointcut(“within(com.cjm..*)”)
-     public void before(){}
+     @Pointcut(“within(com.cjm..*)”) public void before(){}
 
      3） this：用于向通知方法中传入代理对象的引用。
      @Before(“before() && this(proxy)”)
@@ -167,22 +165,18 @@ public class RequestAspect {
      public void before(){}
 
      7）@target ：和@within的功能类似，但必须要指定注解接口的保留策略为RUNTIME。
-     @Pointcut(“@target(com.cjm.annotation.AdviceAnnotation)”)
-     public void before(){}
+     @Pointcut(“@target(com.cjm.annotation.AdviceAnnotation)”) public void before(){}
 
      8）@args ：传入连接点的对象对应的Java类必须被@args指定的Annotation注解标注。
-     @Before(“@args(com.cjm.annotation.AdviceAnnotation)”)
-     public void beforeAdvide(JoinPoint point){
+     @Before(“@args(com.cjm.annotation.AdviceAnnotation)”) public void beforeAdvide(JoinPoint point){
      //处理逻辑
      }
 
      9）@annotation ：匹配连接点被它参数指定的Annotation注解的方法。也就是说，所有被指定注解标注的方法都将匹配。
-     @Pointcut(“@annotation(com.cjm.annotation.AdviceAnnotation)”)
-     public void before(){}
+     @Pointcut(“@annotation(com.cjm.annotation.AdviceAnnotation)”) public void before(){}
 
      10）bean：通过受管Bean的名字来限定连接点所在的Bean。该关键词是Spring2.5新增的。
-     @Pointcut(“bean(person)”)
-     public void before(){}
+     @Pointcut(“bean(person)”) public void before(){}
      ---------------------
      */
 

@@ -1,5 +1,6 @@
 package com.shanxiut.scs.entity;
 
+import com.shanxiut.scs.Auth.entity.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,9 +20,6 @@ public class Student extends SuperEntity<Student> {
     @Id
     public Long id;
 
-    @Column(name = "student_name")
-    private String studentName;
-
     private String sex;
 
     private String birthday;
@@ -34,10 +32,12 @@ public class Student extends SuperEntity<Student> {
 
     private String email;
 
-    private String password;
 
     private Department department;
 
+    @OneToOne(cascade=CascadeType.ALL)//Student是关系的维护端，当删除 Student，会级联删除 User
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
 
 

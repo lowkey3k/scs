@@ -1,8 +1,8 @@
-package com.shanxiut.scs.shiro;
+package com.shanxiut.scs.Auth.shiro;
 
 import com.shanxiut.scs.common.param.CrudParam;
 import com.shanxiut.scs.common.param.Term;
-import com.shanxiut.scs.entity.User;
+import com.shanxiut.scs.Auth.entity.User;
 import com.shanxiut.scs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -12,6 +12,7 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,12 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * 认证
- *
- * /**
- *  * @author LiHaitao
- *  * @description :
- *  * @date 2019/3/6 19:44
- *  **/
+
+ /** 认证
+  * @author LiHaitao
+  * @description :
+  * @date 2019/3/6 19:44
+  **/
 
 @Slf4j
 @Component
@@ -37,7 +36,7 @@ public class OAuth2Realm extends AuthorizingRealm {
 
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof OAuth2Token;
+        return token != null ;
     }
 
     /**
@@ -61,21 +60,23 @@ public class OAuth2Realm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        String accessToken = (String) authenticationToken.getPrincipal();
+//        String accessToken = (String) authenticationToken.getPrincipal();
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         log.info("验证当前Subject时获取到token为：" + ReflectionToStringBuilder.toString(token, ToStringStyle.MULTI_LINE_STYLE));
-        String username= (String) authenticationToken.getPrincipal();
+        String username= (String)token.getPrincipal();
 
-        CrudParam crudParam=new CrudParam();
+        CrudParam<Term> crudParam=new CrudParam<Term>();
         crudParam.add(Term.build("username",username));
-        User user=(User)userService.findAll(crudParam).get(0);
+        User user=userService.findAll(crudParam).get(0);
         if(user==null){
             return null;
         }
         SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(),
                 ByteSource.Util.bytes(user.getSalt()),getName());
         //将用户信息放入session
-        SecurityUtils.getSubject().getSession().setAttribute(user.getCode(), user);
+        Session session = SecurityUtils.getSubject().getSession();
+        session.setAttribute(user.getCode(), user);
+        session.setTimeout(30);
         return simpleAuthenticationInfo;
 
     }

@@ -1,6 +1,7 @@
 package com.shanxiut.scs.controller;
 
-import com.shanxiut.scs.entity.User;
+import com.shanxiut.scs.common.util.ShiroUtils;
+import com.shanxiut.scs.Auth.entity.User;
 import com.shanxiut.scs.response.ResponseMessage;
 import com.shanxiut.scs.service.UserService;
 import org.apache.shiro.SecurityUtils;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 
 /**
@@ -25,31 +28,34 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RequestMapping("/index")
 @RestController
-public class IndexController  {
+public class IndexController {
 
     @Autowired
     private UserService userService;
 
     @RequestMapping("/register")
     public ResponseMessage reg(@RequestBody User user) {
-        Md5Hash md5Hash=new Md5Hash(user.getPassword(), "salt");
+        Md5Hash md5Hash = new Md5Hash(user.getPassword(), user.getSalt());
         user.setPassword(md5Hash.toString());
+        user.setCode(UUID.randomUUID().toString());
         return ResponseMessage.ok(userService.insert(user));
     }
 
     @RequestMapping("/login")
-    public ResponseMessage login(String name,String password,String code,String rememberMe){
-        UsernamePasswordToken token=new UsernamePasswordToken(name,password);
-        Subject subject= SecurityUtils.getSubject();
-        token.setRememberMe(rememberMe==null?false:true);
-        try{
+    public ResponseMessage login(String name, String password, String code, String rememberMe) {
+        UsernamePasswordToken token = new UsernamePasswordToken(name, password);
+        Subject subject = ShiroUtils.getSubject();
+        token.setRememberMe(rememberMe == null ? false : true);
+        try {
             subject.login(token);
-        }catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
             String simpleName = e.getClass().getSimpleName();
             if ("UnknownAccountException".equals(simpleName)) {
                 return ResponseMessage.error("The user does not exist");
-            } else if("IncorrectCredentialsException".equals(simpleName)){
-               return ResponseMessage.error("Incorrect password");
+            } else if ("IncorrectCredentialsException".equals(simpleName)) {
+                return ResponseMessage.error("Incorrect password");
+            } else if ("UnsupportedTokenException".equals(simpleName)) {
+                return ResponseMessage.error("token exception");
             }
         }
         boolean authenticated = subject.isAuthenticated();
@@ -59,6 +65,7 @@ public class IndexController  {
         return ResponseMessage.error("Login failure");
 
     }
+
     @RequestMapping("/logout")
     public ResponseMessage logout() {
         // 注销登录

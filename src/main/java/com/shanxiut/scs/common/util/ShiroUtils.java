@@ -1,9 +1,8 @@
 package com.shanxiut.scs.common.util;
 
 import cn.hutool.json.JSONUtil;
-import com.alibaba.druid.support.json.JSONUtils;
 import com.shanxiut.scs.common.exception.RestException;
-import com.shanxiut.scs.entity.User;
+import com.shanxiut.scs.Auth.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;

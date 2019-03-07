@@ -19,7 +19,7 @@ public class Course extends SuperEntity<Course>{
     private Long id;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "COURSE_TEACHER",joinColumns = {
+    @JoinTable(name = "SCS_COURSE_TEACHER",joinColumns = {
             @JoinColumn(name = "COURSE_ID",referencedColumnName = "ID")},inverseJoinColumns = {
             @JoinColumn(name = "TEACHER_ID",referencedColumnName = "ID")
     })

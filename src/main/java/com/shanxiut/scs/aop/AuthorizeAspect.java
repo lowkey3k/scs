@@ -70,7 +70,9 @@ public class AuthorizeAspect {
         Object target = point.getTarget();
         Class<?> aClass = target.getClass();
         Authorize annotation = aClass.getAnnotation(Authorize.class);
-        String[] resources = annotation.resources();
+        String[] resources;
+        Optional<Authorize> annotation1 = Optional.ofNullable(annotation);
+
         /**
          * 方法界别权限控制
          */
@@ -78,8 +80,14 @@ public class AuthorizeAspect {
         Method method = signature.getMethod();
         Authorize authorize = method.getAnnotation(Authorize.class);
         String[] value = authorize.resources();
-
-        if (isAllowed(user, Arrays.asList(resources))) {
+        if (annotation1.isPresent()) {
+            resources = annotation.resources();
+            if (isAllowed(user, Arrays.asList(resources))) {
+                if (isAllowed(user, Arrays.asList(value))) {
+                    return result;
+                }
+            }
+        } else {
             if (isAllowed(user, Arrays.asList(value))) {
                 return result;
             }
@@ -100,5 +108,6 @@ public class AuthorizeAspect {
         }
         return false;
     }
+
 
 }

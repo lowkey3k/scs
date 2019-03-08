@@ -18,9 +18,9 @@ public class Teacher extends SuperEntity<Teacher>{
     @Id
     private Long id;
 
-    @ManyToMany(mappedBy = "teachers")
+   /* @ManyToMany(mappedBy = "teachers")
     private Set<Course> courses;
-
+*/
     @Column(name = "teacher_name")
     private String teacherName;
 

@@ -229,7 +229,6 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
 
     */
          Specification specification = this.buildSpecification(param);
-         this.superDao.findAll(specification);
         return this.superDao.findAll(specification);
     }
 

@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * @author LiHaitao
- * @description AccessLog:
+ * @description AccessLog:访问日志实体类
  * @date 2019/3/6 15:59
  **/
 @Entity

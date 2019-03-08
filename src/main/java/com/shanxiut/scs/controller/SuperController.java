@@ -5,7 +5,7 @@ import com.shanxiut.scs.annotation.Authorize;
 import com.shanxiut.scs.auth.constant.AuthConstant;
 import com.shanxiut.scs.common.param.CrudParam;
 import com.shanxiut.scs.common.param.Term;
-import com.shanxiut.scs.response.ResponseMessage;
+import com.shanxiut.scs.common.response.ResponseMessage;
 import com.shanxiut.scs.service.SuperService;
 import com.shanxiut.scs.common.util.CrudParamUtil;
 import org.springframework.web.bind.annotation.*;

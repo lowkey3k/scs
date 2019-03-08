@@ -2,7 +2,7 @@ package com.shanxiut.scs.controller;
 
 import com.shanxiut.scs.common.util.ShiroUtils;
 import com.shanxiut.scs.auth.entity.User;
-import com.shanxiut.scs.response.ResponseMessage;
+import com.shanxiut.scs.common.response.ResponseMessage;
 import com.shanxiut.scs.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;

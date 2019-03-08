@@ -1,4 +1,4 @@
-package com.shanxiut.scs.response;
+package com.shanxiut.scs.common.response;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;

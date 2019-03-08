@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * Description:
+ * Description:学生实体类
  *
  * @Author lht
  * @Date 2019/3/3 下午2:02

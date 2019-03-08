@@ -1,6 +1,6 @@
 package com.shanxiut.scs.common.exception;
 
-import com.shanxiut.scs.response.ResponseMessage;
+import com.shanxiut.scs.common.response.ResponseMessage;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

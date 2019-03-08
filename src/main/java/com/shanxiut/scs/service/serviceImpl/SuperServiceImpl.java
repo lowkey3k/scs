@@ -26,8 +26,7 @@ import java.util.List;
  * Description:
  *
  * @Author lht
- * @Da
- * te 2019/3/3 下午2:13
+ * @Da te 2019/3/3 下午2:13
  **/
 public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, PK>, E extends SuperEntity> implements SuperService<E, PK> {
 
@@ -46,22 +45,21 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
     }
 
 
-
-
     protected Specification buildSpecification(CrudParam param) {
         Specification specification = (root, query, cb) -> {
             List<Predicate> predicateList = new ArrayList<>();
             predicateList.addAll(this.buildSpecificationByPropertyFilter(param.getTerms(), root, cb));
-            return cb.and((Predicate[])predicateList.toArray(new Predicate[predicateList.size()]));
+            return cb.and((Predicate[]) predicateList.toArray(new Predicate[predicateList.size()]));
         };
         return specification;
     }
+
     protected List<Predicate> buildSpecificationByPropertyFilter(List<Term> terms, Root root, CriteriaBuilder cb) {
         List<Predicate> predicateList = new ArrayList<>();
         Iterator var5 = terms.iterator();
 
-        while(var5.hasNext()) {
-            Term term = (Term)var5.next();
+        while (var5.hasNext()) {
+            Term term = (Term) var5.next();
             Predicate predicate = this.buildPredicate(term, root, cb);
             if (predicate != null) {
                 predicateList.add(predicate);
@@ -70,63 +68,65 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
 
         return predicateList;
     }
+
     protected Predicate buildPredicate(Term term, Root root, CriteriaBuilder cb) {
 
-            boolean nullTerm = term.getColumn()==null&&term.getColumn().equals("");
-            if (nullTerm && term.getTerms().isEmpty()) {
-                return null;
-            } else {
-                Predicate predicate = null;
-                if (!nullTerm) {
-                    predicate = this.buildPredicate(root.get(term.getColumn()), term.getValue(), term.getTermType(), cb);
-                }
+        boolean nullTerm = term.getColumn() == null && term.getColumn().equals("");
+        if (nullTerm && term.getTerms().isEmpty()) {
+            return null;
+        } else {
+            Predicate predicate = null;
+            if (!nullTerm) {
+                predicate = this.buildPredicate(root.get(term.getColumn()), term.getValue(), term.getTermType(), cb);
+            }
 
-                if (!term.getTerms().isEmpty()) {//改过
-                    Iterator var6 = term.getTerms().iterator();
+            if (!term.getTerms().isEmpty()) {//改过
+                Iterator var6 = term.getTerms().iterator();
 
-                    while(var6.hasNext()) {
-                        Term innerTerm = (Term)var6.next();
-                        Predicate tmp = this.buildPredicate(innerTerm, root, cb);
-                        if (predicate == null) {
-                            predicate = tmp;
-                        } else {
-                            switch(innerTerm.getType()) {
-                                case and:
-                                    predicate = cb.and(predicate, tmp);
-                                    break;
-                                case or:
-                                    predicate = cb.or(predicate, tmp);
-                            }
+                while (var6.hasNext()) {
+                    Term innerTerm = (Term) var6.next();
+                    Predicate tmp = this.buildPredicate(innerTerm, root, cb);
+                    if (predicate == null) {
+                        predicate = tmp;
+                    } else {
+                        switch (innerTerm.getType()) {
+                            case and:
+                                predicate = cb.and(predicate, tmp);
+                                break;
+                            case or:
+                                predicate = cb.or(predicate, tmp);
                         }
                     }
                 }
-
-                return predicate;
             }
 
+            return predicate;
+        }
+
     }
+
     protected Predicate buildPredicate(Path propertyPath, Object propertyValue, TermEnum termType, CriteriaBuilder cb) {
         Object value = propertyValue;
         Predicate predicate = null;
-        switch(termType) {
+        switch (termType) {
             case eq:
                 predicate = cb.equal(propertyPath, value);
                 break;
             case like:
-                String likeValue =String.valueOf(value);
+                String likeValue = String.valueOf(value);
                 predicate = cb.like(propertyPath, StringUtils.contains(likeValue, "%") ? likeValue : "%" + likeValue + "%");
                 break;
             case lte:
-                predicate = cb.le(propertyPath,  Long.parseLong(value+""));
+                predicate = cb.le(propertyPath, Long.parseLong(value + ""));
                 break;
             case lt:
-                predicate = cb.lt(propertyPath,  Long.parseLong(value+""));
+                predicate = cb.lt(propertyPath, Long.parseLong(value + ""));
                 break;
             case gte:
-                predicate = cb.ge(propertyPath,  Long.parseLong(value+""));
+                predicate = cb.ge(propertyPath, Long.parseLong(value + ""));
                 break;
             case gt:
-                predicate = cb.gt(propertyPath, Long.parseLong(value+""));
+                predicate = cb.gt(propertyPath, Long.parseLong(value + ""));
                 break;
             case notnull:
                 predicate = cb.isNotNull(propertyPath);
@@ -138,23 +138,23 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
                 predicate = cb.notEqual(propertyPath, value);
                 break;
             case nlike:
-                predicate = cb.notLike(propertyPath, value+"");
+                predicate = cb.notLike(propertyPath, value + "");
                 break;
             case in:
-                if (value != null && value instanceof Collection && ((Collection)value).size() > 0) {
-                    predicate = propertyPath.in((Collection)value);
+                if (value != null && value instanceof Collection && ((Collection) value).size() > 0) {
+                    predicate = propertyPath.in((Collection) value);
                 }
                 break;
             case nin:
-                if (value != null && value instanceof Collection && ((Collection)value).size() > 0) {
-                    predicate = cb.not(propertyPath.in((List)value));
+                if (value != null && value instanceof Collection && ((Collection) value).size() > 0) {
+                    predicate = cb.not(propertyPath.in((List) value));
                 }
                 break;
             case btw:
-                predicate = cb.between(propertyPath, (Comparable)((List)value).get(0), (Comparable)((List)value).get(1));
+                predicate = cb.between(propertyPath, (Comparable) ((List) value).get(0), (Comparable) ((List) value).get(1));
                 break;
             case nbtw:
-                predicate = cb.not(cb.between(propertyPath, (Comparable)((List)value).get(0), (Comparable)((List)value).get(1)));
+                predicate = cb.not(cb.between(propertyPath, (Comparable) ((List) value).get(0), (Comparable) ((List) value).get(1)));
                 break;
             case empty:
                 predicate = cb.isEmpty(propertyPath);
@@ -169,10 +169,37 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
     }
 
 
-
     @Override
     public List<E> findAll(CrudParam<Term> param) {
-        List<E> resultList = null;
+        Specification specification = this.buildSpecification(param);
+        return this.superDao.findAll(specification);
+    }
+
+    @Override
+    public Page<E> selectPage(Pageable pageable) {
+        return superDao.findAll(pageable);
+    }
+
+    @Override
+    public void deleteById(PK id) {
+        superDao.deleteById(id);
+    }
+
+    @Override
+    public void deleteByIds(Iterable<? extends E> var1) {
+        superDao.deleteAll(var1);
+    }
+
+    @Override
+    public E updateById(E e) {
+        return superDao.save(e);
+    }
+
+    @Override
+    public E insert(E e) {
+        return superDao.save(e);
+    }
+}
 
        /* List<E> resultList = null;
 >>>>>>> 66a885115777b7b44e670b6ddc058e4627ac5156
@@ -228,32 +255,3 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
         };
 
     */
-         Specification specification = this.buildSpecification(param);
-        return this.superDao.findAll(specification);
-    }
-
-    @Override
-    public Page<E> selectPage(Pageable pageable) {
-        return superDao.findAll(pageable);
-    }
-
-    @Override
-    public void deleteById(PK id) {
-        superDao.deleteById(id);
-    }
-
-    @Override
-    public void deleteByIds(Iterable<? extends E> var1) {
-        superDao.deleteAll(var1);
-    }
-
-    @Override
-    public E updateById(E e) {
-        return superDao.save(e);
-    }
-
-    @Override
-    public E insert(E e) {
-        return superDao.save(e);
-    }
-}

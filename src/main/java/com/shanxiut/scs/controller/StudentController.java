@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RequestMapping("/student")
 @RestController
-@Authorize(resources = "STUDENT")
 public class StudentController extends AbstractCrudController<Student,Long, StudentService> {
 
 

@@ -1,4 +1,4 @@
-package com.shanxiut.scs.Auth.shiro;
+package com.shanxiut.scs.auth.shiro;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;

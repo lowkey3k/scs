@@ -1,6 +1,6 @@
-package com.shanxiut.scs.Auth.dao;
+package com.shanxiut.scs.auth.dao;
 
-import com.shanxiut.scs.Auth.entity.Role;
+import com.shanxiut.scs.auth.entity.Role;
 import com.shanxiut.scs.dao.SuperDao;
 
 /**

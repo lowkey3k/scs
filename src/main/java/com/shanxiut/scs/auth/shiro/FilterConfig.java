@@ -1,4 +1,4 @@
-package com.shanxiut.scs.Auth.shiro;
+package com.shanxiut.scs.auth.shiro;
 
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.shanxiut.scs.common.xss.RequestFilter;

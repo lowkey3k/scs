@@ -1,6 +1,6 @@
 package com.shanxiut.scs.entity;
 
-import com.shanxiut.scs.Auth.entity.User;
+import com.shanxiut.scs.auth.entity.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -39,6 +39,10 @@ public class Student extends SuperEntity<Student> {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+
+    @ManyToOne(optional=false)
+    @JoinColumn(name="grade_class")
+    private GradeClass gradeClass;
 
 
 }

@@ -1,6 +1,6 @@
-package com.shanxiut.scs.Auth.service;
+package com.shanxiut.scs.auth.service;
 
-import com.shanxiut.scs.Auth.entity.Role;
+import com.shanxiut.scs.auth.entity.Role;
 import com.shanxiut.scs.service.SuperService;
 
 /**

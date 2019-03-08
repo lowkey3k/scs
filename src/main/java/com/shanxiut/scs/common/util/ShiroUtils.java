@@ -2,7 +2,7 @@ package com.shanxiut.scs.common.util;
 
 import cn.hutool.json.JSONUtil;
 import com.shanxiut.scs.common.exception.RestException;
-import com.shanxiut.scs.Auth.entity.User;
+import com.shanxiut.scs.auth.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;

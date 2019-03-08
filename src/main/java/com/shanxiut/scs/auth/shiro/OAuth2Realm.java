@@ -1,8 +1,8 @@
-package com.shanxiut.scs.Auth.shiro;
+package com.shanxiut.scs.auth.shiro;
 
 import com.shanxiut.scs.common.param.CrudParam;
 import com.shanxiut.scs.common.param.Term;
-import com.shanxiut.scs.Auth.entity.User;
+import com.shanxiut.scs.auth.entity.User;
 import com.shanxiut.scs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;

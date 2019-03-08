@@ -3,9 +3,10 @@ package com.shanxiut.scs.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
- * Description:
+ * Description:学院实体类
  *
  * @Author lht
  * @Date 2019/3/5 下午10:40
@@ -22,6 +23,11 @@ public class Department extends SuperEntity<Department> {
     private String name;
 
     private String code;
+
+    @OneToMany(mappedBy = "department",cascade=CascadeType.ALL)
+    //级联保存、更新、删除、刷新;延迟加载。当删除用户，会级联删除该用户的所有文章
+    //拥有mappedBy注解的实体类为关系被维护端
+    private List<GradeClass> gradeClasses;
 
 
 

@@ -1,8 +1,7 @@
-package com.shanxiut.scs.Auth.entity;
+package com.shanxiut.scs.auth.entity;
 
 import com.shanxiut.scs.entity.SuperEntity;
 import lombok.Data;
-import org.aspectj.lang.annotation.DeclareAnnotation;
 
 import javax.persistence.*;
 
@@ -26,7 +25,8 @@ public class Resource extends SuperEntity<Resource> {
 
     private String priority;
 
-    @Column(name = "parent_id")
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Resource parent;
 
     private String permission;

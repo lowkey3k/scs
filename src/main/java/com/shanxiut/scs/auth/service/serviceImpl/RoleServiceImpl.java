@@ -1,8 +1,8 @@
-package com.shanxiut.scs.Auth.service.serviceImpl;
+package com.shanxiut.scs.auth.service.serviceImpl;
 
-import com.shanxiut.scs.Auth.dao.RoleDao;
-import com.shanxiut.scs.Auth.entity.Role;
-import com.shanxiut.scs.Auth.service.RoleService;
+import com.shanxiut.scs.auth.dao.RoleDao;
+import com.shanxiut.scs.auth.entity.Role;
+import com.shanxiut.scs.auth.service.RoleService;
 import com.shanxiut.scs.service.serviceImpl.SuperServiceImpl;
 import org.springframework.stereotype.Service;
 

@@ -2,6 +2,7 @@ package com.shanxiut.scs.controller;
 
 import com.shanxiut.scs.annotation.AccessLogger;
 import com.shanxiut.scs.annotation.Authorize;
+import com.shanxiut.scs.auth.constant.AuthConstant;
 import com.shanxiut.scs.common.param.CrudParam;
 import com.shanxiut.scs.common.param.Term;
 import com.shanxiut.scs.response.ResponseMessage;
@@ -20,6 +21,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping
+@Authorize(resources = "STUDENT")
 @SuppressWarnings("all")
 public abstract class SuperController<E, PK> {
 
@@ -28,7 +30,7 @@ public abstract class SuperController<E, PK> {
 
     @GetMapping
     @AccessLogger("List结果查询")
-    @Authorize(resources = "QUERY")
+    @Authorize(resources = AuthConstant.Resource.QUERY)
     public ResponseMessage<List<E>> getAll(CrudParam<Term> crudParam, HttpServletRequest request) {
         CrudParamUtil.padding(crudParam, request);
         return ResponseMessage.ok(this.getService().findAll(crudParam));
@@ -36,6 +38,7 @@ public abstract class SuperController<E, PK> {
 
     @PostMapping
     @AccessLogger("插入")
+    @Authorize(resources = AuthConstant.Resource.INSERT)
     public ResponseMessage<E> insert(@RequestBody E e) {
         return ResponseMessage.ok(this.getService().insert(e));
     }
@@ -43,6 +46,7 @@ public abstract class SuperController<E, PK> {
 
     @DeleteMapping
     @AccessLogger("根据id删除")
+    @Authorize(resources = AuthConstant.Resource.DELETE)
     public ResponseMessage delete(@PathVariable PK id) {
         getService().deleteById(id);
         return ResponseMessage.ok();
@@ -50,6 +54,7 @@ public abstract class SuperController<E, PK> {
 
     @PutMapping
     @AccessLogger("通过id更新")
+    @Authorize(resources = AuthConstant.Resource.UPDATE)
     public ResponseMessage<?> update(@RequestBody E e) {
         return ResponseMessage.ok(getService().updateById(e));
     }

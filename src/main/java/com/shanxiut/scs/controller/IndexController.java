@@ -1,7 +1,7 @@
 package com.shanxiut.scs.controller;
 
 import com.shanxiut.scs.common.util.ShiroUtils;
-import com.shanxiut.scs.Auth.entity.User;
+import com.shanxiut.scs.auth.entity.User;
 import com.shanxiut.scs.response.ResponseMessage;
 import com.shanxiut.scs.service.UserService;
 import org.apache.shiro.SecurityUtils;
@@ -35,9 +35,10 @@ public class IndexController {
 
     @RequestMapping("/register")
     public ResponseMessage reg(@RequestBody User user) {
-        Md5Hash md5Hash = new Md5Hash(user.getPassword(), user.getSalt());
+        Md5Hash md5Hash = new Md5Hash(user.getPassword(), user.getUsername());
         user.setPassword(md5Hash.toString());
         user.setCode(UUID.randomUUID().toString());
+        user.setSalt(user.getUsername());
         return ResponseMessage.ok(userService.insert(user));
     }
 

@@ -12,7 +12,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "scs_teacher")
-public class Teacher {
+public class Teacher extends SuperEntity<Teacher>{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

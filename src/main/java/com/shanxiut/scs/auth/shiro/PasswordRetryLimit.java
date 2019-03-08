@@ -1,4 +1,4 @@
-package com.shanxiut.scs.Auth.shiro;
+package com.shanxiut.scs.auth.shiro;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

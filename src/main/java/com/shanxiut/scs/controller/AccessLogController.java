@@ -1,5 +1,6 @@
 package com.shanxiut.scs.controller;
 
+import com.shanxiut.scs.annotation.Authorize;
 import com.shanxiut.scs.entity.AccessLog;
 import com.shanxiut.scs.service.AccessLogService;
 import org.springframework.web.bind.annotation.RequestMapping;

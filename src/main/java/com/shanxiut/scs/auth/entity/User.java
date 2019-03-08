@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Description:
@@ -35,7 +36,7 @@ public class User extends SuperEntity<User> {
             inverseJoinColumns = {
                     @JoinColumn(name = "role_id", referencedColumnName = "id")
             })
-    private List<Role> roles; //1、关系维护端，负责多对多关系的绑定和解除
+    private Set<Role> roles; //1、关系维护端，负责多对多关系的绑定和解除
     //2、@JoinTable注解的name属性指定关联表的名字，joinColumns指定外键的名字，关联到关系维护端(User)
     //3、inverseJoinColumns指定外键的名字，要关联的关系被维护端(Authority)
     //4、其实可以不使用@JoinTable注解，默认生成的关联表名称为主表表名+下划线+从表表名，

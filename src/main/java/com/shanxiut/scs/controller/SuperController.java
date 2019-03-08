@@ -21,7 +21,6 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping
-@Authorize(resources = "STUDENT")
 @SuppressWarnings("all")
 public abstract class SuperController<E, PK> {
 

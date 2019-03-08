@@ -30,7 +30,7 @@ public class Role extends SuperEntity<Role> {
     @JoinTable(name = "scs_auth_role_resource",
             joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "resource_id", referencedColumnName = "id")})
-    private List<Resource> resources;
+    private Set<Resource> resources;
 
 
     private Boolean available;

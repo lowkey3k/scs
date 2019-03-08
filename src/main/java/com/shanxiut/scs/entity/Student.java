@@ -32,7 +32,8 @@ public class Student extends SuperEntity<Student> {
 
     private String email;
 
-
+    @ManyToOne(optional=false)
+    @JoinColumn(name="department")
     private Department department;
 
     @OneToOne(cascade=CascadeType.ALL)//Student是关系的维护端，当删除 Student，会级联删除 User

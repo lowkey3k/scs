@@ -24,10 +24,11 @@ public class GradeClass extends SuperEntity<GradeClass> {
     private String name;
 
     @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)//可选属性optional=false,表示department不能为空。删除文章，不影响department
-    @JoinColumn(name="department_id")//设置在department表中的关联字段(外键)
+    @JoinColumn(name="department_id",referencedColumnName = "id")//设置在department表中的关联字段(外键)
     private Department department;
 
-    @OneToMany(mappedBy = "gradeClass",cascade=CascadeType.ALL)
+   /* @OneToMany(mappedBy = "gradeClass",cascade=CascadeType.ALL)
     private List<Student> students;
+*/
 
 }

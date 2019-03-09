@@ -1,5 +1,6 @@
 package com.shanxiut.scs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -34,5 +35,7 @@ public class Department extends SuperEntity<Department> {
     //拥有mappedBy注解的实体类为关系被维护端
     private List<Student> students;
 */
-
+   @OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
+   @JsonIgnore
+   private List<Teacher> teachers;
 }

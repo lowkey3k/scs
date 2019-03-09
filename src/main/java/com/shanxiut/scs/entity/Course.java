@@ -1,8 +1,10 @@
 package com.shanxiut.scs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,12 +20,12 @@ public class Course extends SuperEntity<Course>{
     @Id
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "SCS_COURSE_TEACHER",joinColumns = {
-            @JoinColumn(name = "COURSE_ID",referencedColumnName = "ID")},inverseJoinColumns = {
-            @JoinColumn(name = "TEACHER_ID",referencedColumnName = "ID")
-    })
+
+    @ManyToMany(mappedBy = "courses")
     private Set<Teacher> teachers;
+
+    @Column(name = "course_code")
+    private String courseCode;//课程号
 
     @Column(name = "course_name")
     private String courseName;
@@ -40,9 +42,9 @@ public class Course extends SuperEntity<Course>{
     @Column(name = "start_term")
     private String startTerm;//开课学期
 
-    @Column
-    private String location;//上课地点
+    @OneToMany(mappedBy = "course")
+    @JsonIgnore
+    private List<Schedule> schedules;
 
-    @Column(name = "course_time")
-    private String courseTime;//上课时间
+    private String isSelection;//是否选修 0 是 1 否
 }

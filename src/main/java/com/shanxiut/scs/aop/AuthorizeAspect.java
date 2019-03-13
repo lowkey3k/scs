@@ -74,7 +74,7 @@ public class AuthorizeAspect {
         Optional<Authorize> annotation1 = Optional.ofNullable(annotation);
 
         /**
-         * 方法界别权限控制
+         * 方法j级别权限控制
          */
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();

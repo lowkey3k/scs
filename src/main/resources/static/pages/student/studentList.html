@@ -17,6 +17,7 @@
 	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
 	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
 	    <![endif]-->
+		<script src="../../static/js/jquery-1.11.1.min.js"></script>
 	</head>
 
 	<body>
@@ -29,9 +30,6 @@
       </span>
 			<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
 				<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
-		</div>
-		<div id="testText">
-			zheli是文字
 		</div>
 		<div class="weadmin-body">
 			<div class="layui-row">
@@ -144,7 +142,8 @@
 			<!--</div>-->
 
 
-            <table class="layui-hide" id="test"></table>
+			<table class="layui-table" id="test" lay-filter="demo">
+			</table>
 
 
 		</div>
@@ -153,26 +152,46 @@
 		<script src="../../static/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
 
         <script>
-            layui.use('table', function(){
-                var table = layui.table;
+			$(function () {
+                layui.use('table', function () {
+                    var table = layui.table;
+                    $.ajax({
+                        url: "http://localhost:9001/student",
+                        type: "GET",
+                        contentType: "application/json;charset=utf-8",
+                        success: function (json) {
+                            if (json.result == "") {
+                                json.result = {};
+                            } else {
+                                table.render({
+                                    elem: '#test'
+                                    , cols: [[
+                                        {field: 'id', width: 80, title: 'ID', sort: true}
+                                        // ,{field:'user.username', width:80, title: '用户名'}
+                                        , {field: 'sex', width: 80, title: '性别', sort: true}
+                                        , {field: 'birthday', width: 80, title: '生日'}
+                                        , {field: 'age', title: '年龄', width: 80}
+                                        , {field: 'number', width: 80, title: '学号', sort: true}
+                                        , {field: 'phone', width: 80, title: '手机号', sort: true}
+                                        , {field: 'email', width: 80, title: '邮箱'}
+                                        // ,{field:'department.name', width:135, title: '学院', sort: true}
+                                        // ,{field:'gradeClass.name', width:135, title: '班级', sort: true}
 
-                table.render({
-                    elem: '#test'
-                    ,url:'http://localhost:9001/student'
-                    ,cols: [[
-                        {field:'id', width:80, title: 'ID', sort: true}
-                        // ,{field:'user.username', width:80, title: '用户名'}
-                        ,{field:'sex', width:80, title: '性别', sort: true}
-                        ,{field:'birthday', width:80, title: '生日'}
-                        ,{field:'age', title: '年龄', minWidth: 150}
-                        ,{field:'number', width:80, title: '学号', sort: true}
-                        ,{field:'phone', width:80, title: '手机号', sort: true}
-                        ,{field:'email', width:80, title: '邮箱'}
-                        // ,{field:'department.name', width:135, title: '学院', sort: true}
-                        // ,{field:'gradeClass.name', width:135, title: '班级', sort: true}
-
-                    ]]
-                    ,page: true
+                                    ]]
+                                    , data:json.result
+									, page: {
+                                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'],
+                                        curr: 1,
+                                        groups: 1,
+                                        first: false,
+                                        last: false
+                                    },
+                                    text: "无记录！",
+                                    even: true,
+                                });
+                            }
+                        }
+                    });
                 });
             });
         </script>

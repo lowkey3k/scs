@@ -7,9 +7,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * 后端接口支持跨域CORS调用
  * CORS全局配置
- *
- * @author liangfeihu
- * @since 2018/6/26 12:38.
  */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {

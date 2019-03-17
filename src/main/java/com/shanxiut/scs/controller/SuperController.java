@@ -29,7 +29,7 @@ public abstract class SuperController<E, PK> {
 
     @GetMapping
     @AccessLogger("List结果查询")
-    @Authorize(resources = AuthConstant.Resource.QUERY)
+//    @Authorize(resources = AuthConstant.Resource.QUERY)
     public ResponseMessage<List<E>> getAll(CrudParam<Term> crudParam, HttpServletRequest request) {
         CrudParamUtil.padding(crudParam, request);
         return ResponseMessage.ok(this.getService().findAll(crudParam));
@@ -37,7 +37,7 @@ public abstract class SuperController<E, PK> {
 
     @PostMapping
     @AccessLogger("插入")
-    @Authorize(resources = AuthConstant.Resource.INSERT)
+//    @Authorize(resources = AuthConstant.Resource.INSERT)
     public ResponseMessage<E> insert(@RequestBody E e) {
         return ResponseMessage.ok(this.getService().insert(e));
     }
@@ -45,7 +45,7 @@ public abstract class SuperController<E, PK> {
 
     @DeleteMapping
     @AccessLogger("根据id删除")
-    @Authorize(resources = AuthConstant.Resource.DELETE)
+//    @Authorize(resources = AuthConstant.Resource.DELETE)
     public ResponseMessage delete(@PathVariable PK id) {
         getService().deleteById(id);
         return ResponseMessage.ok();
@@ -53,7 +53,7 @@ public abstract class SuperController<E, PK> {
 
     @PutMapping
     @AccessLogger("通过id更新")
-    @Authorize(resources = AuthConstant.Resource.UPDATE)
+//    @Authorize(resources = AuthConstant.Resource.UPDATE)
     public ResponseMessage<?> update(@RequestBody E e) {
         return ResponseMessage.ok(getService().updateById(e));
     }

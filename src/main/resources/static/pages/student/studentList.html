@@ -53,96 +53,9 @@
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html',600,400)"><i class="layui-icon"></i>添加
         </button>
-        <span class="fr" style="line-height:40px">共有数据：88 条</span>
     </div>
-    <!--<table class="layui-table" id="memberList">-->
-    <!--<thead>-->
-    <!--<tr>-->
-    <!--<th>-->
-    <!--<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>-->
-    <!--</th>-->
-    <!--<th>ID</th>-->
-    <!--<th>用户名</th>-->
-    <!--<th>性别</th>-->
-    <!--<th>手机</th>-->
-    <!--<th>邮箱</th>-->
-    <!--<th>地址</th>-->
-    <!--<th>加入时间</th>-->
-    <!--<th>状态</th>-->
-    <!--<th>操作</th>-->
-    <!--</tr>-->
-    <!--</thead>-->
-    <!--<tbody>-->
-    <!--<tr data-id="1">-->
-    <!--<td>-->
-    <!--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id="1"><i class="layui-icon">&#xe605;</i></div>-->
-    <!--</td>-->
-    <!--<td>1</td>-->
-    <!--<td>小张</td>-->
-    <!--<td>男</td>-->
-    <!--<td>17600000000</td>-->
-    <!--<td>admin@mail.com</td>-->
-    <!--<td>北京市 海淀区</td>-->
-    <!--<td>2017-01-01 11:11:42</td>-->
-    <!--<td class="td-status">-->
-    <!--<span class="layui-btn layui-btn-normal layui-btn-xs">已启用</span></td>-->
-    <!--<td class="td-manage">-->
-    <!--<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">-->
-    <!--<i class="layui-icon">&#xe601;</i>-->
-    <!--</a>-->
-    <!--<a title="编辑" onclick="WeAdminEdit('编辑','./edit.html', 1, 600, 400)" href="javascript:;">-->
-    <!--<i class="layui-icon">&#xe642;</i>-->
-    <!--</a>-->
-    <!--<a onclick="WeAdminShow('修改密码','./password.html',600,400)" title="修改密码" href="javascript:;">-->
-    <!--<i class="layui-icon">&#xe631;</i>-->
-    <!--</a>-->
-    <!--<a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">-->
-    <!--<i class="layui-icon">&#xe640;</i>-->
-    <!--</a>-->
-    <!--</td>-->
-    <!--</tr>-->
-    <!--<tr data-id="2">-->
-    <!--<td>-->
-    <!--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>-->
-    <!--</td>-->
-    <!--<td>2</td>-->
-    <!--<td>小明</td>-->
-    <!--<td>女</td>-->
-    <!--<td>13000000000</td>-->
-    <!--<td>admin@mail.com</td>-->
-    <!--<td>北京市 海淀区</td>-->
-    <!--<td>2017-01-01 11:11:42</td>-->
-    <!--<td class="td-status">-->
-    <!--<span class="layui-btn layui-btn-normal layui-btn-xs">已启用</span></td>-->
-    <!--<td class="td-manage">-->
-    <!--<a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">-->
-    <!--<i class="layui-icon">&#xe601;</i>-->
-    <!--</a>-->
-    <!--<a title="编辑" onclick="WeAdminEdit('编辑','./edit.html', 2, 600, 400)" href="javascript:;">-->
-    <!--<i class="layui-icon">&#xe642;</i>-->
-    <!--</a>-->
-    <!--<a onclick="WeAdminShow('修改密码','./password.html',600,400)" title="修改密码" href="javascript:;">-->
-    <!--<i class="layui-icon">&#xe631;</i>-->
-    <!--</a>-->
-    <!--<a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">-->
-    <!--<i class="layui-icon">&#xe640;</i>-->
-    <!--</a>-->
-    <!--</td>-->
-    <!--</tr>-->
-    <!--</tbody>-->
-    <!--</table>-->
 
 
-    <!--<div class="page">-->
-    <!--<div>-->
-    <!--<a class="prev" href="">&lt;&lt;</a>-->
-    <!--<a class="num" href="">1</a>-->
-    <!--<span class="current">2</span>-->
-    <!--<a class="num" href="">3</a>-->
-    <!--<a class="num" href="">489</a>-->
-    <!--<a class="next" href="">&gt;&gt;</a>-->
-    <!--</div>-->
-    <!--</div>-->
 
 
     <table class="layui-table" id="test" lay-filter="demo">
@@ -220,11 +133,24 @@
                         table.on('tool(demo)', function(obj){
                             var data = obj.data;
                             if(obj.event === 'detail'){
+
                                 layer.msg('ID：'+ data.id + ' 的查看操作');
+
                             } else if(obj.event === 'del'){
                                 layer.confirm('真的删除行么', function(index){
-                                    obj.del();
-                                    layer.close(index);
+                                    $.ajax({
+                                        url: "http://localhost:9001/student/"+data.id,
+                                        type: "DELETE",
+                                        contentType: "application/json;charset=utf-8",
+                                        success: function (json) {
+                                            obj.del();
+                                            layer.close(index);
+                                            layer.alert("删除成功")
+                                        }
+                                    });
+
+
+
                                 });
                             } else if(obj.event === 'edit'){
                                 layer.alert('编辑行：<br>'+ JSON.stringify(data))
@@ -234,6 +160,11 @@
                     }
                 }
             });
+
+
+
+
+
         });
     });
 

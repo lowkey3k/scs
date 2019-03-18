@@ -43,7 +43,7 @@ public abstract class SuperController<E, PK> {
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @AccessLogger("根据id删除")
 //    @Authorize(resources = AuthConstant.Resource.DELETE)
     public ResponseMessage delete(@PathVariable PK id) {

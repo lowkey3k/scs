@@ -29,8 +29,8 @@ public abstract class SuperController<E, PK> {
 
     @GetMapping
     @AccessLogger("List结果查询")
-//    @Authorize(resources = AuthConstant.Resource.QUERY)
-    public ResponseMessage<List<E>> getAll(CrudParam<Term> crudParam, HttpServletRequest request) {
+    @Authorize(resources = AuthConstant.Resource.QUERY)
+    public ResponseMessage<List<E>> getAll(CrudParam crudParam, HttpServletRequest request) {
         CrudParamUtil.padding(crudParam, request);
         return ResponseMessage.ok(this.getService().findAll(crudParam));
     }

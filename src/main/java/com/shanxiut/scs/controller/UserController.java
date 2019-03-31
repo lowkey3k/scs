@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019/3/8 14:36
  **/
 @RestController
-@RequestMapping
+@RequestMapping("/user")
 public class UserController extends AbstractCrudController<User,Long,UserService> {
 }

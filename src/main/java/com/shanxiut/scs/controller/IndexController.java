@@ -35,16 +35,16 @@ public class IndexController {
 
     @RequestMapping("/register")
     public ResponseMessage reg(@RequestBody User user) {
-        Md5Hash md5Hash = new Md5Hash(user.getPassword(), user.getUsername());
+        Md5Hash md5Hash = new Md5Hash(user.getPassword(), user.getNumber());
         user.setPassword(md5Hash.toString());
         user.setCode(UUID.randomUUID().toString());
-        user.setSalt(user.getUsername());
+        user.setSalt(user.getNumber());
         return ResponseMessage.ok(userService.insert(user));
     }
 
     @RequestMapping("/login")
-    public ResponseMessage login(String name, String password, String code, String rememberMe) {
-        UsernamePasswordToken token = new UsernamePasswordToken(name, password);
+    public ResponseMessage login(String number, String password,String rememberMe) {
+        UsernamePasswordToken token = new UsernamePasswordToken(number, password);
         Subject subject = ShiroUtils.getSubject();
         token.setRememberMe(rememberMe == null ? false : true);
         try {
@@ -57,11 +57,14 @@ public class IndexController {
                 return ResponseMessage.error("Incorrect password");
             } else if ("UnsupportedTokenException".equals(simpleName)) {
                 return ResponseMessage.error("token exception");
+            }else if ("ExcessiveAttemptsException".equals(simpleName)){
+                return ResponseMessage.error("account exception");
             }
         }
         boolean authenticated = subject.isAuthenticated();
         if (authenticated) {
-            return ResponseMessage.ok("Login successfully");
+            Object attribute = subject.getSession().getAttribute(number);
+            return ResponseMessage.ok(attribute);
         }
         return ResponseMessage.error("Login failure");
 

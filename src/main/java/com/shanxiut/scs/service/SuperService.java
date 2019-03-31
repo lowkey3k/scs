@@ -21,7 +21,7 @@ public interface SuperService<E,PK> {
 
     List<E>  findAll();
 
-    List<E> findAll(CrudParam<Term> param);
+    List<E> findAll(CrudParam param);
 
 
     Page<E> selectPage(Pageable pageable);

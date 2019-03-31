@@ -170,7 +170,7 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
 
 
     @Override
-    public List<E> findAll(CrudParam<Term> param) {
+    public List<E> findAll(CrudParam param) {
         Specification specification = this.buildSpecification(param);
         return this.superDao.findAll(specification);
     }

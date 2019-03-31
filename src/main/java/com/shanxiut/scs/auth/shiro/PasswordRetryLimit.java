@@ -39,9 +39,9 @@ public class PasswordRetryLimit extends HashedCredentialsMatcher {
 			// 清除重试次数
 			passwordRetryCache.remove(username);
 		}
-		if (retryCount.incrementAndGet() > 5) {
+		if (retryCount.incrementAndGet() >= 3) {
 			//重试次数大于5
-			throw new ExcessiveAttemptsException();
+			throw new ExcessiveAttemptsException("密码错误已超过3次");
 		}
 		return matches;
 	}

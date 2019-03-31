@@ -12,7 +12,7 @@ import java.util.List;
  * @Date 2019/3/3 下午4:05
  **/
 @Data
-public class CrudParam<T> {
+public class CrudParam {
 
     private String column;
 

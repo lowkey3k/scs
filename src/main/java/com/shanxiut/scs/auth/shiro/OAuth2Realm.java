@@ -1,5 +1,7 @@
 package com.shanxiut.scs.auth.shiro;
 
+import com.shanxiut.scs.auth.entity.Resource;
+import com.shanxiut.scs.auth.entity.Role;
 import com.shanxiut.scs.common.param.CrudParam;
 import com.shanxiut.scs.common.param.Term;
 import com.shanxiut.scs.auth.entity.User;
@@ -19,14 +21,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
- /** 认证
-  * @author LiHaitao
-  * @description :
-  * @date 2019/3/6 19:44
-  **/
+/**
+ * 认证
+ *
+ * @author LiHaitao
+ * @description :
+ * @date 2019/3/6 19:44
+ **/
 
 @Slf4j
 @Component
@@ -36,7 +42,7 @@ public class OAuth2Realm extends AuthorizingRealm {
 
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token != null ;
+        return token != null;
     }
 
     /**
@@ -48,10 +54,22 @@ public class OAuth2Realm extends AuthorizingRealm {
 
         User user = (User) principals.getPrimaryPrincipal();
         Set<String> roles = new HashSet<String>();
-
-       //添加角色
-        info.setRoles(roles);
-
+        CrudParam crudParam = new CrudParam();
+        crudParam.add(Term.build("number", user.getNumber()));
+        User u = userService.findAll(crudParam).get(0);
+        Set<String> collectRoles = u.getRoles().stream().map(role -> {
+            return role.getRole();
+        }).collect(Collectors.toSet());
+        //添加角色
+        info.setRoles(collectRoles);
+        //添加资源
+        Set<String> resources = new HashSet<>();
+        for (Role role : user.getRoles()) {
+            for (Resource resource : role.getResources()) {
+                resources.add(resource.getName());
+            }
+        }
+        info.setStringPermissions(resources);
         return info;
     }
 
@@ -63,19 +81,20 @@ public class OAuth2Realm extends AuthorizingRealm {
 //        String accessToken = (String) authenticationToken.getPrincipal();
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         log.info("验证当前Subject时获取到token为：" + ReflectionToStringBuilder.toString(token, ToStringStyle.MULTI_LINE_STYLE));
-        String username= (String)token.getPrincipal();
+        String number = (String) token.getPrincipal();
 
-        CrudParam<Term> crudParam=new CrudParam<Term>();
-        crudParam.add(Term.build("username",username));
-        User user=userService.findAll(crudParam).get(0);
-        if(user==null){
+        CrudParam crudParam = new CrudParam();
+        crudParam.add(Term.build("number", number));
+        List<User> all = userService.findAll(crudParam);
+        if (all.isEmpty()) {
             return null;
         }
+        User user = all.get(0);
         SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(),
-                ByteSource.Util.bytes(user.getSalt()),getName());
+                ByteSource.Util.bytes(user.getSalt()), getName());
         //将用户信息放入session
         Session session = SecurityUtils.getSubject().getSession();
-        session.setAttribute(user.getCode(), user);
+        session.setAttribute(user.getNumber(), user);
         session.setTimeout(30);
         return simpleAuthenticationInfo;
 

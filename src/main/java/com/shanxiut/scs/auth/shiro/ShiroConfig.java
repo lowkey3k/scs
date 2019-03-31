@@ -18,6 +18,8 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -49,13 +51,19 @@ public class ShiroConfig {
 
         // SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager());
+        shiroFilterFactoryBean.setSuccessUrl("/index.html");
+        shiroFilterFactoryBean.setLoginUrl("/login.html");
+        Map<String, Filter> map=new HashMap<>();
+        map.put("oauth",new OAuth2Filter());
+        shiroFilterFactoryBean.setFilters(map);
 
        /* // 登陆页面
-        shiroFilterFactoryBean.setLoginUrl("/admin/login.html");
         // 登录成功后要跳转的链接
-        shiroFilterFactoryBean.setSuccessUrl("/admin/index");
+        shiroFilterFactoryBean.setSuccessUrl("/admin/index");*/
+
         // 未授权界面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/500.html");*/
+       // perms，roles，ssl，rest，port才是属于AuthorizationFilter
+        shiroFilterFactoryBean.setUnauthorizedUrl("/500.html");
 
 
 
@@ -78,7 +86,7 @@ public class ShiroConfig {
          * authc: 需要认证才能进行访问;
          * user:配置记住我或认证通过可以访问；
          */
-//        filterChainDefinitionMap.put("/student", "user"); // 判断邮箱是否存在
+        filterChainDefinitionMap.put("/student", "perms"); // 判断邮箱是否存在
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;

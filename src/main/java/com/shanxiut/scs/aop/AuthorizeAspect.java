@@ -58,7 +58,7 @@ public class AuthorizeAspect {
         HttpServletRequest request = attributes.getRequest();
 
 
-        Object result = point.proceed();
+        Object result =point.proceed();
         User user = (User) ShiroUtils.getSubject().getPrincipal();
         //执行方法
         if (user == null) {
@@ -82,32 +82,17 @@ public class AuthorizeAspect {
         String[] value = authorize.resources();
         if (annotation1.isPresent()) {
             resources = annotation.resources();
-            if (isAllowed(user, Arrays.asList(resources))) {
-                if (isAllowed(user, Arrays.asList(value))) {
+            if (ShiroUtils.getSubject().isPermittedAll(resources)) {
+                if (ShiroUtils.getSubject().isPermittedAll(value)) {
                     return result;
                 }
             }
         } else {
-            if (isAllowed(user, Arrays.asList(value))) {
+            if (ShiroUtils.getSubject().isPermittedAll(value)){
                 return result;
             }
         }
         return ResponseMessage.error(authorize.message());
     }
-
-    public boolean isAllowed(User user, List<String> list) {
-        //如果在用户的所有权限中存在则通过权限
-        for (Role role : user.getRoles()) {
-            for (Resource resource : role.getResources()) {
-                if (list.contains(resource.getName())) {
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
 
 }

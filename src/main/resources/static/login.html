@@ -44,15 +44,15 @@
             var name = $("input[name='username']").val();
             var password = $("input[name='password']").val();
             $.ajax({
-                url: "http://localhost:9001/index/login?number="+name+"&password="+password,
+                url: "http://localhost:9001/index/login?number=" + name + "&password=" + password,
                 type: 'post',//method请求方式，get或者post
                 dataType: 'json',//预期服务器返回的数据类型
                 contentType: "application/json; charset=utf-8",
                 success: function (res) {//res为相应体,function为回调函数
-                    if (res.status===200){
+                    if (res.status === 200) {
                         layer.msg("登陆成功");
-                        // window.location.href="index.html";
-                        sessionStorage.setItem(""+res.result.number,JSON.stringify(res.result));
+                        sessionStorage.setItem("scs_user", JSON.stringify(res.result));
+                        window.location.href="index.html";
                     } else {
                         layer.msg(res.message);
                     }

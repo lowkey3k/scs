@@ -24,6 +24,8 @@ public class User extends SuperEntity<User> {
     public Long id;
     @NotBlank
     private String number;//工号/学号
+
+    private String username;
     @NotBlank
     private String password;
     @NotBlank

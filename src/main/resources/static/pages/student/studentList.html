@@ -85,15 +85,14 @@
                             , cols: [[
                                 {field: 'id', width: 80, title: 'ID', sort: true},
 
-                                {
-                                    field: 'username', title: '用户名', width: 150, edit: 'text', templet: function (res) {
-                                        return '<em>' + res.user.username + '</em>'
-                                    }
-                                }
-                                , {field: 'sex', width: 80, title: '性别', sort: true}
+                                {field: 'sex', width: 80, title: '性别', sort: true}
                                 , {field: 'birthday', width: 80, title: '生日'}
                                 , {field: 'age', title: '年龄', width: 80}
-                                , {field: 'number', width: 80, title: '学号', sort: true}
+                                , {
+                                    field: 'number', title: '学号', width: 150, edit: 'text', templet: function (res) {
+                                        return '<em>' + res.user.number + '</em>'
+                                    }
+                                },
                                 , {field: 'phone', width: 80, title: '手机号', sort: true}
                                 , {field: 'email', width: 80, title: '邮箱'},
                                 {

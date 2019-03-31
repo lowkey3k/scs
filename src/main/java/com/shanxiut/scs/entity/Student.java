@@ -30,6 +30,8 @@ public class Student extends SuperEntity<Student> {
 
     private String email;
 
+    private String idNumber;//身份证号码
+
     @ManyToOne(optional=false)
     @JoinColumn(name="department")
     private Department department;

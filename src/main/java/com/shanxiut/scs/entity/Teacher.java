@@ -34,6 +34,7 @@ public class Teacher extends SuperEntity<Teacher>{
 
     private String birthday;
 
+    private String idNumber;//身份证号
     @ManyToMany
     //1、关系维护端，负责多对多关系的绑定和解除
     //2、@JoinTable注解的name属性指定关联表的名字，joinColumns指定外键的名字，关联到关系维护端(User)

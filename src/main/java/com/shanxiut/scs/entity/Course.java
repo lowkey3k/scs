@@ -20,10 +20,6 @@ public class Course extends SuperEntity<Course>{
     @Id
     private Long id;
 
-
-    @ManyToMany(mappedBy = "courses")
-    private Set<Teacher> teachers;
-
     @Column(name = "course_code")
     private String courseCode;//课程号
 

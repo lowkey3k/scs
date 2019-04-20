@@ -25,4 +25,7 @@ public class Schedule extends SuperEntity<Schedule>{
     @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
     @JoinColumn(name="course_id",referencedColumnName = "id")
     private Course course;
+
+    @ManyToOne
+    private Teacher teacher;
 }

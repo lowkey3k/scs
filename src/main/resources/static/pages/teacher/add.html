@@ -30,6 +30,21 @@
 						请设置至少5个字符，将会成为您唯一的登录名
 					</div>
 				</div>
+
+				<div class="layui-form-item" pane>
+					<label  class="layui-form-label">
+						<span for="L_department" class="we-red">*</span>隶属学院
+					</label>
+					<div class="layui-input-inline">
+						<select id="L_department" name="department" lay-verify="required" lay-search>
+							<!--<option value="">请选择隶属学院</option>
+							<option value="010">数学与计算机科学学院</option>
+							<option value="021">管理与经济学院</option>
+							<option value="0571">马克思学院</option>-->
+						</select>
+					</div>
+				</div>
+
 				<div class="layui-form-item" pane>
 				    <label for="L_sex" class="layui-form-label">性别</label>
 				    <div class="layui-input-block" id="L_sex">
@@ -86,6 +101,31 @@
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 
 		<script>
+			//页面载入时执行
+			window.onload = function () {
+                //加载隶属学院信息
+                layui.use( 'jquery', function() {
+                    $ = layui.jquery;
+					$.ajax({
+                        url: "http://localhost:9001/department",
+                        type: "GET",
+                        contentType: "application/json;charset=utf-8",
+						async:true,
+                        success: function (json) {
+                            var seldom = $('#l_department');
+                            var departments = json.result;
+                            var length = json.result.length;
+                            var optionHtml = "";
+                            for (var i = 0;i<length;i++){
+                                alert("<option value='"+departments[i].id+"'>"+departments[i].name+"</option>");
+								seldom.append("<option value='"+departments[i].id+"'>"+departments[i].name+"</option>");
+
+                            }
+                        }
+                        //接口调用失败时
+                    });
+                });
+            }
 			layui.extend({
 				admin: '{/}../../static/js/admin'
 			});
@@ -95,6 +135,9 @@
 					util = layui.util,
 					admin = layui.admin,
 					layer = layui.layer;
+
+
+
 
 				//自定义验证规则
 				form.verify({
@@ -128,7 +171,7 @@
 					//console.log(f.username);
 					//console.log(f.sex);				
 					//var sex = $('input:radio[name="sex"]:checked').val();
-					
+                    alert($('select[name="department"] option:selected').val());
 					//发异步，把数据提交给php
 					layer.alert("增加成功", {
 						icon: 6

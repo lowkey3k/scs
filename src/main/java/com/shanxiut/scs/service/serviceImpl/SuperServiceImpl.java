@@ -1,5 +1,6 @@
 package com.shanxiut.scs.service.serviceImpl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.shanxiut.scs.dao.SuperDao;
 import com.shanxiut.scs.entity.SuperEntity;
 import com.shanxiut.scs.common.param.CrudParam;
@@ -17,10 +18,9 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import static sun.corba.Bridge.get;
 
 /**
  * Description:
@@ -35,8 +35,13 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
 
 
     @Override
+    public SuperDao<E, PK> getDao() {
+        return superDao;
+    }
+
+    @Override
     public E findById(PK id) {
-        return superDao.findById(id).get();
+        return superDao.getOne(id);
     }
 
     @Override
@@ -45,8 +50,49 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
     }
 
 
-    protected Specification buildSpecification(CrudParam param) {
-        Specification specification = (root, query, cb) -> {
+    @Override
+    public List<E> findAll(CrudParam param) {
+        Specification specification = this.buildSpecification(param);
+        return this.superDao.findAll(specification);
+    }
+
+    @Override
+    public Page<E> selectPage(Pageable pageable) {
+        return superDao.findAll(pageable);
+    }
+
+    @Override
+    public void deleteById(PK id) {
+        superDao.deleteById(id);
+    }
+
+    @Override
+    public void deleteByIds(Iterable<E> var1) {
+        superDao.deleteAll(var1);
+    }
+
+    @Override
+    public E updateById(E e) {
+        return superDao.save(e);
+    }
+
+    @Override
+    public E insert(E e) {
+        return superDao.save(e);
+    }
+
+    @Override
+    public E selectSingle(CrudParam param) {
+        Specification<E> specification = this.buildSpecification(param);
+        List<E> all = superDao.findAll(specification);
+        if (CollectionUtil.isEmpty(all)){
+            return null;
+        }
+        return all.get(0);
+    }
+
+    protected Specification<E> buildSpecification(CrudParam param) {
+        Specification<E> specification = (root, query, cb) -> {
             List<Predicate> predicateList = new ArrayList<>();
             predicateList.addAll(this.buildSpecificationByPropertyFilter(param.getTerms(), root, cb));
             return cb.and((Predicate[]) predicateList.toArray(new Predicate[predicateList.size()]));
@@ -168,37 +214,6 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
         return predicate;
     }
 
-
-    @Override
-    public List<E> findAll(CrudParam param) {
-        Specification specification = this.buildSpecification(param);
-        return this.superDao.findAll(specification);
-    }
-
-    @Override
-    public Page<E> selectPage(Pageable pageable) {
-        return superDao.findAll(pageable);
-    }
-
-    @Override
-    public void deleteById(PK id) {
-        superDao.deleteById(id);
-    }
-
-    @Override
-    public void deleteByIds(Iterable<? extends E> var1) {
-        superDao.deleteAll(var1);
-    }
-
-    @Override
-    public E updateById(E e) {
-        return superDao.save(e);
-    }
-
-    @Override
-    public E insert(E e) {
-        return superDao.save(e);
-    }
 }
 
        /* List<E> resultList = null;

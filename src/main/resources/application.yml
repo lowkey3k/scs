@@ -9,9 +9,9 @@ server:
 spring:
   # 环境 dev|test|prod
   profiles:
-    active: dev #dev
+    active: prod #dev
   jpa:
 #    properties:
       hibernate:
-       ddl-auto: update
+       ddl-auto: none
       show-sql: true

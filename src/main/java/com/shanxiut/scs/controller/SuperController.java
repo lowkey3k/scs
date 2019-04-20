@@ -1,10 +1,7 @@
 package com.shanxiut.scs.controller;
 
 import com.shanxiut.scs.annotation.AccessLogger;
-import com.shanxiut.scs.annotation.Authorize;
-import com.shanxiut.scs.auth.constant.AuthConstant;
 import com.shanxiut.scs.common.param.CrudParam;
-import com.shanxiut.scs.common.param.Term;
 import com.shanxiut.scs.common.response.ResponseMessage;
 import com.shanxiut.scs.common.util.CrudParamUtil;
 import com.shanxiut.scs.service.SuperService;
@@ -56,5 +53,25 @@ public abstract class SuperController<E, PK> {
 //    @Authorize(resources = AuthConstant.Resource.UPDATE)
     public ResponseMessage<?> update(@RequestBody E e) {
         return ResponseMessage.ok(getService().updateById(e));
+    }
+
+    @GetMapping("/{id}")
+    @AccessLogger("通过id查询")
+    public ResponseMessage<E> getByPrimaryKey(@PathVariable("id") PK id){
+        return ResponseMessage.ok(getService().findById(id));
+    }
+
+    @DeleteMapping
+    @AccessLogger("通过id批量删除")
+    public ResponseMessage batchDeleteByIds(@RequestBody List<E> ids){
+           getService().deleteByIds(ids);
+        return ResponseMessage.ok();
+    }
+
+    @GetMapping("/single")
+    @AccessLogger("查询一个结果")
+    public ResponseMessage selectSingle(CrudParam crudParam, HttpServletRequest request){
+        CrudParamUtil.padding(crudParam,request);
+        return ResponseMessage.ok(getService().selectSingle(crudParam));
     }
 }

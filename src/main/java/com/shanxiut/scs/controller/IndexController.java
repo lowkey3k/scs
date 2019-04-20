@@ -37,7 +37,6 @@ public class IndexController {
     public ResponseMessage reg(@RequestBody User user) {
         Md5Hash md5Hash = new Md5Hash(user.getPassword(), user.getNumber());
         user.setPassword(md5Hash.toString());
-        user.setCode(UUID.randomUUID().toString());
         user.setSalt(user.getNumber());
         return ResponseMessage.ok(userService.insert(user));
     }

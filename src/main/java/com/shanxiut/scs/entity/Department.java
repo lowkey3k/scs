@@ -35,7 +35,7 @@ public class Department extends SuperEntity<Department> {
     //拥有mappedBy注解的实体类为关系被维护端
     private List<Student> students;
 */
-   @OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
-   @JsonIgnore
-   private List<Teacher> teachers;
+//   @OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
+//   @JsonIgnore
+//   private List<Teacher> teachers;
 }

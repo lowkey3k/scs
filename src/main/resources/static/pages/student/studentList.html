@@ -45,7 +45,7 @@
     </div>
     <div class="weadmin-block">
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="WeAdminShow('添加学生','./add.html',600,400)"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="WeAdminShow('添加学生','./add.html',600,500)"><i class="layui-icon"></i>添加
         </button>
     </div>
 
@@ -83,30 +83,35 @@
                         table.render({
                             elem: '#test'
                             , cols: [[
-                                {field: 'id', width: 80, title: 'ID', sort: true},
-
+                                {field: 'id', width: 80, title: 'ID', sort: true}
+                                ,
+                                {
+                                    field: 'username', title: '姓名', width: 80, edit: 'text', templet: function (res) {
+                                        return '<em>' + res.user.username + '</em>'
+                                    }
+                                },
                                 {field: 'sex', width: 80, title: '性别', sort: true}
                                 , {field: 'birthday', width: 80, title: '生日'}
                                 , {field: 'age', title: '年龄', width: 80}
                                 , {
-                                    field: 'number', title: '学号', width: 150, edit: 'text', templet: function (res) {
+                                    field: 'number', title: '学号', width: 100, edit: 'text', templet: function (res) {
                                         return '<em>' + res.user.number + '</em>'
                                     }
                                 },
-                                , {field: 'phone', width: 80, title: '手机号', sort: true}
-                                , {field: 'email', width: 80, title: '邮箱'},
+                                , {field: 'phone', width: 115,edit:'text', title: '手机号'}
+                                , {field: 'email', width: 150,edit:'text', title: '邮箱'},
                                 {
-                                    field: 'name', title: '学院', width: 150, edit: 'text', templet: function (res) {
+                                    field: 'name', title: '学院', width: 140, edit: 'text', templet: function (res) {
                                         return '<em>' + res.department.name + '</em>'
                                     }
                                 },
                                 {
-                                    field: 'name', title: '班级', width: 150, edit: 'text', templet: function (res) {
+                                    field: 'name', title: '班级', width: 100, edit: 'text', templet: function (res) {
                                         return '<em>' + res.gradeClass.name + '</em>'
                                     }
                                 },
                                 {
-                                    fixed: 'right', width:178, align:'center', toolbar: '#barDemo'
+                                    fixed: 'right', width:180, align:'center', toolbar: '#barDemo'
                                 }
 
                             ]]

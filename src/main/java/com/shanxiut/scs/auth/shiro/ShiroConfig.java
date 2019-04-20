@@ -86,7 +86,7 @@ public class ShiroConfig {
          * authc: 需要认证才能进行访问;
          * user:配置记住我或认证通过可以访问；
          */
-        filterChainDefinitionMap.put("/student", "user");
+//        filterChainDefinitionMap.put("/student", "user");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;

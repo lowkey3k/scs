@@ -91,7 +91,7 @@ public class OAuth2Realm extends AuthorizingRealm {
         }
         User user = all.get(0);
         SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(),
-                ByteSource.Util.bytes(user.getSalt()), getName());
+                ByteSource.Util.bytes(user.getNumber()), getName());
         //将用户信息放入session
         Session session = SecurityUtils.getSubject().getSession();
         session.setAttribute(user.getNumber(), user);

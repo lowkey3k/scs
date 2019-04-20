@@ -2,6 +2,7 @@ package com.shanxiut.scs.auth.entity;
 
 import com.shanxiut.scs.entity.SuperEntity;
 import lombok.Data;
+import sun.rmi.rmic.iiop.IDLGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -22,14 +23,15 @@ public class User extends SuperEntity<User> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     public Long id;
+
     @NotBlank
     private String number;//工号/学号
 
     private String username;
+
     @NotBlank
     private String password;
-    @NotBlank
-    private String code;
+
 
     private String salt;
 

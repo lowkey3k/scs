@@ -2,9 +2,10 @@ package com.shanxiut.scs.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * @author LiHaitao
@@ -14,6 +15,8 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "scs_grade_class")
+@DynamicUpdate
+@DynamicInsert
 @JsonIgnoreProperties( value={"hibernateLazyInitializer","handler"})//jackson把懒加载也作为pojo进行序列化了
 public class GradeClass extends SuperEntity<GradeClass> {
 
@@ -25,7 +28,7 @@ public class GradeClass extends SuperEntity<GradeClass> {
 
     private String name;
 
-    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)//可选属性optional=false,表示department不能为空。删除文章，不影响department
+    @ManyToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE},optional=false)//可选属性optional=false,表示department不能为空。删除文章，不影响department
     @JoinColumn(name="department_id",referencedColumnName = "id")//设置在department表中的关联字段(外键)
     private Department department;
 

@@ -2,6 +2,8 @@ package com.shanxiut.scs.entity;
 
 import com.shanxiut.scs.auth.entity.User;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -14,6 +16,8 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "scs_student")
+@DynamicUpdate
+@DynamicInsert
 public class Student extends SuperEntity<Student> {
 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -32,16 +36,16 @@ public class Student extends SuperEntity<Student> {
 
     private String idNumber;//身份证号码
 
-    @ManyToOne(optional=false)
-    @JoinColumn(name="department")
-    private Department department;
+//    @ManyToOne(optional=false,cascade={CascadeType.PERSIST,CascadeType.MERGE})
+//    @JoinColumn(name="department")
+//    private Department department;
 
-    @OneToOne(cascade=CascadeType.ALL)//Student是关系的维护端，当删除 Student，会级联删除 User
+    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE})//Student是关系的维护端，当删除 Student，会级联删除 User
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
 
-    @ManyToOne(optional=false)
+    @ManyToOne(optional=false,cascade={CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name="grade_class")
     private GradeClass gradeClass;
 

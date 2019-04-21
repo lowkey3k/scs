@@ -1,10 +1,10 @@
 package com.shanxiut.scs.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Description:学院实体类
@@ -15,6 +15,8 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "scs_department")
+@DynamicUpdate
+@DynamicInsert
 public class Department extends SuperEntity<Department> {
 
     @GeneratedValue(strategy= GenerationType.IDENTITY)

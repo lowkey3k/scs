@@ -19,77 +19,113 @@
 	<body>
 		<div class="weadmin-body">
 			<form class="layui-form">
-				<div class="layui-form-item">
-					<label for="L_username" class="layui-form-label">
-		                <span class="we-red">*</span>登录名
-		            </label>
-					<div class="layui-input-inline">
-						<input type="text" id="L_username" name="username" lay-verify="required|nikename" autocomplete="off" class="layui-input">
-					</div>
-					<div class="layui-form-mid layui-word-aux">
-						请设置至少5个字符，将会成为您唯一的登录名
-					</div>
-				</div>
-				<div class="layui-form-item">
-				    <label for="L_sex" class="layui-form-label">性别</label>
-				    <div class="layui-input-block" id="L_sex">
-				      <input type="radio" name="sex" value="男" title="男" checked>
-				      <input type="radio" name="sex" value="女" title="女">
-				      <input type="radio" name="sex" value="未知" title="未知">
-				    </div>
-				</div>
+                <div class="layui-form-item">
+                    <label for="L_number" class="layui-form-label">
+                        <span class="we-red">*</span>学号
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="L_number" name="number" lay-verify="required" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        请设置至少5个字符，将会成为您唯一的学号
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        <span class="we-red">*</span>姓名
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="L_username" name="username" lay-verify="required|username" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        请填写至少2个字符
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_age" class="layui-form-label">
+                        <span class="we-red">*</span>年龄
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="L_age" name="age" lay-verify="required|number" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
 
-				<div class="layui-form-item">
-					<label for="L_email" class="layui-form-label">
-		                <span class="we-red">*</span>手机
-		            </label>
-					<div class="layui-input-inline">
-						<input type="text" id="L_phone" name="phone" lay-verify="required|phone" autocomplete="" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label for="L_email" class="layui-form-label">
-		                <span class="we-red">*</span>邮箱
-		            </label>
-					<div class="layui-input-inline">
-						<input type="text" id="L_email" name="email" lay-verify="email" autocomplete="off" class="layui-input">
-					</div>
 
-				</div>
-				<div class="layui-form-item">
-					<label for="L_address" class="layui-form-label">
-		                <span class="we-red"></span>地址
-		            </label>
-					<div class="layui-input-inline">
-						<input type="text" id="L_address" name="address" autocomplete="off" class="layui-input">
-					</div>
+                <div class="layui-form-item">
+                    <label for="L_sex" class="layui-form-label">性别</label>
+                    <div class="layui-input-block" id="L_sex">
+                        <input type="radio" name="sex" value="男" title="男" checked>
+                        <input type="radio" name="sex" value="女" title="女">
+                        <input type="radio" name="sex" value="未知" title="未知">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">生日</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
 
-				</div>
-				<div class="layui-form-item">
-					<label for="L_pass" class="layui-form-label">
-                  <span class="we-red">*</span>密码
-              </label>
-					<div class="layui-input-inline">
-						<input type="password" id="L_pass" name="pass" autocomplete="off" class="layui-input">
-					</div>
-					<div class="layui-form-mid layui-word-aux">
-						6到16个字符
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label for="L_repass" class="layui-form-label">
-                  <span class="we-red">*</span>确认密码
-              </label>
-					<div class="layui-input-inline">
-						<input type="password" id="L_repass" name="repass" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label for="L_repass" class="layui-form-label">
-              </label>
-					<button class="layui-btn" lay-filter="add" lay-submit="">确定</button>
-					<input type="hidden" name="dataId" id="dataId" value="" />
-				</div>
+                <div class="layui-form-item">
+                    <label for="L_email" class="layui-form-label">
+                        <span class="we-red">*</span>手机
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="L_phone" name="phone" lay-verify="required|phone" autocomplete=""
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_email" class="layui-form-label">
+                        <span class="we-red">*</span>邮箱
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="L_email" name="email" autocomplete="off" class="layui-input">
+                    </div>
+
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="L_identity" class="layui-form-label">
+                        <span class="we-red">*</span>身份证
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="L_identity" name="identity" lay-verify="required|identity" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        身份证请填写至少15个字符
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学院</label>
+                    <div class="layui-input-inline">
+                        <select name="department" lay-filter="department" id="department">
+
+                        </select>
+                    </div>
+
+                </div>
+                <div>
+                    <label class="layui-form-label">班级</label>
+                    <div class="layui-input-inline">
+                        <select name="grade_class" id="grade_class">
+
+                        </select>
+                    </div>
+                </div>
+                <div style="height: 20px"></div>
+                <div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                        </label>
+                        <button class="layui-btn" lay-filter="add" lay-submit="">确定</button>
+                    </div>
+                </div>
 			</form>
 		</div>
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -111,6 +147,37 @@
 						}
 					}
 				});
+                //自定义验证规则
+                form.verify({
+                    username: function (value) {
+                        if (value.length < 2) {
+                            return '姓名最少两个字符';
+                        }
+                    },
+                    pass: [/(.+){6,12}$/, '密码必须6到12位'],
+                    repass: function (value) {
+                        if ($('#L_pass').val() != $('#L_repass').val()) {
+                            return '两次密码不一致';
+                        }
+                    }
+                });
+                var number = $('#L_number').val();
+                if (number.length <= 5) {
+                    $('#L_number').attr('lay-verify', 'number');
+
+                }
+                //失去焦点时判断值为空不验证，一旦填写必须验证
+                $('input[name="email"]').blur(function () {
+                    //这里是失去焦点时的事件
+                    if ($('input[name="email"]').val()) {
+                        $('input[name="email"]').attr('lay-verify', 'email');
+                    } else {
+                        $('input[name="email"]').removeAttr('lay-verify');
+                    }
+                });
+
+
+
 				//页面初始化加载
 				$(function(){
 					setTimeout(function(){

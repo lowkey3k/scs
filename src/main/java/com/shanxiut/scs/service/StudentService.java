@@ -9,4 +9,6 @@ import com.shanxiut.scs.entity.Student;
  * @Date 2019/3/3 下午9:24
  **/
 public interface StudentService extends SuperService<Student,Long> {
+
+    public Student updateById(Student student);
 }

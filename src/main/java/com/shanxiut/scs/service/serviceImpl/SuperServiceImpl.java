@@ -20,8 +20,6 @@ import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.*;
 
-import static sun.corba.Bridge.get;
-
 /**
  * Description:
  *
@@ -32,7 +30,6 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
 
     @Autowired
     private Dao superDao;
-
 
     @Override
     public SuperDao<E, PK> getDao() {
@@ -73,7 +70,8 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
 
     @Override
     public E updateById(E e) {
-        return superDao.save(e);
+        E oldEntity=superDao.getOne((PK)e.getId());
+        return superDao.save(oldEntity);
     }
 
     @Override

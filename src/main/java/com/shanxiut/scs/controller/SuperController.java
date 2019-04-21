@@ -70,7 +70,7 @@ public abstract class SuperController<E, PK> {
 
     @GetMapping("/single")
     @AccessLogger("查询一个结果")
-    public ResponseMessage selectSingle(CrudParam crudParam, HttpServletRequest request){
+    public ResponseMessage<E> selectSingle(CrudParam crudParam, HttpServletRequest request){
         CrudParamUtil.padding(crudParam,request);
         return ResponseMessage.ok(getService().selectSingle(crudParam));
     }

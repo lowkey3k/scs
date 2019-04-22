@@ -1,5 +1,6 @@
 package com.shanxiut.scs.auth.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.shanxiut.scs.entity.SuperEntity;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "scs_auth_resource")
+@JsonIgnoreProperties( value={"hibernateLazyInitializer","handler"})//jackson把懒加载也作为pojo进行序列化了
 public class Resource extends SuperEntity<Resource> {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

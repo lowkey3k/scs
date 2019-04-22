@@ -1,11 +1,9 @@
 package com.shanxiut.scs.dao;
 
 import com.shanxiut.scs.entity.Student;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Description:
@@ -23,6 +21,6 @@ public interface StudentDao extends SuperDao<Student, Long> {
 //            "s.phone=:#{#student.phone},s.email=:#{#student.email},s.id_number=:#{#student.idNumber}," +
 //            "s.grade_class=:#{#student.gradeClass}")
 //    public int update(@Param("student") Student student);
-//
+    List<Student> findByUser_NumberOrUser_Username(String number,String username);
 
 }

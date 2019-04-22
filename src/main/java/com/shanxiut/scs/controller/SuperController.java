@@ -4,6 +4,8 @@ import com.shanxiut.scs.annotation.AccessLogger;
 import com.shanxiut.scs.common.param.CrudParam;
 import com.shanxiut.scs.common.response.ResponseMessage;
 import com.shanxiut.scs.common.util.CrudParamUtil;
+import com.shanxiut.scs.common.util.UpdateTool;
+import com.shanxiut.scs.entity.SuperEntity;
 import com.shanxiut.scs.service.SuperService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping
 @SuppressWarnings("all")
-public abstract class SuperController<E, PK> {
+public abstract class SuperController<E extends SuperEntity, PK> {
 
     public abstract SuperService<E, PK> getService();
 
@@ -52,6 +54,8 @@ public abstract class SuperController<E, PK> {
     @AccessLogger("通过id更新")
 //    @Authorize(resources = AuthConstant.Resource.UPDATE)
     public ResponseMessage<?> update(@RequestBody E e) {
+        E byId = getService().findById((PK) e.getId());
+        UpdateTool.copyNullProperties(byId,e);
         return ResponseMessage.ok(getService().updateById(e));
     }
 

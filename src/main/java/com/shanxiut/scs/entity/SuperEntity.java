@@ -1,10 +1,11 @@
 package com.shanxiut.scs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -14,21 +15,23 @@ import java.io.Serializable;
  * @Date 2019/3/3 下午1:56
  **/
 @Data
-@DynamicUpdate
-@DynamicInsert
-public class SuperEntity<E extends SuperEntity> implements Serializable {
+@MappedSuperclass
+@JsonIgnoreProperties( value={"hibernateLazyInitializer","handler"})//jackson把懒加载也作为pojo进行序列化了
+public class SuperEntity<E> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "status")
     private Integer status;
 
-    @Column(updatable = false, name = "creator_code")
+    @Column(name = "creator_code")
     private String creatorCode;
 
-    @Column(updatable = false, name = "create_time")
+    @Column(name = "create_time")
     private Long createTime;
 
     @Column(name = "updater_code")

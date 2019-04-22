@@ -2,6 +2,8 @@ package com.shanxiut.scs.service;
 
 import com.shanxiut.scs.entity.Student;
 
+import java.util.List;
+
 /**
  * Description:
  *
@@ -11,4 +13,6 @@ import com.shanxiut.scs.entity.Student;
 public interface StudentService extends SuperService<Student,Long> {
 
     public Student updateById(Student student);
+
+    List<Student> findByUsernameAndNumber(String number, String username);
 }

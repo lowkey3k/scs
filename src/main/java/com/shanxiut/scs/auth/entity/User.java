@@ -1,5 +1,6 @@
 package com.shanxiut.scs.auth.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.shanxiut.scs.entity.SuperEntity;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
@@ -22,6 +23,7 @@ import java.util.Set;
 @Table(name = "scs_user")
 @DynamicUpdate
 @DynamicInsert
+@JsonIgnoreProperties( value={"hibernateLazyInitializer","handler"})//jackson把懒加载也作为pojo进行序列化了
 public class User extends SuperEntity<User> {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +40,7 @@ public class User extends SuperEntity<User> {
 
 
     private String salt;
+
 
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinTable(name = "scs_auth_user_role", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},

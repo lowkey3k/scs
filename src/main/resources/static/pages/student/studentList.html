@@ -34,17 +34,20 @@
         <i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
 </div>
 <div class="weadmin-body">
-    <div class="layui-row">
-        <form class="layui-form layui-col-md12 we-search">
-            学生搜索：
-            <div class="layui-inline">
-                <input type="text" name="username" placeholder="请输入学生学号" autocomplete="off" class="layui-input">
-            </div>
-            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-        </form>
+
+    <div class="demoTable">
+        学生搜索：
+        <div class="layui-inline">
+            <input name="number" id="number" placeholder="请输入学生学号" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-inline">
+            <input name="username" id="username" placeholder="请输入学生姓名" autocomplete="off" class="layui-input">
+        </div>
+        <button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
     </div>
+
     <div class="weadmin-block">
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
         <button class="layui-btn" onclick="WeAdminShow('添加学生','./add.html',600,500)"><i class="layui-icon"></i>添加
         </button>
     </div>
@@ -167,7 +170,6 @@
     </div>
 
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
@@ -200,7 +202,6 @@
             //创建一个编辑器
             var editIndex = layedit.build('LAY_demo_editor');
 
-
             $.ajax({
                 url: "http://localhost:9001/student",
                 type: "GET",
@@ -228,7 +229,7 @@
                                         return '<em>' + res.user.number + '</em>'
                                     }
                                 },
-                                , {field: 'phone', width: 115, edit: 'text', title: '手机号'}
+                                {field: 'phone', width: 115, edit: 'text', title: '手机号'}
                                 , {field: 'email', width: 150, edit: 'text', title: '邮箱'},
                                 {
                                     field: 'name', title: '学院', width: 140, edit: 'text', templet: function (res) {
@@ -245,6 +246,7 @@
                                 }
 
                             ]]
+                            , id: 'demoReload'
                             , data: json.result
                             , page: {
                                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'],
@@ -260,7 +262,6 @@
                         //监听工具条
                         table.on('tool(demo)', function (obj) {
                             var data = obj.data;
-                            alert(JSON.stringify(data));
                             if (obj.event === 'detail') {
 
                                 layer.msg('ID：' + data.id + ' 的查看操作');
@@ -360,31 +361,30 @@
                                         $('#date').val(data.birthday);
 
 
-
                                         //监听提交
                                         form.on('submit(update)', function (dataField) {
 
-                                            var datas=dataField.field;
+                                            var datas = dataField.field;
 
                                             var data1 = {
                                                 "id": data.id,
                                                 "user":
                                                     {
-                                                        "id":data.user.id,
+                                                        "id": data.user.id,
                                                         "number": $('#L_number').val(),
                                                         "username": $('#L_username').val(),
                                                         "password": "123456"
                                                     },
                                                 "age": $('#L_age').val(),
                                                 "sex": $("input[type='radio']:checked").val(),
-                                                "birthday":$('#date').val(),
+                                                "birthday": $('#date').val(),
                                                 "phone": $('#L_phone').val(),
                                                 "email": $('#L_email').val(),
                                                 'idNumber': $('#L_identity').val(),
                                                 'birthday': $('#date').val(),
                                                 "gradeClass": {
                                                     "id": datas.grade_class,
-                                                    "department":{
+                                                    "department": {
                                                         "id": datas.department
                                                     }
                                                 }
@@ -396,12 +396,12 @@
                                                 type: 'put',//method请求方式，get或者post
                                                 dataType: 'json',//预期服务器返回的数据类型
                                                 contentType: "application/json; charset=utf-8",
-                                                data:JSON.stringify(data1),
-                                                success: function(res) {//res为相应体,function为回调函数
+                                                data: JSON.stringify(data1),
+                                                success: function (res) {//res为相应体,function为回调函数
                                                     if (res.status === 200) {
                                                         layer.alert("增加成功", {
                                                             icon: 6
-                                                        }, function() {
+                                                        }, function () {
                                                             // 获得frame索引
                                                             var index = parent.layer.getFrameIndex(window.name);
                                                             //关闭当前frame
@@ -416,13 +416,7 @@
                                             });
 
 
-
                                         });
-
-
-
-
-
 
 
                                     }
@@ -469,6 +463,80 @@
                 }
             });
 
+
+            /**
+             * 搜索
+             */
+            $('.demoTable .layui-btn').on('click', function () {
+                var number = $('#number').val();
+                var username = $('#username').val();
+
+                $.ajax({
+                    url: "http://localhost:9001/student/getByUsernameAndNumber?username=" + username + "&number=" + number,
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (json) {
+
+                        if (json.result == "") {
+                            json.result = [];
+                        } else {
+
+                            table.render({
+                                elem: '#test'
+                                , cols: [[
+                                    {field: 'id', width: 80, title: 'ID', sort: true}
+                                    ,
+                                    {
+                                        field: 'username',
+                                        title: '姓名',
+                                        width: 80,
+                                        edit: 'text',
+                                        templet: function (res) {
+                                            return '<em>' + res.user.username + '</em>'
+                                        }
+                                    },
+                                    {field: 'sex', width: 80, title: '性别', sort: true}
+                                    , {field: 'birthday', width: 80, title: '生日'}
+                                    , {field: 'age', title: '年龄', width: 80}
+                                    , {
+                                        field: 'number',
+                                        title: '学号',
+                                        width: 100,
+                                        edit: 'text',
+                                        templet: function (res) {
+                                            return '<em>' + res.user.number + '</em>'
+                                        }
+                                    },
+                                    {field: 'phone', width: 115, edit: 'text', title: '手机号'}
+                                    , {field: 'email', width: 150, edit: 'text', title: '邮箱'},
+                                    {
+                                        field: 'name', title: '学院', width: 140, edit: 'text', templet: function (res) {
+                                            return '<em>' + res.gradeClass.department.name + '</em>'
+                                        }
+                                    },
+                                    {
+                                        field: 'name', title: '班级', width: 100, edit: 'text', templet: function (res) {
+                                            return '<em>' + res.gradeClass.name + '</em>'
+                                        }
+                                    },
+                                    {
+                                        fixed: 'right', width: 180, align: 'center', toolbar: '#barDemo'
+                                    }
+
+                                ]]
+                                , data: json.result
+                                , page: true
+                                , text: {none: '暂无相关记录！'}
+                                , even: true
+                            });
+
+
+                        }
+                    }
+                });
+
+
+            });
 
         });
     });

@@ -12,6 +12,8 @@ import com.shanxiut.scs.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Description:
  *
@@ -23,6 +25,9 @@ public class StudentServiceImpl extends SuperServiceImpl<Long, StudentDao, Stude
 
     @Autowired
     private GradeClassService gradeClassService;
+    @Autowired
+    private StudentDao studentDao;
+
 
     @Override
     public Student updateById(Student student) {
@@ -33,6 +38,11 @@ public class StudentServiceImpl extends SuperServiceImpl<Long, StudentDao, Stude
         UpdateTool.copyNullProperties(user,student.getUser());
         UpdateTool.copyNullProperties(one,student);
         return this.getDao().save(student);
+    }
+
+    @Override
+    public List<Student> findByUsernameAndNumber(String number, String username) {
+        return studentDao.findByUser_NumberOrUser_Username(number,username);
     }
 
 

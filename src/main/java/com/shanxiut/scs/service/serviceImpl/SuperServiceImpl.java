@@ -70,8 +70,7 @@ public class SuperServiceImpl<PK extends Serializable, Dao extends SuperDao<E, P
 
     @Override
     public E updateById(E e) {
-        E oldEntity=superDao.getOne((PK)e.getId());
-        return superDao.save(oldEntity);
+        return superDao.save(e);
     }
 
     @Override

@@ -24,7 +24,10 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
 						}, {
 							field: 'id',title: 'ID',sort: true,width:50
 						}, {
-							field: 'teacherName',title: '姓名',width:80
+							field: 'teacherName',title: '姓名',width:80,templet:function(res) {
+								alert(res.user);
+                                return res.user.username;
+                            }
 						}, {
 							field: 'sex',title: '性别',sort: true,width:80,templet:function(res){
 								switch(res.sex){

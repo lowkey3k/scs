@@ -1,5 +1,6 @@
 package com.shanxiut.scs.entity;
 
+import com.shanxiut.scs.auth.entity.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,8 +22,6 @@ public class Teacher extends SuperEntity<Teacher>{
    /* @ManyToMany(mappedBy = "teachers")
     private Set<Course> courses;
 */
-    @Column(name = "teacher_name")
-    private String teacherName;
 
     private String phoneNumber;//手机号
 
@@ -35,6 +34,11 @@ public class Teacher extends SuperEntity<Teacher>{
     private String birthday;
 
     private String idNumber;//身份证号
+
+    @OneToOne(cascade=CascadeType.ALL)//
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
     @OneToMany(mappedBy = "teacher")
     //1、关系维护端，负责多对多关系的绑定和解除
     //2、@JoinTable注解的name属性指定关联表的名字，joinColumns指定外键的名字，关联到关系维护端(User)

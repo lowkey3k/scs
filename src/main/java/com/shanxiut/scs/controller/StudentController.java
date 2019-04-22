@@ -10,6 +10,8 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Description:
  *
@@ -43,5 +45,11 @@ public class StudentController extends AbstractCrudController<Student,Long, Stud
         student.getUser().setPassword(md5Hash.toString());
         student.getUser().setSalt(student.getUser().getNumber());
         return ResponseMessage.ok(service.insert(student));
+    }
+
+    @AccessLogger("根据学号和姓名查找学生")
+    @GetMapping("/getByUsernameAndNumber")
+    public ResponseMessage<List<Student>> getByUsernameAndNumber(@RequestParam("number")String number, @RequestParam("username")String username){
+        return ResponseMessage.ok(service.findByUsernameAndNumber(number,username));
     }
 }

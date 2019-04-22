@@ -22,7 +22,7 @@ public class AccessLog extends SuperEntity<AccessLog> {
     /**
      * 创建时间
      */
-    @Column(name = "create_time")
+    @Column(name = "create_time_str")
     private String createTimeStr;
 
     @Column(name = "create_times")

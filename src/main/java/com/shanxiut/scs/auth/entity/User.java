@@ -2,6 +2,8 @@ package com.shanxiut.scs.auth.entity;
 
 import com.shanxiut.scs.entity.SuperEntity;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import sun.rmi.rmic.iiop.IDLGenerator;
 
 import javax.persistence.*;
@@ -18,6 +20,8 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "scs_user")
+@DynamicUpdate
+@DynamicInsert
 public class User extends SuperEntity<User> {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

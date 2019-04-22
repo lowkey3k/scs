@@ -50,17 +50,127 @@
     </div>
 
 
-
-
     <table class="layui-table" id="test" lay-filter="demo">
     </table>
+
+    <div id="editForm" style="display: none">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label for="L_number" class="layui-form-label">
+                    <span class="we-red">*</span>学号
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_number" name="number" lay-verify="required" autocomplete="off"
+                           class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    请设置至少5个字符，将会成为您唯一的学号
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_username" class="layui-form-label">
+                    <span class="we-red">*</span>姓名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_username" name="username" lay-verify="required|username" autocomplete="off"
+                           class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    请填写至少2个字符
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_age" class="layui-form-label">
+                    <span class="we-red">*</span>年龄
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_age" name="age" lay-verify="required|number" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label for="L_sex" class="layui-form-label">性别</label>
+                <div class="layui-input-block" id="L_sex">
+                    <input type="radio" name="sex" value="男" title="男" checked>
+                    <input type="radio" name="sex" value="女" title="女">
+                    <input type="radio" name="sex" value="未知" title="未知">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">生日</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="L_email" class="layui-form-label">
+                    <span class="we-red">*</span>手机
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_phone" name="phone" lay-verify="required|phone" autocomplete=""
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_email" class="layui-form-label">
+                    <span class="we-red">*</span>邮箱
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_email" name="email" autocomplete="off" class="layui-input">
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <label for="L_identity" class="layui-form-label">
+                    <span class="we-red">*</span>身份证
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_identity" name="identity" lay-verify="required|identity" autocomplete="off"
+                           class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    身份证请填写至少15个字符
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">学院</label>
+                <div class="layui-input-inline">
+                    <select name="department" lay-filter="department" id="department">
+
+                    </select>
+                </div>
+
+            </div>
+            <div>
+                <label class="layui-form-label">班级</label>
+                <div class="layui-input-inline">
+                    <select name="grade_class" id="grade_class">
+
+                    </select>
+                </div>
+            </div>
+            <div style="height: 20px"></div>
+            <div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                    </label>
+                    <button class="layui-btn" lay-filter="update" lay-submit="">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
-
 
 
 </div>
@@ -70,13 +180,33 @@
 
 <script>
     $(function () {
-        layui.use('table', function () {
-            var table = layui.table;
+        layui.use(['table', 'form', 'jquery', 'util', 'admin', 'layer', 'layedit', 'laydate'], function () {
+            var table = layui.table,
+                form = layui.form,
+                $ = layui.$,
+                util = layui.util,
+                admin = layui.admin,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate;
+
+            //日期
+            laydate.render({
+                elem: '#date'
+            });
+            laydate.render({
+                elem: '#date1'
+            });
+            //创建一个编辑器
+            var editIndex = layedit.build('LAY_demo_editor');
+
+
             $.ajax({
                 url: "http://localhost:9001/student",
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
                 success: function (json) {
+
                     if (json.result == "") {
                         json.result = {};
                     } else {
@@ -98,11 +228,11 @@
                                         return '<em>' + res.user.number + '</em>'
                                     }
                                 },
-                                , {field: 'phone', width: 115,edit:'text', title: '手机号'}
-                                , {field: 'email', width: 150,edit:'text', title: '邮箱'},
+                                , {field: 'phone', width: 115, edit: 'text', title: '手机号'}
+                                , {field: 'email', width: 150, edit: 'text', title: '邮箱'},
                                 {
                                     field: 'name', title: '学院', width: 140, edit: 'text', templet: function (res) {
-                                        return '<em>' + res.department.name + '</em>'
+                                        return '<em>' + res.gradeClass.department.name + '</em>'
                                     }
                                 },
                                 {
@@ -111,7 +241,7 @@
                                     }
                                 },
                                 {
-                                    fixed: 'right', width:180, align:'center', toolbar: '#barDemo'
+                                    fixed: 'right', width: 180, align: 'center', toolbar: '#barDemo'
                                 }
 
                             ]]
@@ -123,21 +253,22 @@
                                 first: false,
                                 last: false
                             },
-                            text: {none:'暂无相关记录！'},
+                            text: {none: '暂无相关记录！'},
                             even: true
                         });
 
                         //监听工具条
-                        table.on('tool(demo)', function(obj){
+                        table.on('tool(demo)', function (obj) {
                             var data = obj.data;
-                            if(obj.event === 'detail'){
+                            alert(JSON.stringify(data));
+                            if (obj.event === 'detail') {
 
-                                layer.msg('ID：'+ data.id + ' 的查看操作');
+                                layer.msg('ID：' + data.id + ' 的查看操作');
 
-                            } else if(obj.event === 'del'){
-                                layer.confirm('真的删除行么', function(index){
+                            } else if (obj.event === 'del') {
+                                layer.confirm('真的删除行么', function (index) {
                                     $.ajax({
-                                        url: "http://localhost:9001/student/"+data.id,
+                                        url: "http://localhost:9001/student/" + data.id,
                                         type: "DELETE",
                                         contentType: "application/json;charset=utf-8",
                                         success: function (json) {
@@ -148,10 +279,159 @@
                                     });
 
 
-
                                 });
-                            } else if(obj.event === 'edit'){
-                                layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                            } else if (obj.event === 'edit') {
+                                layer.open({
+                                    type: 1,
+                                    fix: false, //不固定
+                                    maxmin: true,
+                                    shadeClose: true,
+                                    area: [600 + 'px', 500 + 'px'],
+                                    shade: 0.4,
+                                    title: "编辑",
+                                    content: $('#editForm'),
+                                    success: function () {
+                                        $.ajax({
+                                            url: "http://localhost:9001/department",
+                                            type: 'get',//method请求方式，get或者post
+                                            dataType: 'json',//预期服务器返回的数据类型
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (res) {//res为相应体,function为回调函数
+                                                var result = res.result;
+                                                var i = 0;
+                                                var op = "";
+                                                $('#department').html("");
+                                                $('#department').append('<option value="">请选择</option>');
+                                                for (i; i < result.length; i++) {
+                                                    op += '<option value=' + result[i].id + '>' + result[i].name + '</option>';
+                                                }
+                                                $('#department').append(op);
+                                                $('#department').find('option[value=' + data.gradeClass.department.id + ']').attr("selected", true);
+                                                form.render();
+
+                                            }
+                                        });
+                                        $.ajax({
+                                            url: "http://localhost:9001/grade_class/getbyDepartment/" + data.gradeClass.department.id,
+                                            type: 'get',//method请求方式，get或者post
+                                            dataType: 'json',//预期服务器返回的数据类型
+                                            contentType: "application/json; charset=utf-8",
+                                            async: false,
+                                            success: function (res) {//res为相应体,function为回调函数
+                                                var result = res.result;
+                                                var i = 0;
+                                                var op = "";
+                                                $('#grade_class').html("");
+                                                for (i; i < result.length; i++) {
+                                                    op += '<option value=' + result[i].id + '>' + result[i].name + '</option>';
+                                                }
+                                                $('#grade_class').append(op);
+                                                $('#grade_class').find('option[value=' + data.gradeClass.id + ']').attr("selected", true);
+                                                form.render();
+                                            }
+                                        });
+                                        form.on('select(department)', function (data) {
+                                            $.ajax({
+                                                url: "http://localhost:9001/grade_class/getbyDepartment/" + data.value,
+                                                type: 'get',//method请求方式，get或者post
+                                                dataType: 'json',//预期服务器返回的数据类型
+                                                contentType: "application/json; charset=utf-8",
+                                                async: false,
+                                                success: function (res) {//res为相应体,function为回调函数
+                                                    var result = res.result;
+                                                    var i = 0;
+                                                    var op = "";
+                                                    $('#grade_class').html("");
+                                                    for (i; i < result.length; i++) {
+                                                        op += '<option value=' + result[i].id + '>' + result[i].name + '</option>';
+                                                    }
+                                                    $('#grade_class').append(op);
+                                                    form.render();
+                                                }
+                                            });
+
+                                        });
+                                        $('#L_number').val(data.user.number);
+                                        $('#L_age').val(data.age);
+                                        $('#L_identity').val(data.idNumber);
+                                        $('#L_email').val(data.email);
+                                        $('#L_phone').val(data.phone);
+                                        $('#L_username').val(data.user.username);
+                                        $('#date').val(data.birthday);
+
+
+
+                                        //监听提交
+                                        form.on('submit(update)', function (dataField) {
+
+                                            var datas=dataField.field;
+
+                                            var data1 = {
+                                                "id": data.id,
+                                                "user":
+                                                    {
+                                                        "id":data.user.id,
+                                                        "number": $('#L_number').val(),
+                                                        "username": $('#L_username').val(),
+                                                        "password": "123456"
+                                                    },
+                                                "age": $('#L_age').val(),
+                                                "sex": $("input[type='radio']:checked").val(),
+                                                "birthday":$('#date').val(),
+                                                "phone": $('#L_phone').val(),
+                                                "email": $('#L_email').val(),
+                                                'idNumber': $('#L_identity').val(),
+                                                'birthday': $('#date').val(),
+                                                "gradeClass": {
+                                                    "id": datas.grade_class,
+                                                    "department":{
+                                                        "id": datas.department
+                                                    }
+                                                }
+
+                                            };
+
+                                            $.ajax({
+                                                url: "http://localhost:9001/student/update",
+                                                type: 'put',//method请求方式，get或者post
+                                                dataType: 'json',//预期服务器返回的数据类型
+                                                contentType: "application/json; charset=utf-8",
+                                                data:JSON.stringify(data1),
+                                                success: function(res) {//res为相应体,function为回调函数
+                                                    if (res.status === 200) {
+                                                        layer.alert("增加成功", {
+                                                            icon: 6
+                                                        }, function() {
+                                                            // 获得frame索引
+                                                            var index = parent.layer.getFrameIndex(window.name);
+                                                            //关闭当前frame
+                                                            parent.layer.close(index);
+                                                        });
+                                                    } else {
+                                                        layer.msg(res.message);
+                                                    }
+
+
+                                                }
+                                            });
+
+
+
+                                        });
+
+
+
+
+
+
+
+                                    }
+                                })
+
+
+                                // layer.alert('编辑行：<br>'+ JSON.stringify(data))
+
+
                             }
                         });
 
@@ -160,13 +440,38 @@
             });
 
 
+//自定义验证规则
+            form.verify({
+                username: function (value) {
+                    if (value.length < 2) {
+                        return '姓名最少两个字符';
+                    }
+                },
+                pass: [/(.+){6,12}$/, '密码必须6到12位'],
+                repass: function (value) {
+                    if ($('#L_pass').val() != $('#L_repass').val()) {
+                        return '两次密码不一致';
+                    }
+                }
+            });
+            var number = $('#L_number').val();
+            if (number.length <= 5) {
+                $('#L_number').attr('lay-verify', 'number');
 
+            }
+            //失去焦点时判断值为空不验证，一旦填写必须验证
+            $('input[name="email"]').blur(function () {
+                //这里是失去焦点时的事件
+                if ($('input[name="email"]').val()) {
+                    $('input[name="email"]').attr('lay-verify', 'email');
+                } else {
+                    $('input[name="email"]').removeAttr('lay-verify');
+                }
+            });
 
 
         });
     });
-
-
 
 
 </script>

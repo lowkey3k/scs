@@ -1,6 +1,8 @@
 package com.shanxiut.scs.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import java.io.Serializable;
@@ -12,6 +14,8 @@ import java.io.Serializable;
  * @Date 2019/3/3 下午1:56
  **/
 @Data
+@DynamicUpdate
+@DynamicInsert
 public class SuperEntity<E extends SuperEntity> implements Serializable {
 
     private static final long serialVersionUID = 1L;

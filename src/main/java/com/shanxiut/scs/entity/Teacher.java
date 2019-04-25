@@ -48,7 +48,7 @@ public class Teacher extends SuperEntity<Teacher>{
     //关联到主表的外键名：主表名+下划线+主表中的主键列名,即user_id
     //关联到从表的外键名：主表中用于关联的属性名+下划线+从表的主键列名,即authority_id
     //主表就是关系维护端对应的表，从表就是关系被维护端对应的表
-    private Set<Schedule> schedules;
+    //private Set<Schedule> schedules;
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "department")

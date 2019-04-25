@@ -19,9 +19,7 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
 					elem: '#teacherList',
 					cellMinWidth: 80,
 					cols: [
-						[{
-							type: 'checkbox'
-						}, {
+						[ {
 							field: 'id',title: 'ID',sort: true,width:50
 						}, {
 							field: 'teacherName',title: '姓名',width:80,templet:function(res) {

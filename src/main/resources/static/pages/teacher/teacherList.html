@@ -42,14 +42,6 @@
 			<div class="layui-row">
 				<form class="layui-form layui-col-md12 we-search">
 					教师搜索：
-					<div class="layui-input-inline">
-						<select name="cateid">
-							<option>请选择分类</option>
-							<option>文章</option>
-							<option>会员</option>
-							<option>权限</option>
-						</select>
-					</div>
 					<div class="layui-inline">
 						<input type="text" name="keyword" placeholder="请输入关键字" autocomplete="off" class="layui-input">
 					</div>
@@ -57,12 +49,11 @@
 				</form>
 			</div>
 			<div class="weadmin-block demoTable">
-				<button class="layui-btn layui-btn-danger" data-type="getCheckData"><i class="layui-icon">&#xe640;</i>批量删除</button>
+
 				<button class="layui-btn" onclick="WeAdminShow('添加教师','./add.html',600,400)"><i class="layui-icon">&#xe61f;</i>添加</button>
 			</div>
 			<table class="layui-hide" id="teacherList" lay-filter="teacherbar"></table>
 			<script type="text/html" id="teacherOpBar">
-				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
 				<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 			</script>

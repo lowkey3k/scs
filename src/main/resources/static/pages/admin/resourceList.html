@@ -45,7 +45,7 @@
 
     <div class="weadmin-block">
         <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
-        <button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html',600,500)"><i class="layui-icon"></i>添加
+        <button class="layui-btn" onclick="WeAdminShow('添加资源','./addResource.html',600,500)"><i class="layui-icon"></i>添加
         </button>
     </div>
 
@@ -54,85 +54,37 @@
     </table>
 
     <!--添加角色form-->
-    <div id="addRoleForm" style="display: none">
+    <!--编辑信息页面-->
+    <div id="editForm" style="display: none">
         <form action="" method="post" class="layui-form">
             <div style="height: 20px"></div>
             <div class="layui-form-item">
                 <label for="name" class="layui-form-label">
-                    用户名
+                    资源名称
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="name" name="name" required="" lay-verify="required" autocomplete="off"
-                           class="layui-input" disabled>
+                           class="layui-input" >
                 </div>
             </div>
-
             <div class="layui-form-item">
-                <label class="layui-form-label">角色:</label>
-                <div class="layui-input-block" id="roles">
-
-                </div>
-            </div>
-            <div style="height: 20px"></div>
-            <div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">
-                    </label>
-                    <button class="layui-btn" lay-filter="addRole" lay-submit="">确定</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <!--编辑信息页面-->
-    <div id="editForm" style="display: none">
-        <form class="layui-form">
-            <div class="layui-form-item">
-                <label for="L_number" class="layui-form-label">
-                    <span class="we-red">*</span>编号
+                <label for="name" class="layui-form-label">
+                    资源标识
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_number" name="number" lay-verify="required" autocomplete="off"
-                           class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    请设置至少5个字符，将会成为您唯一的账号
+                    <input type="text" id="permission" name="name" required="" lay-verify="required" autocomplete="off"
+                           class="layui-input" >
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_username" class="layui-form-label">
-                    <span class="we-red">*</span>姓名
+                <label for="name" class="layui-form-label">
+                    资源url
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_username" name="username" lay-verify="required|username" autocomplete="off"
-                           class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    请填写至少2个字符
+                    <input type="text" id="url" name="name" required="" lay-verify="required" autocomplete="off"
+                           class="layui-input" >
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label for="L_pass" class="layui-form-label">
-                    <span class="we-red">*</span>密码
-                </label>
-                <div class="layui-input-inline">
-                    <input type="password" id="L_pass" name="pass" required="" lay-verify="pass" autocomplete="off"
-                           class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    6到16个字符
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_repass" class="layui-form-label">
-                    <span class="we-red">*</span>确认密码
-                </label>
-                <div class="layui-input-inline">
-                    <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
-                           autocomplete="off"
-                           class="layui-input">
-                </div>
-            </div>
-
 
             <div style="height: 20px"></div>
             <div>
@@ -156,9 +108,9 @@
         <a href="javascript:;" lay-event="del" title="启用">
             <i class="layui-icon">&#xe601;</i>
         </a>
-        <a href="javascript:;" lay-event="addRole" title="启用">
-            <i class="layui-icon">&#xe608;</i>
-        </a>
+        <!--<a href="javascript:;" lay-event="addRole" title="启用">-->
+            <!--<i class="layui-icon">&#xe608;</i>-->
+        <!--</a>-->
 
         <!--<a title="编辑" onclick="WeAdminShow('编辑','./roleList.html')" href="javascript:;">-->
         <!--<i class="layui-icon">&#xe642;</i>-->
@@ -190,7 +142,7 @@
 
 
             $.ajax({
-                url: "http://localhost:9001/user/list",
+                url: "http://localhost:9001/resource",
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
                 success: function (json) {
@@ -203,9 +155,9 @@
                             , cols: [[
                                 {field: 'id', width: 80, title: 'ID', sort: true}
                                 ,
-                                {field: 'username', width: 100, title: '用户名', sort: true}
-                                , {field: 'number', width: 120, title: '编号'}
-                                , {field: 'roleStr', width: 220, title: '角色'}
+                                {field: 'name', width: 100, title: '资源名称', sort: true}
+                                , {field: 'permission', width: 120, title: '资源标识'}
+                                , {field: 'url', width: 220, title: '资源地址'}
                                 , {field: 'createTime', width: 120, title: '加入时间'}
                                 , {
                                     field: 'status', width: 80, title: '状态', templet: function (d) {
@@ -261,7 +213,7 @@
                                 }
                                 layer.confirm(tip, function (index) {
                                     $.ajax({
-                                        url: "http://localhost:9001/user/update",
+                                        url: "http://localhost:9001/resource/update",
                                         type: "put",
                                         contentType: "application/json;charset=utf-8",
                                         data: JSON.stringify(data1),
@@ -285,27 +237,27 @@
                                     content: $('#editForm'),
                                     success: function () {
 
-                                        $('#L_number').val(data.number);
-                                        $('#L_username').val(data.username);
-                                        $('#L_pass').val(data.password);
+                                        $('#name').val(data.name);
+                                        $('#permission').val(data.permission);
+                                        $('#url').val(data.url);
                                         //监听提交
                                         form.on('submit(update)', function (dataField) {
 
                                             var data1 = {
                                                 "id": data.id,
-                                                "number": $('#L_number').val(),
-                                                "username": $('#L_username').val(),
-                                                "password": $('#L_repass').val()
+                                                "name": $('#name').val(),
+                                                "permission": $('#permission').val(),
+                                                "url": $('#url').val()
                                             };
                                             $.ajax({
-                                                url: "http://localhost:9001/user/update",
+                                                url: "http://localhost:9001/resource/update",
                                                 type: 'put',//method请求方式，get或者post
                                                 dataType: 'json',//预期服务器返回的数据类型
                                                 contentType: "application/json; charset=utf-8",
                                                 data: JSON.stringify(data1),
                                                 success: function (res) {//res为相应体,function为回调函数
                                                     if (res.status === 200) {
-                                                        layer.alert("增加成功", {
+                                                        layer.alert("编辑成功", {
                                                             icon: 6
                                                         }, function () {
                                                             // 获得frame索引
@@ -416,11 +368,11 @@
                     }
                 }
             });
-            var number = $('#L_number').val();
-            if (number.length <= 5) {
-                $('#L_number').attr('lay-verify', 'number');
-
-            }
+            // var number = $('#L_number').val();
+            // if (number.length <= 5) {
+            //     $('#L_number').attr('lay-verify', 'number');
+            //
+            // }
             //失去焦点时判断值为空不验证，一旦填写必须验证
             $('input[name="email"]').blur(function () {
                 //这里是失去焦点时的事件

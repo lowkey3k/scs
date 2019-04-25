@@ -2,6 +2,7 @@ package com.shanxiut.scs.auth.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.shanxiut.scs.entity.SuperEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "scs_auth_role")
+@AllArgsConstructor
 @JsonIgnoreProperties( value={"hibernateLazyInitializer","handler"})//jackson把懒加载也作为pojo进行序列化了
 public class Role extends SuperEntity<Role> {
 
@@ -36,4 +38,7 @@ public class Role extends SuperEntity<Role> {
 
 
     private Boolean available;
+    public Role(){
+
+    }
 }

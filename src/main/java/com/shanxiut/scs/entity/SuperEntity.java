@@ -32,7 +32,7 @@ public class SuperEntity<E> implements Serializable {
     private String creatorCode;
 
     @Column(name = "create_time")
-    private Long createTime;
+    private String createTime;
 
     @Column(name = "updater_code")
     private String updaterCode;

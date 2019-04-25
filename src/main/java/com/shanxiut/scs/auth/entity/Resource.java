@@ -33,9 +33,8 @@ public class Resource extends SuperEntity<Resource> {
 
     private String permission;
 
-    /**
-     * 是否可用
-     */
-    private boolean available;
+    private String url;
+
+    private Boolean owner;
 
 }

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加会员-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="weadmin-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label for="L_name" class="layui-form-label">
+                <span class="we-red">*</span>角色名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_name" name="number" lay-verify="required" autocomplete="off"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                角色的名称
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="L_des" class="layui-form-label">
+                <span class="we-red">*</span>角色的描述
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_des" name="username" lay-verify="" autocomplete="off"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                角色的职责描述
+            </div>
+        </div>
+
+        <div style="height: 20px"></div>
+        <div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                </label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">确定</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+
+<script>
+    layui.extend({
+        admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form', 'jquery', 'util', 'admin', 'layer', 'layedit', 'laydate'], function () {
+        var form = layui.form,
+            $ = layui.$,
+            util = layui.util,
+            admin = layui.admin,
+            layer = layui.layer,
+            layedit = layui.layedit
+            , laydate = layui.laydate;
+
+
+        //自定义验证规则
+        form.verify({
+            username: function (value) {
+                if (value.length < 2) {
+                    return '姓名最少两个字符';
+                }
+            },
+            pass: [/(.+){6,12}$/, '密码必须6到12位'],
+            repass: function (value) {
+                if ($('#L_pass').val() != $('#L_repass').val()) {
+                    return '两次密码不一致';
+                }
+            }
+        });
+
+        //失去焦点时判断值为空不验证，一旦填写必须验证
+        $('input[name="email"]').blur(function () {
+            //这里是失去焦点时的事件
+            if ($('input[name="email"]').val()) {
+                $('input[name="email"]').attr('lay-verify', 'email');
+            } else {
+                $('input[name="email"]').removeAttr('lay-verify');
+            }
+            1
+        });
+
+        //监听提交
+        form.on('submit(add)', function (data) {
+            var data = {
+                "role": $('#L_name').val(),
+                "description": $('#L_des').val(),
+
+            };
+            $.ajax({
+                url: "http://localhost:9001/role",
+                type: 'post',//method请求方式，get或者post
+                dataType: 'json',//预期服务器返回的数据类型
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {//res为相应体,function为回调函数
+                    if (res.status === 200) {
+                        layer.alert("增加成功", {
+                            icon: 6
+                        }, function () {
+                            // 获得frame索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //关闭当前frame
+                            parent.layer.close(index);
+                        });
+                    } else {
+                        layer.msg(res.message);
+                    }
+
+                }
+            });
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+
+</html>

@@ -45,7 +45,7 @@ public class Student extends SuperEntity<Student> {
     private User user;
 
 
-    @ManyToOne(optional=false,cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @ManyToOne(optional=false,cascade={CascadeType.MERGE})
     @JoinColumn(name="grade_class")
     private GradeClass gradeClass;
 

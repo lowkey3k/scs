@@ -71,22 +71,39 @@ public class ShiroConfig {
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
 //        filterChainDefinitionMap.put("/admin/logout", "logout");
         // 过滤链
-       /* filterChainDefinitionMap.put("/css/**", "anon");
-        filterChainDefinitionMap.put("/fonts/**", "anon");
-        filterChainDefinitionMap.put("/img/**", "anon");
-        filterChainDefinitionMap.put("/js/**", "anon");
-        filterChainDefinitionMap.put("/plugins/**", "anon");
-        filterChainDefinitionMap.put("/500.html", "perms");
-        filterChainDefinitionMap.put("/favicon.ico", "anon");
-        filterChainDefinitionMap.put("/admin/mylogin", "anon");
-*/
+        filterChainDefinitionMap.put("/static/css/**", "anon");
+        filterChainDefinitionMap.put("/static/fonts/**", "anon");
+        filterChainDefinitionMap.put("/static/images/**", "anon");
+        filterChainDefinitionMap.put("/static/js/**", "anon");
+
+
+        filterChainDefinitionMap.put("/layui/css/**", "anon");
+        filterChainDefinitionMap.put("/layui/font/**", "anon");
+        filterChainDefinitionMap.put("/layui/images/**", "anon");
+        filterChainDefinitionMap.put("/layui/lay/**", "anon");
+        filterChainDefinitionMap.put("/layui/**", "anon");
+
+
+//        filterChainDefinitionMap.put("/static/500.html", "perms");
+//        filterChainDefinitionMap.put("/favicon.ico", "anon");
+//        filterChainDefinitionMap.put("/admin/mylogin", "anon");
+//*/
 //        filterChainDefinitionMap.put("/**", "authc");
         /**
          * anon:所有url都都可以匿名访问;
          * authc: 需要认证才能进行访问;
          * user:配置记住我或认证通过可以访问；
          */
-//        filterChainDefinitionMap.put("/student", "user");
+        filterChainDefinitionMap.put("/**", "authc");
+
+        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/student", "user");
+        filterChainDefinitionMap.put("/course", "user");
+        filterChainDefinitionMap.put("/department", "user");
+        filterChainDefinitionMap.put("/grade_class", "user");
+        filterChainDefinitionMap.put("/teacher", "user");
+        filterChainDefinitionMap.put("/schedule", "user");
+
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;

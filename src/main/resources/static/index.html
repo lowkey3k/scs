@@ -340,16 +340,11 @@
 			layui.use(['jquery','admin'], function(){
 				var $ = layui.jquery;
 				$(function(){
-					var login = JSON.parse(localStorage.getItem("login"));
-					if(login){
-						if(login=0){
-							window.location.href='./login.html';
-							return false;
-						}else{
-							return false;
-						}
+					var login = JSON.parse(localStorage.getItem("isLogin"));
+					if(login==="login"){
+
 					}else{
-						window.location.href='./login.html';
+						window.location.href='http://localhost:9001/login.html';
 						return false;
 					}
 				});

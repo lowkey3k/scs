@@ -201,14 +201,14 @@
                         table.render({
                             elem: '#test'
                             , cols: [[
-                                {field: 'id', width: 80, title: 'ID', sort: true}
+                                {field: 'id',  title: 'ID', sort: true}
                                 ,
-                                {field: 'username', width: 100, title: '用户名', sort: true}
-                                , {field: 'number', width: 120, title: '编号'}
-                                , {field: 'roleStr', width: 220, title: '角色'}
-                                , {field: 'createTime', width: 120, title: '加入时间'}
+                                {field: 'username',  title: '用户名', sort: true}
+                                , {field: 'number',  title: '编号'}
+                                , {field: 'roleStr',  title: '角色'}
+                                , {field: 'createTime',  title: '加入时间'}
                                 , {
-                                    field: 'status', width: 80, title: '状态', templet: function (d) {
+                                    field: 'status',  title: '状态', templet: function (d) {
                                         if (d.status === 1) {
                                             $(this).find('i').html('&#xe62f;')
                                             return '  <span class="td-status">\n' +
@@ -223,7 +223,7 @@
                                     }
                                 }
                                 , {
-                                    fixed: 'right', width: 180, align: 'center', toolbar: '#barDemo'
+                                    fixed: 'right', align: 'center', toolbar: '#barDemo'
                                 }
                             ]]
                             , id: 'demoReload'

@@ -38,7 +38,7 @@ public abstract class SuperController<E extends SuperEntity, PK> {
 
     @PostMapping
     @AccessLogger("插入")
-    @Authorize(resources = AuthConstant.Resource.INSERT)
+//    @Authorize(resources = AuthConstant.Resource.INSERT)
     public ResponseMessage<E> insert(@RequestBody E e) {
         return ResponseMessage.ok(this.getService().insert(e));
     }

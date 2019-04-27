@@ -49,6 +49,10 @@ public class AccessLog extends SuperEntity<AccessLog> {
      */
     private Long time;
 
+    private String username;
+
+
+
 
 
 }

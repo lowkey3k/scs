@@ -1,6 +1,8 @@
 package com.shanxiut.scs.aop;
 
 import com.shanxiut.scs.annotation.AccessLogger;
+import com.shanxiut.scs.auth.entity.User;
+import com.shanxiut.scs.common.util.ShiroUtils;
 import com.shanxiut.scs.entity.AccessLog;
 import com.shanxiut.scs.service.AccessLogService;
 import org.aspectj.lang.JoinPoint;
@@ -93,7 +95,12 @@ public class RequestAspect {
         accessLog.setUrl(request.getRequestURI());
         accessLog.setRequestWay(request.getMethod());
         accessLog.setTime(time);
+        User user = (User) ShiroUtils.getSubject().getPrincipal();
+        if (null!=user) {
+            accessLog.setUsername(user.getUsername());
+        }
         saveAccessLog(accessLog);
+
 
         return result;
     }

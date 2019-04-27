@@ -1,11 +1,14 @@
 package com.shanxiut.scs;
 
+import cn.hutool.core.date.DateUtil;
 import com.shanxiut.scs.auth.entity.User;
+import com.shanxiut.scs.common.util.DateUtils;
 import com.shanxiut.scs.common.util.UpdateTool;
 import com.shanxiut.scs.entity.Student;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Description:
@@ -39,6 +42,8 @@ public class Main {
 
         UpdateTool.copyNullProperties(student,student1);
         System.out.println(student1);
+
+        System.out.println(DateUtil.format(new Date(), DateUtils.DATE_TIME_PATTERN));
 
     }
 }

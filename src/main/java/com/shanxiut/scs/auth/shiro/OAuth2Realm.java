@@ -5,7 +5,7 @@ import com.shanxiut.scs.auth.entity.Role;
 import com.shanxiut.scs.common.param.CrudParam;
 import com.shanxiut.scs.common.param.Term;
 import com.shanxiut.scs.auth.entity.User;
-import com.shanxiut.scs.service.UserService;
+import com.shanxiut.scs.auth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;

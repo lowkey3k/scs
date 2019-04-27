@@ -1,6 +1,8 @@
 package com.shanxiut.scs.controller;
 
 import com.shanxiut.scs.annotation.AccessLogger;
+import com.shanxiut.scs.annotation.Authorize;
+import com.shanxiut.scs.auth.constant.AuthConstant;
 import com.shanxiut.scs.common.param.CrudParam;
 import com.shanxiut.scs.common.response.ResponseMessage;
 import com.shanxiut.scs.common.util.CrudParamUtil;
@@ -36,7 +38,7 @@ public abstract class SuperController<E extends SuperEntity, PK> {
 
     @PostMapping
     @AccessLogger("插入")
-//    @Authorize(resources = AuthConstant.Resource.INSERT)
+    @Authorize(resources = AuthConstant.Resource.INSERT)
     public ResponseMessage<E> insert(@RequestBody E e) {
         return ResponseMessage.ok(this.getService().insert(e));
     }

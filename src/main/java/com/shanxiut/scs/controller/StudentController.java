@@ -1,11 +1,12 @@
 package com.shanxiut.scs.controller;
 
 import com.shanxiut.scs.annotation.AccessLogger;
+import com.shanxiut.scs.annotation.Authorize;
 import com.shanxiut.scs.auth.entity.User;
 import com.shanxiut.scs.common.response.ResponseMessage;
 import com.shanxiut.scs.entity.Student;
 import com.shanxiut.scs.service.StudentService;
-import com.shanxiut.scs.service.UserService;
+import com.shanxiut.scs.auth.service.UserService;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ import java.util.List;
  **/
 @RequestMapping("/student")
 @RestController
-//@Authorize(resources = "STUDENT")
+@Authorize(resources = "STUDENT")
 public class StudentController extends AbstractCrudController<Student,Long, StudentService> {
 
     @Autowired
@@ -40,6 +41,7 @@ public class StudentController extends AbstractCrudController<Student,Long, Stud
     @Override
     @AccessLogger("添加学生")
     @PostMapping
+    @Authorize(resources = "INSERT")
     public ResponseMessage<Student> insert(@RequestBody Student student){
         Md5Hash md5Hash = new Md5Hash(student.getUser().getPassword(), student.getUser().getNumber());
         student.getUser().setPassword(md5Hash.toString());

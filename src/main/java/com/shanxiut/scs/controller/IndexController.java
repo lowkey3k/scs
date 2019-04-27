@@ -3,7 +3,7 @@ package com.shanxiut.scs.controller;
 import com.shanxiut.scs.common.util.ShiroUtils;
 import com.shanxiut.scs.auth.entity.User;
 import com.shanxiut.scs.common.response.ResponseMessage;
-import com.shanxiut.scs.service.UserService;
+import com.shanxiut.scs.auth.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 
 /**

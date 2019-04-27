@@ -41,6 +41,8 @@ public class User extends SuperEntity<User> {
 
     private String salt;
 
+    private String code;
+
 
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinTable(name = "scs_auth_user_role", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},

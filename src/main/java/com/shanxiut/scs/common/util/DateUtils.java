@@ -33,6 +33,19 @@ public class DateUtils {
         return format(date, DATE_PATTERN);
     }
 
+
+    public static final String YEAR = "yyyy";
+    public static final String YEAR_MONTH = "yyyy-MM";
+    public static final String YEAR_MONTH_DAY = "yyyy-MM-dd";
+    public static final String YEAR_MONTH_DAY_SIMPLE = "yyyyMMdd";
+    public static final String YEAR_MONTH_DAY_HOUR = "yyyy-MM-dd HH";
+    public static final String YEAR_MONTH_DAY_HOUR_CN = "yyyy年MM月dd日HH时";
+    public static final String YEAR_MONTH_DAY_HOUR_MINUTE = "yyyy-MM-dd HH:mm";
+    public static final String YEAR_MONTH_DAY_HOUR_MINUTE_SECOND = "yyyy-MM-dd HH:mm:ss";
+    public static final String YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_SIMPLE = "yyyyMMddHHmmss";
+    public static final String HOUR_MINUTE_SECOND = "HH:mm:ss";
+    public static final String HOUR_MINUTE = "HH:mm";
+
     /**
      * 日期格式化 日期格式为：yyyy-MM-dd
      *

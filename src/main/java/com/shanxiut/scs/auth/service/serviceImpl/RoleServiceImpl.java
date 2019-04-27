@@ -1,26 +1,19 @@
 package com.shanxiut.scs.auth.service.serviceImpl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.google.common.collect.Lists;
-import com.shanxiut.scs.annotation.AccessLogger;
 import com.shanxiut.scs.auth.dao.RoleDao;
 import com.shanxiut.scs.auth.entity.Role;
 import com.shanxiut.scs.auth.entity.User;
 import com.shanxiut.scs.auth.service.RoleService;
 import com.shanxiut.scs.auth.vo.RoleVO;
-import com.shanxiut.scs.common.response.ResponseMessage;
-import com.shanxiut.scs.service.UserService;
+import com.shanxiut.scs.auth.service.UserService;
 import com.shanxiut.scs.service.serviceImpl.SuperServiceImpl;
-import com.shanxiut.scs.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author LiHaitao

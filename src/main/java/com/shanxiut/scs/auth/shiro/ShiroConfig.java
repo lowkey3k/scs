@@ -102,15 +102,16 @@ public class ShiroConfig {
          * authc: 需要认证才能进行访问;
          * user:配置记住我或认证通过可以访问；
          */
-        filterChainDefinitionMap.put("/**", "authc");
+//        filterChainDefinitionMap.put("/**", "authc");
 
-        filterChainDefinitionMap.put("/**", "authc");
-        filterChainDefinitionMap.put("/student", "user");
-        filterChainDefinitionMap.put("/course", "user");
-        filterChainDefinitionMap.put("/department", "user");
-        filterChainDefinitionMap.put("/grade_class", "user");
-        filterChainDefinitionMap.put("/teacher", "user");
-        filterChainDefinitionMap.put("/schedule", "user");
+        filterChainDefinitionMap.put("/student", "anon");
+        filterChainDefinitionMap.put("/course", "anon");
+        filterChainDefinitionMap.put("/department", "anon");
+        filterChainDefinitionMap.put("/grade_class", "anon");
+        filterChainDefinitionMap.put("/teacher", "anon");
+        filterChainDefinitionMap.put("/schedule", "anon");
+        filterChainDefinitionMap.put("/access_log", "anon");
+
 
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

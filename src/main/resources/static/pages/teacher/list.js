@@ -8,7 +8,7 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
 		form = layui.form,
 		admin = layui.admin;
 	$.ajax({
-        url: "http://localhost:9001/teacher",
+        url: remoteUrl+"teacher",
         type: "GET",
         contentType: "application/json;charset=utf-8",
         success: function (json) {
@@ -64,7 +64,7 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
                     } else if(obj.event === 'del'){
                         layer.confirm('真的删除行么', function(index){
                             $.ajax({
-                                url: "http://localhost:9001/teacher/"+data.id,
+                                url: remoteUrl+"teacher/"+data.id,
                                 type: "DELETE",
                                 contentType: "application/json;charset=utf-8",
                                 success: function (json) {

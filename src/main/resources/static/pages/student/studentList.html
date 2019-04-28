@@ -178,7 +178,11 @@
 </div>
 <!--<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
 <script src="../../layui/layui.js" charset="utf-8"></script>
+
 <script src="../../static/js/eleDel.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/admin.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/common.js" charset="utf-8"></script>
+
 
 <script>
     $(function () {
@@ -191,7 +195,6 @@
                 layer = layui.layer,
                 layedit = layui.layedit,
                 laydate = layui.laydate;
-
             //日期
             laydate.render({
                 elem: '#date'
@@ -203,7 +206,7 @@
             var editIndex = layedit.build('LAY_demo_editor');
 
             $.ajax({
-                url: "http://localhost:9001/student",
+                url: remoteUrl+"student",
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
                 success: function (json) {
@@ -269,7 +272,7 @@
                             } else if (obj.event === 'del') {
                                 layer.confirm('真的删除行么', function (index) {
                                     $.ajax({
-                                        url: "http://localhost:9001/student/" + data.id,
+                                        url: remoteUrl+"student/" + data.id,
                                         type: "DELETE",
                                         contentType: "application/json;charset=utf-8",
                                         success: function (json) {
@@ -293,7 +296,7 @@
                                     content: $('#editForm'),
                                     success: function () {
                                         $.ajax({
-                                            url: "http://localhost:9001/department",
+                                            url: remoteUrl+"department",
                                             type: 'get',//method请求方式，get或者post
                                             dataType: 'json',//预期服务器返回的数据类型
                                             contentType: "application/json; charset=utf-8",
@@ -313,7 +316,7 @@
                                             }
                                         });
                                         $.ajax({
-                                            url: "http://localhost:9001/grade_class/getbyDepartment/" + data.gradeClass.department.id,
+                                            url: remoteUrl+"grade_class/getbyDepartment/" + data.gradeClass.department.id,
                                             type: 'get',//method请求方式，get或者post
                                             dataType: 'json',//预期服务器返回的数据类型
                                             contentType: "application/json; charset=utf-8",
@@ -333,7 +336,7 @@
                                         });
                                         form.on('select(department)', function (data) {
                                             $.ajax({
-                                                url: "http://localhost:9001/grade_class/getbyDepartment/" + data.value,
+                                                url: remoteUrl+"grade_class/getbyDepartment/" + data.value,
                                                 type: 'get',//method请求方式，get或者post
                                                 dataType: 'json',//预期服务器返回的数据类型
                                                 contentType: "application/json; charset=utf-8",
@@ -392,7 +395,7 @@
                                             };
 
                                             $.ajax({
-                                                url: "http://localhost:9001/student/update",
+                                                url: remoteUrl+"student/update",
                                                 type: 'put',//method请求方式，get或者post
                                                 dataType: 'json',//预期服务器返回的数据类型
                                                 contentType: "application/json; charset=utf-8",
@@ -472,7 +475,7 @@
                 var username = $('#username').val();
 
                 $.ajax({
-                    url: "http://localhost:9001/student/getByUsernameAndNumber?username=" + username + "&number=" + number,
+                    url: remoteUrl+"student/getByUsernameAndNumber?username=" + username + "&number=" + number,
                     type: "GET",
                     contentType: "application/json;charset=utf-8",
                     success: function (json) {

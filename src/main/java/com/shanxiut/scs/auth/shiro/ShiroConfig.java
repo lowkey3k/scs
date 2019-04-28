@@ -69,12 +69,13 @@ public class ShiroConfig {
 
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
-//        filterChainDefinitionMap.put("/admin/logout", "logout");
+        filterChainDefinitionMap.put("/index/logout", "logout");
         // 过滤链
         filterChainDefinitionMap.put("/static/css/**", "anon");
         filterChainDefinitionMap.put("/static/fonts/**", "anon");
         filterChainDefinitionMap.put("/static/images/**", "anon");
         filterChainDefinitionMap.put("/static/js/**", "anon");
+        filterChainDefinitionMap.put("/index/login/**", "anon");
 
 
         filterChainDefinitionMap.put("/layui/css/**", "anon");
@@ -84,7 +85,14 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/layui/**", "anon");
 
 
-//        filterChainDefinitionMap.put("/static/500.html", "perms");
+        filterChainDefinitionMap.put("/lib/layui/css/**", "anon");
+        filterChainDefinitionMap.put("/lib/layui/font/**", "anon");
+        filterChainDefinitionMap.put("/lib/layui/images/**", "anon");
+        filterChainDefinitionMap.put("/lib/layui/lay/**", "anon");
+        filterChainDefinitionMap.put("/lib/layui/**", "anon");
+
+
+        filterChainDefinitionMap.put("/static/500.html", "perms");
 //        filterChainDefinitionMap.put("/favicon.ico", "anon");
 //        filterChainDefinitionMap.put("/admin/mylogin", "anon");
 //*/
@@ -103,7 +111,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/teacher", "anon");
         filterChainDefinitionMap.put("/schedule", "anon");
         filterChainDefinitionMap.put("/access_log", "anon");
-
 
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -211,7 +218,6 @@ public class ShiroConfig {
         hashedCredentialsMatcher.setHashIterations(1);
         return hashedCredentialsMatcher;
     }
-
 
 
       /**

@@ -10,6 +10,8 @@
 		<link rel="stylesheet" href="../../static/css/font.css">
 		<link rel="stylesheet" href="../../static/css/weadmin.css">
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<script src="../../static/js/common.js" charset="utf-8"></script>
+
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
 		<!--[if lt IE 9]>
 	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -70,7 +72,7 @@
 
                     alert(JSON.stringify(data));
                     $.ajax({
-                        url: "http://localhost:9001/department",
+                        url: remoteUrl+"department",
                         type: 'post',//method请求方式，get或者post
                         dataType: 'json',//预期服务器返回的数据类型
                         data: JSON.stringify(data),

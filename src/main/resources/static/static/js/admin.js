@@ -16,7 +16,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 		element = layui.element;
 	var menu = [];
 	var curMenu;
-
 	/*
 	 * @todo 初始化加载完成执行方法
 	 * 打开或刷新后执行

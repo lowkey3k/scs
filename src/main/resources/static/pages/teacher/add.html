@@ -11,7 +11,9 @@
 		<link rel="stylesheet" href="../../static/css/weadmin.css">
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
 		<!--[if lt IE 9]>
-	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+		<script src="../../static/js/common.js" charset="utf-8"></script>
+
+		<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
 	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
 	    <![endif]-->
 	</head>
@@ -148,7 +150,7 @@
                 });
 				//加载部门信息
                 $.ajax({
-                    url: "http://localhost:9001/department",
+                    url: remoteUrl+"department",
                     type: 'get',//method请求方式，get或者post
                     dataType: 'json',//预期服务器返回的数据类型
                     contentType: "application/json; charset=utf-8",
@@ -173,7 +175,7 @@
                         form.render();
 					}else
 						$.ajax({
-							url: "http://localhost:9001/grade_class/getbyDepartment/"+data.value,
+							url: remoteUrl+"grade_class/getbyDepartment/"+data.value,
 							type: 'get',//method请求方式，get或者post
 							dataType: 'json',//预期服务器返回的数据类型
 							contentType: "application/json; charset=utf-8",
@@ -250,7 +252,7 @@
 
 				    alert(JSON.stringify(data));
                     $.ajax({
-                        url: "http://localhost:9001/teacher",
+                        url: remoteUrl+"teacher",
                         type: 'post',//method请求方式，get或者post
                         dataType: 'json',//预期服务器返回的数据类型
                         data: JSON.stringify(data),

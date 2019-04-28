@@ -46,13 +46,13 @@
 					<dl class="layui-nav-child">
 						<!-- 二级菜单 -->
 						<dd>
-							<a onclick="WeAdminShow('个人信息','http://www.baidu.com')">个人信息</a>
+							<a onclick="WeAdminShow('个人信息','./person/introduce.html')">个人信息</a>
 						</dd>
 						<dd>
 							<a onclick="WeAdminShow('切换帐号','./login.html')">切换帐号</a>
 						</dd>
 						<dd>
-							<a class="loginout" href="login.html">退出</a>
+							<a class="loginout" onclick="logout()">退出</a>
 						</dd>
 					</dl>
 				</li>
@@ -64,7 +64,7 @@
 		<div class="left-nav">
 			<div id="side-nav">
 				<ul id="nav">
-					<li>
+					<li id="student" style="display: none">
 						<a href="javascript:;">
 							<i class="iconfont">&#xe6b8;</i>
 							<cite>学生管理</cite>
@@ -78,13 +78,7 @@
 
 								</a>
 							</li>
-							<!--<li>-->
-								<!--<a _href="./pages/student/studentDel.html">-->
-									<!--<i class="iconfont">&#xe6a7;</i>-->
-									<!--<cite>学生删除</cite>-->
 
-								<!--</a>-->
-							<!--</li>-->
                             <li>
                                 <a _href="./pages/student/add.html">
                                     <i class="iconfont">&#xe6a7;</i>
@@ -95,7 +89,7 @@
 						</ul>
 					</li>
 
-					<li>
+					<li id="studentOp" style="display: none">
 						<a href="javascript:;">
 							<i class="iconfont">&#xe6b8;</i>
 							<cite>学生操作</cite>
@@ -118,7 +112,7 @@
 						</ul>
 					</li>
 
-					<li>
+					<li id="teacher" style="display: none">
 						<a href="javascript:;">
 							<i class="iconfont">&#xe6b8;</i>
 							<cite>教师管理</cite>
@@ -139,7 +133,7 @@
 							</li>
 						</ul>
 					</li>
-					<li>
+					<li id="course" style="display: none">
 						<a href="javascript:;">
 							<i class="iconfont">&#xe705;</i>
 							<cite>课程管理</cite>
@@ -160,7 +154,7 @@
 							</li>
 						</ul>
 					</li>
-					<li>
+					<li id="department" style="display: none">
 						<a href="javascript:;">
 							<i class="iconfont">&#xe723;</i>
 							<cite>学院管理</cite>
@@ -181,7 +175,7 @@
                             </li>
 						</ul>
 					</li>
-					<li>
+					<li id="gradeClass" style="display: none">
 						<a href="javascript:;">
 							<i class="iconfont">&#xe723;</i>
 							<cite>班级管理</cite>
@@ -202,7 +196,7 @@
                             </li>
 						</ul>
 					</li>
-					<li>
+					<li id="auth" style="display: none">
 						<a href="javascript:;">
 							<i class="iconfont">&#xe726;</i>
 							<cite>权限管理</cite>
@@ -235,7 +229,7 @@
 							<!--</li>-->
 						</ul>
 					</li>
-					<li>
+					<li id="log" style="display: none">
 						<a href="javascript:;">
 							<i class="iconfont">&#xe6ce;</i>
 							<cite>系统统计</cite>
@@ -323,6 +317,8 @@
 		<div class="footer">
 			<div class="copyright">Copyright ©2019 scs</div>
 		</div>
+		<script src="static/js/common.js" charset="utf-8"></script>
+
 		<!-- 底部结束 -->
 		<script type="text/javascript">
 //			layui扩展模块的两种加载方式-示例
@@ -338,16 +334,59 @@
 			  ,version: '101100'
 			}).use('admin');
 			layui.use(['jquery','admin'], function(){
+				//判读用户是否登录
 				var $ = layui.jquery;
-				$(function(){
-					var login = JSON.parse(localStorage.getItem("isLogin"));
+					var login = localStorage.getItem("isLogin");
 					if(login==="login"){
 
 					}else{
-						window.location.href='http://localhost:9001/login.html';
+						window.location.href=remoteUrl+'login.html';
 						return false;
 					}
-				});
+				   //控制页面权限
+                    var user=JSON.parse(sessionStorage.getItem("scs_user"));
+					var roles=user.roles;
+					var names=[];
+					for (var i=0;i<roles.length;i++){
+					    names.push(roles[i].role);
+					}
+					names.find(function (value) {
+						if(value==="老师"){
+                            $("#student").css("display","block");
+                            $("#studentOp").css("display","block");
+						}
+						if (value==="学生"){
+                            $("#studentOp").css("display","block");
+                        }
+                        if  (value==="超级管理员"){
+                            $("#student").css("display","block");
+                            $("#teacher").css("display","block");
+                            $("#log").css("display","block");
+                            $("#department").css("display","block");
+                            $("#gradeClass").css("display","block");
+                            $("#auth").css("display","block");
+						}
+                    })
+				function logout() {
+                    $.ajax({
+                        url: remoteUrl+"index/logout",
+                        type: 'post',//method请求方式，get或者post
+                        dataType: 'json',//预期服务器返回的数据类型
+                        contentType: "application/json; charset=utf-8",
+                        success: function (res) {//res为相应体,function为回调函数
+                            if (res.status === 200) {
+                                sessionStorage.removeItem("scs_user");
+
+                                window.location.href=remoteUrl+"login.html";
+                            } else {
+                                layer.msg(res.message);
+                            }
+
+                        }
+                    });
+
+
+                }
 			});
 
 		</script>

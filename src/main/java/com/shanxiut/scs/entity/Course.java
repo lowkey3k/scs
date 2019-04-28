@@ -42,5 +42,10 @@ public class Course extends SuperEntity<Course>{
     @JsonIgnore
     private List<Schedule> schedules;
 
+    @ManyToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    @JoinTable( joinColumns = @JoinColumn(name = "course_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_id",referencedColumnName = "id") )
+    private List<Teacher> teachers;
+
     private String isSelection;//是否选修 0 是 1 否
 }

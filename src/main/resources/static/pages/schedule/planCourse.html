@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>学院列表-学生选课后台管理系统</title>
+    <title>排课信息</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -21,8 +21,8 @@
 <div class="weadmin-nav">
 			<span class="layui-breadcrumb">
         <a href="">首页</a>
-        <a href="">学院管理</a>
-        <a><cite>学院列表</cite></a>
+        <a href="">课程管理</a>
+        <a><cite>排课信息</cite></a>
       </span>
     <a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
@@ -30,25 +30,19 @@
 <div class="weadmin-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 we-search">
-            <div class="layui-inline">
-                <input class="layui-input" placeholder="开始日" name="start" id="start">
-            </div>
-            <div class="layui-inline">
-                <input class="layui-input" placeholder="截止日" name="end" id="end">
-            </div>
 
             <div class="layui-inline">
-                <input type="text" name="username" placeholder="请输入学院名称" autocomplete="off" class="layui-input">
+                <input type="text" name="username" placeholder="请输入关键字" autocomplete="off" class="layui-input">
             </div>
             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <div class="weadmin-block">
-        <button class="layui-btn" onclick="WeAdminShow('添加学院','./add.html')"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="WeAdminShow('添加选课信息','./add.html')"><i class="layui-icon"></i>添加选课信息</button>
     </div>
 
-    <table class="layui-hide" id="departmentList" lay-filter="departmentbar"></table>
-    <script type="text/html" id="departmentOpBar">
+    <table class="layui-hide" id="scheduleList" lay-filter="schedulebar"></table>
+    <script type="text/html" id="scheduleOpBar">
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
@@ -65,7 +59,7 @@
             form = layui.form,
             admin = layui.admin;
         $.ajax({
-            url: "http://localhost:9001/department",
+            url: "http://localhost:9001/schedule",
             type: "GET",
             contentType: "application/json;charset=utf-8",
             success: function (json) {
@@ -73,17 +67,53 @@
                     json.result = {};
                 } else {
                     table.render({
-                        elem: '#departmentList',
+                        elem: '#scheduleList',
                         cellMinWidth: 80,
                         cols: [
                             [ {
-                                field: 'id',title: '学院编码',
+                                field: 'id',title: '选课编码',width:100
                             },{
-                                field: 'name',title: '学院名称',
-                            }, {
-                                field: 'detail',title: '职能描述',
+                                field: 'name',title: '课程名称', templet: function (res) {
+                                    return  res.course.courseName ;
+                                }
                             },{
-                                field: 'operate',title: '操作',align:'center',toolbar: '#departmentOpBar',unresize: true
+                                field: 'courseScore',title: '课程学分',templet: function (res) {
+                                    return   res.course.courseScore ;
+                                }
+                            },{
+                                field: 'username',title: '授课教师',templet: function (res) {
+                                    return   res.teacher.user.username ;
+                                }
+                            },{
+                                field: 'location',title: '授课地点',templet: function (res) {
+                                    var locations = res.location.split("@");
+                                    var loc = '';
+                                    for(i=1;i<locations.length;i++){
+                                        loc = loc+"["
+                                        loc = loc+locations[i];
+                                        loc = loc+"]";
+                                        loc = loc+"\n";
+                                    }
+                                    return loc ;
+                                }
+                            },{
+                                field: 'time',title: '上课时间',templet: function (res) {
+                                    var times = res.time.split("@");
+                                    var tim = '';
+                                    for(i=1;i<times.length;i++){
+                                        tim = tim+"["
+                                        tim = tim+times[i];
+                                        tim = tim+"]";
+                                        tim = tim+"\n";
+                                    }
+                                    return tim ;
+                                }
+                            },{
+                                field: 'chooseNumber',title: '规定人数',width:100, templet: function (res) {
+                                    return '<em>' + res.course.chooseNumber + '</em>'
+                                }
+                            },{
+                                fixed:'right',field: 'operate',title: '操作',align:'center',toolbar: '#scheduleOpBar',width:200
                             }]
                         ],
                         data: json.result,
@@ -92,7 +122,7 @@
                     });
 
                     //监听工具条
-                    table.on('tool(departmentbar)', function(obj){
+                    table.on('tool(schedulebar)', function(obj){
                         var data = obj.data;
                         if(obj.event === 'detail'){
 
@@ -101,7 +131,7 @@
                         } else if(obj.event === 'del'){
                             layer.confirm('真的删除行么', function(index){
                                 $.ajax({
-                                    url: "http://localhost:9001/department/"+data.id,
+                                    url: "http://localhost:9001/schedule/"+data.id,
                                     type: "DELETE",
                                     contentType: "application/json;charset=utf-8",
                                     success: function (json) {

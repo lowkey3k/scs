@@ -29,14 +29,12 @@
     </div>
 </div>
 <script type="text/javascript">
-
     layui.extend({//layui.extend扩展一个模块别名
         admin: '{/}./static/js/admin'
     });
     layui.use(['form', 'admin'], function () {
         var form = layui.form
             , admin = layui.admin;
-
 
         var $ = layui.$;
         $('.loginin').click(function () {

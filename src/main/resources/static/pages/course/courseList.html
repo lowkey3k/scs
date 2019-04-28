@@ -75,6 +75,8 @@
                     type: "GET",
                     contentType: "application/json;charset=utf-8",
                     success: function (json) {
+                        alert(json.result);
+                        alert(JSON.stringify(json));
                         if (json.result == "") {
                             json.result = {};
                         } else {

@@ -1,10 +1,12 @@
 package com.shanxiut.scs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shanxiut.scs.auth.entity.User;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.List;
 
 /**
  * Created by hliu on 2019/3/5.
@@ -39,7 +41,7 @@ public class Teacher extends SuperEntity<Teacher>{
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "teacher")
+    //@OneToMany(mappedBy = "teacher")
     //1、关系维护端，负责多对多关系的绑定和解除
     //2、@JoinTable注解的name属性指定关联表的名字，joinColumns指定外键的名字，关联到关系维护端(User)
     //3、inverseJoinColumns指定外键的名字，要关联的关系被维护端(Authority)
@@ -53,4 +55,8 @@ public class Teacher extends SuperEntity<Teacher>{
     @ManyToOne(optional = true)
     @JoinColumn(name = "department")
     private Department department;
+
+    @ManyToMany(mappedBy="teachers")
+    @JsonIgnore
+    private List<Course> courses;
 }

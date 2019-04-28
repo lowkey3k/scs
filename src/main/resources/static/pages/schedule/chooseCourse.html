@@ -81,9 +81,29 @@
                                     return   res.teacher.user.username ;
                                 }
                             },{
-                                field: 'location',title: '授课地点',
+                                field: 'location',title: '授课地点',templet: function (res) {
+                                    var locations = res.location.split("@");
+                                    var loc = '';
+                                    for(i=1;i<locations.length;i++){
+                                        loc = loc+"["
+                                        loc = loc+locations[i];
+                                        loc = loc+"]";
+                                        loc = loc+"\n";
+                                    }
+                                    return loc ;
+                                }
                             },{
-                                field: 'time',title: '上课时间',
+                                field: 'time',title: '上课时间',templet: function (res) {
+                                    var times = res.time.split("@");
+                                    var tim = '';
+                                    for(i=1;i<times.length;i++){
+                                        tim = tim+"["
+                                        tim = tim+times[i];
+                                        tim = tim+"]";
+                                        tim = tim+"\n";
+                                    }
+                                    return tim ;
+                                }
                             },{
                                 field: 'chooseNumber',title: '规定人数',width:100, templet: function (res) {
                                     return '<em>' + res.course.chooseNumber + '</em>'

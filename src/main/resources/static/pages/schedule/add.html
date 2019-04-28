@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>添加选课信息</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../../static/css/font.css">
+		<link rel="stylesheet" href="../../static/css/weadmin.css">
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	</head>
+
+	<body>
+		<div class="weadmin-body">
+			<form class="layui-form">
+				<div class="layui-form-item" pane>
+					<label  class="layui-form-label">
+						<span for="course" class="we-red">*</span>选择课程
+					</label>
+					<div class="layui-input-inline">
+						<select id="course" name="course" lay-verify="required" lay-filter="department" >
+
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item" pane>
+					<label  class="layui-form-label">
+						<span for="teacher" class="we-red">*</span>授课教师
+					</label>
+					<div class="layui-input-inline">
+						<select id="teacher" name="teacher" lay-verify="required" lay-filter="department" >
+
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item" id="locationAndtimeBT">
+					<label  class="layui-form-label">
+						时间地点
+					</label>
+					<div class="layui-btn-group">
+						<input type="button" class="layui-btn layui-btn-sm" id="addLT" value="增加"/>
+						<input type="button" class="layui-btn layui-btn-sm" id="delLT" value="删除"/>
+					</div>
+				</div>
+
+				<div class="layui-form-item layui-form-hide" id="locationAndtime0">
+
+				</div>
+
+				<div class="layui-form-item">
+					<label  class="layui-form-label">
+					</label>
+					<button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+				</div>
+		</form>
+		</div>
+		<script>
+			layui.extend({
+				admin: '{/}../../static/js/admin'
+			});
+			layui.use(['form', 'admin', 'jquery', 'table', 'layer'], function() {
+				var form = layui.form,
+					admin = layui.admin,
+					$ = layui.jquery,
+					table = layui.table,
+					layer = layui.layer;
+
+				//加载课程信息
+                $.ajax({
+                    url: "http://localhost:9001/course",
+                    type: 'get',//method请求方式，get或者post
+                    dataType: 'json',//预期服务器返回的数据类型
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    success: function (res) {//res为相应体,function为回调函数
+                        var result = res.result;
+                        var i = 0;
+                        var op = "";
+                        $('#course').append('<option value="">请选择</option>');
+                        for (i; i < result.length; i++) {
+                            op += '<option value=' + result[i].id + '>' + result[i].courseName + '</option>';
+                        }
+                        $('#course').append(op);
+                        form.render();
+                    }
+                });
+
+                //加载教师信息
+                $.ajax({
+                    url: "http://localhost:9001/teacher",
+                    type: 'get',//method请求方式，get或者post
+                    dataType: 'json',//预期服务器返回的数据类型
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    success: function (res) {//res为相应体,function为回调函数
+                        var result = res.result;
+                        var i = 0;
+                        var op = "";
+                        $('#teacher').append('<option value="">请选择</option>');
+                        for (i; i < result.length; i++) {
+                            op += '<option value=' + result[i].id + '>' + result[i].user.username + '</option>';
+                        }
+                        $('#teacher').append(op);
+                        form.render();
+                    }
+                });
+                //加载授课地点信息
+                var locationOp = '';
+                $.ajax({
+                    url: "http://localhost:9001/code_library/getbycodelibrary/SKLocation",
+                    type: 'get',//method请求方式，get或者post
+                    dataType: 'json',//预期服务器返回的数据类型
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    success: function (res1) {//res为相应体,function为回调函数
+                        var result = res1.result;
+                        var i = 0;
+                        locationOp = '<option value="">请选择授课地点</option>';
+                        for (i; i < result.length; i++) {
+                            locationOp += '<option value=' + result[i].itemName + '>' + result[i].itemName + '</option>';
+                        }
+                    }
+                });
+                //加载授课时间信息
+                var timeOp='';
+                $.ajax({
+                    url: "http://localhost:9001/code_library/getbycodelibrary/SKTime",
+                    type: 'get',//method请求方式，get或者post
+                    dataType: 'json',//预期服务器返回的数据类型
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    success: function (res) {//res为相应体,function为回调函数
+
+                        var result = res.result;
+                        var i = 0;
+                        timeOp = '<option value="">请选择授课时间</option>';
+                        for (i; i < result.length; i++) {
+                            timeOp += '<option value=' + result[i].itemName + '>' + result[i].itemName + '</option>';
+                        }
+                    }});
+                //时间与地点的个数
+				var lTNumber=0;
+				//添加时间地点
+                $(document).on('click','#addLT',function(){
+						lTNumber++;
+						var temp = lTNumber-1;
+						var addflag = '#locationAndtime'+temp;
+						$(addflag).after(
+							'<div class="layui-form-item layui-form-text" id="locationAndtime'+lTNumber+'">'
+							+'<label  class="layui-form-label"></label>'
+							+'<div class="layui-input-inline">'
+							+'<select id="location'+lTNumber+'" name="" lay-verify="required" lay-filter="">'+locationOp+'</select>'
+							+'</div>'
+							+'<div class="layui-input-inline"></div>'
+							+'<div class="layui-input-inline">'
+							+'<select id="time'+lTNumber+'" name="" lay-verify="required" lay-filter="" >'+timeOp+'</select>'
+							+'</div>'
+							+'</div>'
+						);
+						form.render();
+				});
+
+
+
+                //删除时间地点
+                $(document).on('click','#delLT',function(){
+                    var delflag = '#locationAndtime'+lTNumber;
+                    if(lTNumber>0){
+                        $(delflag).remove();
+                        lTNumber--;
+					}
+                });
+
+				//自定义验证规则
+				form.verify({
+
+				});
+
+
+                //监听提交
+                form.on('submit(add)', function(data) {
+                    //获取时间和地点的值
+                    var judge1;
+                    var judge2;
+                    var times='';//最终存在时间
+                    var locations='';//最终存在地点
+                    for(i=0;i<lTNumber;i++){
+                        judge1="#location"+(i+1);
+                        judge2="#time"+(i+1);
+                        times = times+"@"+$(judge2).find("option:selected").val();
+                        locations = locations+"@"+$(judge1).find("option:selected").val();
+					}
+					if(lTNumber==0){
+					    layer.msg("必须添加授课时间和授课地点");
+					    return false;
+					}
+                    var data = {
+                        "course": {
+                            "id":$('#course').find("option:selected").val()
+						},
+                        'teacher': {
+                            "id":$("#teacher").find("option:selected").val()
+						},
+						'location':locations,
+						'time':times
+                    };
+
+
+                    $.ajax({
+                        url: "http://localhost:9001/schedule",
+                        type: 'post',//method请求方式，get或者post
+                        dataType: 'json',//预期服务器返回的数据类型
+                        data: JSON.stringify(data),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (res) {//res为相应体,function为回调函数
+                            if (res.status === 200) {
+                                layer.alert("增加成功", {
+                                    icon: 6
+                                }, function() {
+                                    // 获得frame索引
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    //关闭当前frame
+                                    //parent.layer.close(index);
+                                });
+                            } else {
+                                layer.msg(res.message);
+                            }
+                        }
+                    });
+                    return false;
+                });
+            });
+		</script>
+	</body>
+
+</html>

@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../../static/css/font.css">
     <link rel="stylesheet" href="../../static/css/weadmin.css">
     <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../../static/js/common.js" charset="utf-8"></script>
+
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -66,7 +68,7 @@
             form = layui.form,
             admin = layui.admin;
         $.ajax({
-            url: "http://localhost:9001/access_log",
+            url: remoteUrl+"access_log",
             type: "GET",
             contentType: "application/json;charset=utf-8",
             success: function (json) {
@@ -119,7 +121,7 @@
                         } else if (obj.event === 'del') {
                             layer.confirm('真的删除行么', function (index) {
                                 $.ajax({
-                                    url: "http://localhost:9001/access_log/" + data.id,
+                                    url: remoteUrl+"access_log/" + data.id,
                                     type: "DELETE",
                                     contentType: "application/json;charset=utf-8",
                                     success: function (json) {

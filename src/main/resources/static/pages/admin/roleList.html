@@ -19,6 +19,8 @@
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="../../static/js/jquery-1.11.1.min.js"></script>
+    <script src="../../static/js/common.js" charset="utf-8"></script>
+
 </head>
 
 <body>
@@ -177,7 +179,7 @@
 
 
             $.ajax({
-                url: "http://localhost:9001/role",
+                url: remoteUrl+"role",
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
                 success: function (json) {
@@ -247,7 +249,7 @@
                                 }
                                 layer.confirm(tip, function (index) {
                                     $.ajax({
-                                        url: "http://localhost:9001/role/update",
+                                        url: remoteUrl+"role/update",
                                         type: "put",
                                         contentType: "application/json;charset=utf-8",
                                         data: JSON.stringify(data1),
@@ -282,7 +284,7 @@
                                                 "description": $('#L_username').val(),
                                             };
                                             $.ajax({
-                                                url: "http://localhost:9001/role/update",
+                                                url: remoteUrl+"role/update",
                                                 type: 'put',//method请求方式，get或者post
                                                 dataType: 'json',//预期服务器返回的数据类型
                                                 contentType: "application/json; charset=utf-8",
@@ -318,7 +320,7 @@
                                     success: function () {
                                         $('#name').val(data.role);
                                         $.ajax({
-                                            url: "http://localhost:9001/resource/ownerAndAllResource/" + data.id,
+                                            url: remoteUrl+"resource/ownerAndAllResource/" + data.id,
                                             type: 'get',//method请求方式，get或者post
                                             dataType: 'json',//预期服务器返回的数据类型
                                             contentType: "application/json; charset=utf-8",
@@ -357,7 +359,7 @@
                                             });
 
                                             $.ajax({
-                                                url: "http://localhost:9001/role/addResource/" + data.id,
+                                                url: remoteUrl+"role/addResource/" + data.id,
                                                 type: 'put',//method请求方式，get或者post
                                                 dataType: 'json',//预期服务器返回的数据类型
                                                 contentType: "application/json; charset=utf-8",
@@ -424,7 +426,7 @@
                 var username = $('#username').val();
 
                 $.ajax({
-                    url: "http://localhost:9001/student/getByUsernameAndNumber?username=" + username + "&number=" + number,
+                    url: remoteUrl+"student/getByUsernameAndNumber?username=" + username + "&number=" + number,
                     type: "GET",
                     contentType: "application/json;charset=utf-8",
                     success: function (json) {

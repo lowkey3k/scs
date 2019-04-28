@@ -68,7 +68,7 @@ public class OAuth2Realm extends AuthorizingRealm {
             Set<String> resources = new HashSet<>();
             for (Role role : roles) {
                 for (Resource resource : role.getResources()) {
-                    if (resource.getStatus()==1) {
+                    if (resource.getStatus()!=null&&resource.getStatus()==1) {
                         resources.add(resource.getName());
                     }
                 }
@@ -90,6 +90,8 @@ public class OAuth2Realm extends AuthorizingRealm {
 
         CrudParam crudParam = new CrudParam();
         crudParam.add(Term.build("number", number));
+        crudParam.add(Term.build("status", 1));
+
         List<User> all = userService.findAll(crudParam);
         if (all.isEmpty()) {
             return null;

@@ -14,7 +14,9 @@
 		<!--[if lt IE 9]>
 	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
 	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-	    <![endif]-->
+		  <script src="../../static/js/common.js" charset="utf-8"></script>
+
+		<![endif]-->
 		<style type="text/css">
 			.layui-form-switch {
 				width: 55px;
@@ -71,7 +73,7 @@
                     form = layui.form,
                     admin = layui.admin;
                 $.ajax({
-                    url: "http://localhost:9001/course",
+                    url: remoteUrl+"course",
                     type: "GET",
                     contentType: "application/json;charset=utf-8",
                     success: function (json) {
@@ -113,7 +115,7 @@
                                 } else if(obj.event === 'del'){
                                     layer.confirm('真的删除行么', function(index){
                                         $.ajax({
-                                            url: "http://localhost:9001/course/"+data.id,
+                                            url: remoteUrl+"course/"+data.id,
                                             type: "DELETE",
                                             contentType: "application/json;charset=utf-8",
                                             success: function (json) {

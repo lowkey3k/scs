@@ -14,6 +14,8 @@
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <script src="../../static/js/common.js" charset="utf-8"></script>
+
     <![endif]-->
 </head>
 
@@ -156,7 +158,7 @@
         var editIndex = layedit.build('LAY_demo_editor');
 
         $.ajax({
-            url: "http://localhost:9001/department",
+            url: remoteUrl+"department",
             type: 'get',//method请求方式，get或者post
             dataType: 'json',//预期服务器返回的数据类型
             contentType: "application/json; charset=utf-8",
@@ -182,7 +184,7 @@
             }
             else
                 $.ajax({
-                    url: "http://localhost:9001/grade_class/getbyDepartment/"+data.value,
+                    url: remoteUrl+"grade_class/getbyDepartment/"+data.value,
                     type: 'get',//method请求方式，get或者post
                     dataType: 'json',//预期服务器返回的数据类型
                     contentType: "application/json; charset=utf-8",
@@ -258,7 +260,7 @@
 
             };
             $.ajax({
-                url: "http://localhost:9001/student",
+                url: remoteUrl+"student",
                 type: 'post',//method请求方式，get或者post
                 dataType: 'json',//预期服务器返回的数据类型
                 data: JSON.stringify(data),

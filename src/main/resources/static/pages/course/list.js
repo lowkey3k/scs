@@ -9,7 +9,7 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
 		admin = layui.admin;
 	alert(111);
     $.ajax({
-        url: "http://localhost:9001/course",
+        url: remoteUrl+"course",
         type: "GET",
         contentType: "application/json;charset=utf-8",
         success: function (json) {
@@ -47,7 +47,7 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
                     } else if(obj.event === 'del'){
                         layer.confirm('真的删除行么', function(index){
                             $.ajax({
-                                url: "http://localhost:9001/course/"+data.id,
+                                url: remoteUrl+"course/"+data.id,
                                 type: "DELETE",
                                 contentType: "application/json;charset=utf-8",
                                 success: function (json) {

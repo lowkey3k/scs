@@ -69,7 +69,7 @@ public class ShiroConfig {
 
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
-//        filterChainDefinitionMap.put("/admin/logout", "logout");
+        filterChainDefinitionMap.put("/index/logout", "logout");
         // 过滤链
         filterChainDefinitionMap.put("/static/css/**", "anon");
         filterChainDefinitionMap.put("/static/fonts/**", "anon");
@@ -111,7 +111,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/teacher", "anon");
         filterChainDefinitionMap.put("/schedule", "anon");
         filterChainDefinitionMap.put("/access_log", "anon");
-
 
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

@@ -28,6 +28,8 @@
         <hr class="hr20">
     </div>
 </div>
+<script src="static/js/common.js" charset="utf-8"></script>
+
 <script type="text/javascript">
 
     layui.extend({//layui.extend扩展一个模块别名
@@ -44,7 +46,7 @@
             var name = $("input[name='username']").val();
             var password = $("input[name='password']").val();
             $.ajax({
-                url: "http://localhost:9001/index/login?number=" + name + "&password=" + password,
+                url: remoteUrl+"index/login?number=" + name + "&password=" + password,
                 type: 'post',//method请求方式，get或者post
                 dataType: 'json',//预期服务器返回的数据类型
                 contentType: "application/json; charset=utf-8",

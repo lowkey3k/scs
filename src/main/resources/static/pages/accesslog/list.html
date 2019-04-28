@@ -65,7 +65,7 @@
                     form = layui.form,
                     admin = layui.admin;
                 $.ajax({
-                    url: "http://localhost:9001/department",
+                    url: remoteUrl+"department",
                     type: "GET",
                     contentType: "application/json;charset=utf-8",
                     success: function (json) {
@@ -101,7 +101,7 @@
                                 } else if(obj.event === 'del'){
                                     layer.confirm('真的删除行么', function(index){
                                         $.ajax({
-                                            url: "http://localhost:9001/department/"+data.id,
+                                            url: remoteUrl+"department/"+data.id,
                                             type: "DELETE",
                                             contentType: "application/json;charset=utf-8",
                                             success: function (json) {

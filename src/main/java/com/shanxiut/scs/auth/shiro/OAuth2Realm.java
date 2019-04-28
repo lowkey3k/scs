@@ -1,5 +1,7 @@
 package com.shanxiut.scs.auth.shiro;
 
+import cn.hutool.core.collection.CollectionUtil;
+import com.google.common.collect.Sets;
 import com.shanxiut.scs.auth.entity.Resource;
 import com.shanxiut.scs.auth.entity.Role;
 import com.shanxiut.scs.common.param.CrudParam;
@@ -51,25 +53,28 @@ public class OAuth2Realm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-
         User user = (User) principals.getPrimaryPrincipal();
-        Set<String> roles = new HashSet<String>();
         CrudParam crudParam = new CrudParam();
         crudParam.add(Term.build("number", user.getNumber()));
+        crudParam.add(Term.build("status", 1));
         User u = userService.findAll(crudParam).get(0);
-        Set<String> collectRoles = u.getRoles().stream().map(role -> {
-            return role.getRole();
-        }).collect(Collectors.toSet());
-        //添加角色
-        info.setRoles(collectRoles);
-        //添加资源
-        Set<String> resources = new HashSet<>();
-        for (Role role : user.getRoles()) {
-            for (Resource resource : role.getResources()) {
-                resources.add(resource.getName());
+        Set<Role> roles= u.getRoles();
+        Set<String> collectRoles=Sets.newHashSet();
+        if (CollectionUtil.isNotEmpty(u.getRoles())) {
+             collectRoles = roles.stream().filter(role -> role.getStatus() == 1).map(Role::getRole).collect(Collectors.toSet());
+            //添加角色
+            info.setRoles(collectRoles);
+            //添加资源
+            Set<String> resources = new HashSet<>();
+            for (Role role : roles) {
+                for (Resource resource : role.getResources()) {
+                    if (resource.getStatus()==1) {
+                        resources.add(resource.getName());
+                    }
+                }
             }
+            info.setStringPermissions(resources);
         }
-        info.setStringPermissions(resources);
         return info;
     }
 

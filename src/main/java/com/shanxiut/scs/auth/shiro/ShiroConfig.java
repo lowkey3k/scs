@@ -75,6 +75,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/static/fonts/**", "anon");
         filterChainDefinitionMap.put("/static/images/**", "anon");
         filterChainDefinitionMap.put("/static/js/**", "anon");
+        filterChainDefinitionMap.put("/index/login/**", "anon");
 
 
         filterChainDefinitionMap.put("/layui/css/**", "anon");
@@ -84,7 +85,14 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/layui/**", "anon");
 
 
-//        filterChainDefinitionMap.put("/static/500.html", "perms");
+        filterChainDefinitionMap.put("/lib/layui/css/**", "anon");
+        filterChainDefinitionMap.put("/lib/layui/font/**", "anon");
+        filterChainDefinitionMap.put("/lib/layui/images/**", "anon");
+        filterChainDefinitionMap.put("/lib/layui/lay/**", "anon");
+        filterChainDefinitionMap.put("/lib/layui/**", "anon");
+
+
+        filterChainDefinitionMap.put("/static/500.html", "perms");
 //        filterChainDefinitionMap.put("/favicon.ico", "anon");
 //        filterChainDefinitionMap.put("/admin/mylogin", "anon");
 //*/
@@ -210,7 +218,6 @@ public class ShiroConfig {
         hashedCredentialsMatcher.setHashIterations(1);
         return hashedCredentialsMatcher;
     }
-
 
 
       /**

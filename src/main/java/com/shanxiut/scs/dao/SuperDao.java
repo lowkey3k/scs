@@ -1,11 +1,8 @@
 package com.shanxiut.scs.dao;
 
-import com.shanxiut.scs.service.SuperService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
-
-import java.util.Optional;
 
 
 /**

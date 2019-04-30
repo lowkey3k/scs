@@ -2,6 +2,7 @@ package com.shanxiut.scs.controller;
 
 import com.shanxiut.scs.annotation.AccessLogger;
 import com.shanxiut.scs.annotation.Authorize;
+import com.shanxiut.scs.auth.constant.AuthConstant;
 import com.shanxiut.scs.common.response.ResponseMessage;
 import com.shanxiut.scs.entity.Student;
 import com.shanxiut.scs.entity.Teacher;
@@ -24,7 +25,7 @@ public class TeacherController extends AbstractCrudController<Teacher,Long,Teach
     @Override
     @AccessLogger("添加老师")
     @PostMapping
-    @Authorize(resources = "INSERT")
+    @Authorize(resources = AuthConstant.Resource.INSERT)
     public ResponseMessage<Teacher> insert(@RequestBody Teacher teacher){
         Md5Hash md5Hash = new Md5Hash(teacher.getUser().getPassword(), teacher.getUser().getNumber());
         teacher.getUser().setPassword(md5Hash.toString());

@@ -23,4 +23,5 @@ public interface StudentDao extends SuperDao<Student, Long> {
 //    public int update(@Param("student") Student student);
     List<Student> findByUser_NumberOrUser_Username(String number,String username);
 
+    Student findByUser_Id(Long id);
 }

@@ -15,6 +15,5 @@ public class AuthConstant {
            public static final String INSERT="INSERT";
            public static final String DELETE="DELETE";
            public static final String UPDATE="UPDATE";
-
     }
 }

@@ -63,12 +63,14 @@ public abstract class SuperController<E extends SuperEntity, PK> {
 
     @GetMapping("/{id}")
     @AccessLogger("通过id查询")
+    @Authorize(resources = AuthConstant.Resource.QUERY)
     public ResponseMessage<E> getByPrimaryKey(@PathVariable("id") PK id){
         return ResponseMessage.ok(getService().findById(id));
     }
 
     @DeleteMapping
     @AccessLogger("通过id批量删除")
+    @Authorize(resources = AuthConstant.Resource.DELETE)
     public ResponseMessage batchDeleteByIds(@RequestBody List<E> ids){
            getService().deleteByIds(ids);
         return ResponseMessage.ok();
@@ -76,6 +78,7 @@ public abstract class SuperController<E extends SuperEntity, PK> {
 
     @GetMapping("/single")
     @AccessLogger("查询一个结果")
+    @Authorize(resources = AuthConstant.Resource.QUERY)
     public ResponseMessage<E> selectSingle(CrudParam crudParam, HttpServletRequest request){
         CrudParamUtil.padding(crudParam,request);
         return ResponseMessage.ok(getService().selectSingle(crudParam));

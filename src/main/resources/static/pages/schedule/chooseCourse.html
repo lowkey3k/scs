@@ -41,7 +41,7 @@
     </div>
     <table class="layui-hide" id="scheduleList" lay-filter="schedulebar"></table>
     <script type="text/html" id="scheduleOpBar">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">选择课程</a>
+        <a class="layui-btn layui-btn-xs" lay-event="choose">选择课程</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">课程详情</a>
     </script>
 
@@ -51,19 +51,34 @@
         admin: '{/}../../static/js/admin'
     });
 
-    layui.use(['table', 'jquery','form', 'admin'], function() {
+    layui.use(['table', 'jquery','form', 'admin','layer'], function() {
         var table = layui.table,
             $ = layui.jquery,
             form = layui.form,
+            layer = layui.layer,
             admin = layui.admin;
+        //用userid请求得到studentId
+        function getStudentID() {
+            var userInfo = JSON.parse(window.sessionStorage.getItem("scs_user"));
+            var studentID = -1;
+            var role = encodeURI(userInfo.roles[0].role);
+            var userID = userInfo.id;
+            $.ajax({
+                url: remoteUrl + "user/getByRoleAndUserID?role="+role+"&userID="+userID,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                async: false,
+                success: function (json) {
+                    studentID = json.result;
+                }
+            });
+            return studentID;
+        }
         $.ajax({
             url: remoteUrl+"schedule",
             type: "GET",
             contentType: "application/json;charset=utf-8",
             success: function (json) {
-                if (json.result == "") {
-                    json.result = {};
-                } else {
                     table.render({
                         elem: '#scheduleList',
                         cellMinWidth: 80,
@@ -116,7 +131,10 @@
                         ],
                         data: json.result,
                         event: true,
-                        page: true
+                        page: true,
+                        text:{
+                            none: '暂时没有可以选择的课程'
+                        }
                     });
 
                     //监听工具条
@@ -125,12 +143,49 @@
                         if(obj.event === 'detail'){
 
                             layer.msg('ID：'+ data.id + ' 的查看操作');
-
-                        }else if(obj.event === 'edit'){
                             layer.alert('编辑行：<br>'+ JSON.stringify(data))
+
+                        }else if(obj.event === 'choose'){
+                            var studentID = getStudentID();
+                            if(studentID == -1){
+                                layer.alert("当前网络不稳定");
+                                return;
+                            }
+                            var data1 = {
+                                "id":data.id,
+                                'students':[
+                                    {
+
+                                        "id":studentID,
+
+                                    },
+                                ],
+                            };
+
+                            $.ajax({
+                                url: remoteUrl + "schedule/chooseSchedule",
+                                type: "POST",
+                                data: JSON.stringify(data1),
+                                async: false,
+                                contentType: "application/json;charset=utf-8",
+                                success: function (res) {
+                                    if (res.status === 200) {
+                                        layer.alert("选课成功", {
+                                            icon: 6
+                                        }, function() {
+                                            // 获得frame索引
+                                            var index = parent.layer.getFrameIndex(window.name);
+                                            //关闭当前frame
+                                            parent.layer.close(index);
+                                        });
+                                    } else {
+                                        layer.msg(res.message);
+                                    }
+                                }
+                            });
                         }
                     });
-                }
+
             }
         });
         /*

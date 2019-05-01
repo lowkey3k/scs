@@ -15,4 +15,6 @@ public interface StudentService extends SuperService<Student,Long> {
     public Student updateById(Student student);
 
     List<Student> findByUsernameAndNumber(String number, String username);
+
+    Student findByUserID(Long userID);
 }

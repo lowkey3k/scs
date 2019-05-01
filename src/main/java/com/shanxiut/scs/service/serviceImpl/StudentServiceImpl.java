@@ -45,5 +45,10 @@ public class StudentServiceImpl extends SuperServiceImpl<Long, StudentDao, Stude
         return studentDao.findByUser_NumberOrUser_Username(number,username);
     }
 
+    @Override
+    public Student findByUserID(Long userID) {
+       return studentDao.findByUserId(userID);
+    }
+
 
 }

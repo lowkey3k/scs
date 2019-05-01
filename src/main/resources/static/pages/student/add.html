@@ -11,12 +11,10 @@
     <link rel="stylesheet" href="../../static/css/font.css">
     <link rel="stylesheet" href="../../static/css/weadmin.css">
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-    <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <script src="../../static/js/common.js" charset="utf-8"></script>
 
-    <![endif]-->
 </head>
 
 <body>
@@ -158,10 +156,11 @@
         var editIndex = layedit.build('LAY_demo_editor');
 
         $.ajax({
-            url: remoteUrl+"department",
+            url: remoteUrl + "department",
             type: 'get',//method请求方式，get或者post
             dataType: 'json',//预期服务器返回的数据类型
             contentType: "application/json; charset=utf-8",
+            async: false,
             success: function (res) {//res为相应体,function为回调函数
                 var result = res.result;
                 var i = 0;

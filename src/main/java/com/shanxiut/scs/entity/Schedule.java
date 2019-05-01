@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by hliu on 2019/3/9.
@@ -28,4 +29,10 @@ public class Schedule extends SuperEntity<Schedule>{
 
     @ManyToOne
     private Teacher teacher;
+
+    @ManyToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    @JoinTable( joinColumns = @JoinColumn(name = "schedule_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id",referencedColumnName = "id") )
+    private List<Student> students;
+
 }

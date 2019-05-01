@@ -33,7 +33,10 @@ public class Course extends SuperEntity<Course>{
     private Double courseScore;//学分
 
     @Column(name="choose_number")
-    private Integer chooseNumber;//选课人数
+    private Integer chooseNumber;//规定选课人数
+
+    @Column(name="actual_choose_number")
+    private Integer actualChooseNumber;//真实选课人数
 
     @Column(name = "start_term")
     private String startTerm;//开课学期

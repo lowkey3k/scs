@@ -77,8 +77,8 @@ public class RequestAspect {
         logger.info("请求方法={}", request.getMethod());
 
         //ip
-        String remoteAddr = ShiroUtils.getRemoteAddr(request);
-        logger.info("请求ip={}", remoteAddr);
+        //String remoteAddr = ShiroUtils.getRemoteAddr(request);
+        logger.info("请求ip={}", request.getRemoteAddr());
 
         //method
         logger.info("请求类方法class_method={}", point.getSignature().getDeclaringTypeName() + "." + point.getSignature().getName());
@@ -87,7 +87,7 @@ public class RequestAspect {
         logger.info("参数={}", point.getArgs());
         AccessLog accessLog = new AccessLog();
         accessLog.setCreateTimeStr(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        accessLog.setIp(remoteAddr);
+        accessLog.setIp(request.getRemoteAddr());
         accessLog.setCreateTimes(System.currentTimeMillis());
         accessLog.setMethod(point.getSignature().getDeclaringTypeName() + "." + point.getSignature().getName());
         String params = Arrays.toString(point.getArgs());

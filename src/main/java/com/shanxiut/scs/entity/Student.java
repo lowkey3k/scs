@@ -1,11 +1,13 @@
 package com.shanxiut.scs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shanxiut.scs.auth.entity.User;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Description:学生实体类
@@ -49,5 +51,8 @@ public class Student extends SuperEntity<Student> {
     @JoinColumn(name="grade_class")
     private GradeClass gradeClass;
 
+    @ManyToMany(mappedBy="students")
+    @JsonIgnore
+    private List<Schedule> scheduleList;
 
 }

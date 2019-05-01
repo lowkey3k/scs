@@ -13,6 +13,9 @@ import com.shanxiut.scs.common.response.ResponseMessage;
 import com.shanxiut.scs.common.util.CrudParamUtil;
 import com.shanxiut.scs.common.util.UpdateTool;
 import com.shanxiut.scs.auth.service.UserService;
+import com.shanxiut.scs.entity.Student;
+import com.shanxiut.scs.service.StudentService;
+import com.shanxiut.scs.service.TeacherService;
 import com.shanxiut.scs.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +37,10 @@ public class UserController extends AbstractCrudController<User,Long,UserService
     private UserService userService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private TeacherService teacherService;
 
     @AccessLogger("更新用户信息")
     @PutMapping("/update")
@@ -101,4 +108,14 @@ public class UserController extends AbstractCrudController<User,Long,UserService
         return userVO;
     }
 
+    @AccessLogger("根据用户角色和ID查询相对应的实体ID")
+    @GetMapping("/getByRoleAndUserID")
+    public ResponseMessage<Long> getByRoleAndUserID(@RequestParam("role")String role, @RequestParam("userID")Long userID){
+        if(role.equals("老师"))//教师
+            return ResponseMessage.ok(teacherService.findByUserID(userID).getId());
+        else if(role.equals("学生"))//学生
+            return ResponseMessage.ok(studentService.findByUserID(userID).getId());
+        else
+            return ResponseMessage.ok(-1L);
+    }
 }

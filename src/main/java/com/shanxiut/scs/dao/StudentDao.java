@@ -1,6 +1,7 @@
 package com.shanxiut.scs.dao;
 
 import com.shanxiut.scs.entity.Student;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface StudentDao extends SuperDao<Student, Long> {
 //    public int update(@Param("student") Student student);
     List<Student> findByUser_NumberOrUser_Username(String number,String username);
 
+    @Query(value = "select * from scs_student where user_id=?1",nativeQuery = true)
+    Student findByUserId(Long userID);
 }

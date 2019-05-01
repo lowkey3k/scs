@@ -77,7 +77,7 @@ public class RequestAspect {
         logger.info("请求方法={}", request.getMethod());
 
         //ip
-        //String remoteAddr = ShiroUtils.getRemoteAddr(request);
+//        String remoteAddr = ShiroUtils.getRemoteAddr(request);
         logger.info("请求ip={}", request.getRemoteAddr());
 
         //method

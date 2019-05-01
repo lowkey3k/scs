@@ -104,15 +104,13 @@ public class ShiroConfig {
          */
 //        filterChainDefinitionMap.put("/**", "authc");
 
-        filterChainDefinitionMap.put("/student", "anon");
-        filterChainDefinitionMap.put("/course", "anon");
-        filterChainDefinitionMap.put("/department", "anon");
-        filterChainDefinitionMap.put("/grade_class", "anon");
-        filterChainDefinitionMap.put("/teacher", "anon");
-        filterChainDefinitionMap.put("/schedule", "anon");
-        filterChainDefinitionMap.put("/access_log", "anon");
-
-
+//        filterChainDefinitionMap.put("/student", "anon");
+//        filterChainDefinitionMap.put("/course", "anon");
+//        filterChainDefinitionMap.put("/department", "anon");
+//        filterChainDefinitionMap.put("/grade_class", "anon");
+//        filterChainDefinitionMap.put("/teacher", "anon");
+//        filterChainDefinitionMap.put("/schedule", "anon");
+//        filterChainDefinitionMap.put("/access_log", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }

@@ -60,4 +60,11 @@ public class ScheduleServiceImpl extends SuperServiceImpl<Long,ScheduleDao,Sched
     public List<Schedule> findScheduleByStudentID(Long studentID) {
         return scheduleDao.findSchedulesById(studentID);
     }
+
+    @Override
+    public List<Schedule> findSchedulesByTeacherID(Long teacherID) {
+        return scheduleDao.findSchedulesByTeacherId(teacherID);
+    }
+
+
 }

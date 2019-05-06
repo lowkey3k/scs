@@ -2,6 +2,7 @@ package com.shanxiut.scs.controller;
 
 import com.shanxiut.scs.annotation.AccessLogger;
 import com.shanxiut.scs.annotation.Authorize;
+import com.shanxiut.scs.auth.constant.AuthConstant;
 import com.shanxiut.scs.common.response.ResponseMessage;
 import com.shanxiut.scs.entity.Schedule;
 import com.shanxiut.scs.entity.Student;
@@ -36,4 +37,12 @@ public class ScheduleController extends AbstractCrudController<Schedule,Long,Sch
     public ResponseMessage<List<Schedule>> getScheduleByStudentID(@PathVariable("StudentID")Long StudentID){
         return ResponseMessage.ok(scheduleService.findScheduleByStudentID(StudentID));
     }
+
+    @AccessLogger("根据教师ID查找所对应的排课信息")
+    @GetMapping("/getScheduleByTeacherID")
+    @Authorize(resources = AuthConstant.Resource.QUERY)
+    public ResponseMessage<List<Schedule>> getScheduleByTeacherID(@RequestParam("teacherID") Long teacherID){
+        return ResponseMessage.ok(scheduleService.findSchedulesByTeacherID(teacherID));
+    }
+
 }

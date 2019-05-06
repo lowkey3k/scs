@@ -14,4 +14,6 @@ public interface ScheduleService extends SuperService<Schedule,Long> {
     public ResponseMessage chooseSchedule(Schedule schedule);
 
     public List<Schedule> findScheduleByStudentID(Long studentID);
+
+    public List<Schedule> findSchedulesByTeacherID(Long teacherID);
 }

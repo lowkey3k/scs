@@ -58,11 +58,4 @@ public class StudentController extends AbstractCrudController<Student, Long, Stu
         return ResponseMessage.ok(service.findByUsernameAndNumber(number, username));
     }
 
-
-    @AccessLogger("根据userid查询学生信息")
-    @GetMapping("/{userid}")
-    @Authorize(resources = AuthConstant.Resource.QUERY)
-    public ResponseMessage<Student> getByUserId(@PathVariable Long userid) {
-        return ResponseMessage.ok(service.findByUserId(userid));
-    }
 }

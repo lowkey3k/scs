@@ -5,6 +5,7 @@ import com.shanxiut.scs.auth.entity.User;
 import com.shanxiut.scs.common.util.DateUtils;
 import com.shanxiut.scs.common.util.UpdateTool;
 import com.shanxiut.scs.entity.Student;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -44,6 +45,9 @@ public class Main {
         System.out.println(student1);
 
         System.out.println(DateUtil.format(new Date(), DateUtils.DATE_TIME_PATTERN));
+
+        Md5Hash md5Hash = new Md5Hash("123456", "dongqin");
+        System.out.println(md5Hash.toString());
 
     }
 }

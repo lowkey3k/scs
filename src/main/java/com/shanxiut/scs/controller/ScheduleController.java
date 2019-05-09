@@ -40,7 +40,6 @@ public class ScheduleController extends AbstractCrudController<Schedule,Long,Sch
 
     @AccessLogger("根据教师ID查找所对应的排课信息")
     @GetMapping("/getScheduleByTeacherID")
-    @Authorize(resources = AuthConstant.Resource.QUERY)
     public ResponseMessage<List<Schedule>> getScheduleByTeacherID(@RequestParam("teacherID") Long teacherID){
         return ResponseMessage.ok(scheduleService.findSchedulesByTeacherID(teacherID));
     }

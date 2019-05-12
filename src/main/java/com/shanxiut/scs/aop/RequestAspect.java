@@ -64,8 +64,7 @@ public class RequestAspect {
         Method method = signature.getMethod();
         AccessLogger requestAnnotation = method.getAnnotation(AccessLogger.class);
         Long beginTime = System.currentTimeMillis();
-        //执行方法
-        Object result = point.proceed();
+
         //执行时长(毫秒)
         long time = System.currentTimeMillis() - beginTime;
 
@@ -101,6 +100,8 @@ public class RequestAspect {
             accessLog.setUsername(user.getUsername());
         }
         saveAccessLog(accessLog);
+        //执行方法
+        Object result = point.proceed();
         return result;
     }
 

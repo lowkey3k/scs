@@ -55,7 +55,6 @@ public class AuthorizeAspect {
         HttpServletRequest request = attributes.getRequest();
 
         Object[] args = point.getArgs();
-        Object result =point.proceed(args);
         User user;
         try {
              user = (User) ShiroUtils.getSubject().getPrincipal();
@@ -96,16 +95,17 @@ public class AuthorizeAspect {
                 }
             }
         }
+
         if (annotation1.isPresent()) {
             resources = annotation.resources();
             if (ShiroUtils.getSubject().isPermittedAll(resources)) {
                 if (ShiroUtils.getSubject().isPermittedAll(value)) {
-                    return result;
+                    return point.proceed(args);
                 }
             }
         } else {
             if (ShiroUtils.getSubject().isPermittedAll(value)){
-                return result;
+                return point.proceed(args);
             }
         }
         return ResponseMessage.error(authorize.message());

@@ -5,3 +5,6 @@
  * @Version 1.0.0
  **/
 var remoteUrl="http://localhost:9001/";
+$(function(){
+    $(".we-search").css("display","none");
+});

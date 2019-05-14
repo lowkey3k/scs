@@ -43,6 +43,41 @@
 	<script type="text/html" id="scheduleOpBar">
 		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">课程详情</a>
 	</script>
+	<div id="editForm" style="display: none;">
+		<form class="layui-form">
+			<div class="layui-form-item" pane>
+				<label  class="layui-form-label">
+					<span for="course" class="we-red">*</span>选择课程
+				</label>
+				<div class="layui-input-inline">
+					<select id="course" name="course" lay-verify="required" lay-filter="department" disabled>
+
+					</select>
+				</div>
+			</div>
+
+			<div class="layui-form-item" pane>
+				<label  class="layui-form-label">
+					<span for="teacher" class="we-red">*</span>授课教师
+				</label>
+				<div class="layui-input-inline">
+					<select id="teacher" name="teacher" lay-verify="required" lay-filter="department" disabled>
+
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item" id="locationAndtimeBT">
+				<label  class="layui-form-label">
+					时间地点
+				</label>
+			</div>
+
+			<div class="layui-form-item layui-form-hide" id="locationAndtime0">
+
+			</div>
+
+		</form>
+	</div>
 
 </div>
 <script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -148,7 +183,89 @@
                 table.on('tool(schedulebar)', function(obj){
                     var data = obj.data;
                     if(obj.event === 'detail'){
-                        layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                        layer.open({
+                            type: 1,
+                            fix: false, //不固定
+                            maxmin: true,
+                            shadeClose: true,
+                            area: [600 + 'px', 500 + 'px'],
+                            shade: 0.4,
+                            title: "编辑",
+                            content: $('#editForm'),
+                            success: function () {
+                                //加载课程信息
+                                $.ajax({
+                                    url: "http://localhost:9001/course",
+                                    type: 'get',//method请求方式，get或者post
+                                    dataType: 'json',//预期服务器返回的数据类型
+                                    contentType: "application/json; charset=utf-8",
+                                    async: false,
+                                    success: function (res) {//res为相应体,function为回调函数
+                                        var result = res.result;
+                                        var i = 0;
+                                        var op = "";
+                                        $('#course').append('<option value="">请选择</option>');
+                                        for (i; i < result.length; i++) {
+                                            op += '<option value=' + result[i].id + '>' + result[i].courseName + '</option>';
+                                        }
+                                        $('#course').append(op);
+                                        $('#course').find('option[value=' + data.course.id + ']').attr("selected", true);
+                                        form.render();
+                                    }
+                                });
+
+                                //加载教师信息
+                                $.ajax({
+                                    url: "http://localhost:9001/teacher",
+                                    type: 'get',//method请求方式，get或者post
+                                    dataType: 'json',//预期服务器返回的数据类型
+                                    contentType: "application/json; charset=utf-8",
+                                    async: false,
+                                    success: function (res) {//res为相应体,function为回调函数
+                                        var result = res.result;
+                                        var i = 0;
+                                        var op = "";
+                                        $('#teacher').append('<option value="">请选择</option>');
+                                        for (i; i < result.length; i++) {
+                                            op += '<option value=' + result[i].id + '>' + result[i].user.username + '</option>';
+                                        }
+                                        $('#teacher').append(op);
+                                        $('#teacher').find('option[value=' + data.teacher.id + ']').attr("selected", true);
+                                        form.render();
+                                    }
+
+                                });
+                                var locations = data.location.split("@");
+                                var times = data.time.split("@");
+                                var locationChoose = "";
+                                var timeChoose = "";
+                                for(var lTNumber=0,i=1;lTNumber<locations.length-1;lTNumber++,i++) {
+                                    var addflag = '#locationAndtime' + lTNumber;
+                                    locationChoose = "<option value="+locations[i]+">"+locations[i]+"</option>";
+                                    timeChoose = "<option value="+times[i]+">"+times[i]+"</option>";
+                                    $(addflag).after(
+                                        '<div class="layui-form-item layui-form-text" id="locationAndtime' + (lTNumber+1) + '">'
+                                        + '<label  class="layui-form-label"></label>'
+                                        + '<div class="layui-input-inline">'
+                                        + '<select id="location' + (lTNumber+1) + '" name="" lay-verify="required" lay-filter="" disabled>' + locationChoose + '</select>'
+                                        + '</div>'
+                                        + '<div class="layui-input-inline"></div>'
+                                        + '<div class="layui-input-inline">'
+                                        + '<select id="time' + (lTNumber+1) + '" name="" lay-verify="required" lay-filter="" disabled>' + timeChoose + '</select>'
+                                        + '</div>'
+                                        + '</div>'
+                                    );
+                                }
+                                form.render();
+                            },
+                            end:function () {
+                                var delflag;
+                                for(var i=1;i<=10;i++){
+                                    delflag = '#locationAndtime'+i;
+                                    $(delflag).remove();
+                                }
+                            }
+                        })
                     }else if(obj.event === 'choose'){
                     }
                 });

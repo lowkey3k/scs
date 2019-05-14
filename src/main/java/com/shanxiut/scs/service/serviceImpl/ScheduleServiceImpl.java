@@ -48,6 +48,8 @@ public class ScheduleServiceImpl extends SuperServiceImpl<Long,ScheduleDao,Sched
             }
             if (student != null) {
                 students1.add(student);
+            }else{
+               return ResponseMessage.error("当前用户不是学生角色，不能选择课程");
             }
         }
         //将课程中实际选课人数增1

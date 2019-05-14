@@ -2,11 +2,16 @@ layui.extend({
 	admin: '{/}../../static/js/admin'
 });
 
-layui.use(['table', 'jquery','form', 'admin'], function() {
+layui.use(['table', 'jquery','form', 'admin','laydate'], function() {
 	var table = layui.table,
 		$ = layui.jquery,
 		form = layui.form,
 		admin = layui.admin;
+		laydate = layui.laydate;
+    //日期
+    laydate.render({
+        elem: '#L_birthday'
+    });
 	$.ajax({
         url: remoteUrl+"teacher",
         type: "GET",
@@ -43,7 +48,7 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
 							field: 'phoneNumber',title: '联系方式',width:100
 						}, {
 							field: 'name',title: '隶属学院',templet:function(res){
-                                return '<em>' + res.department.name + '</em>'
+                                return '<em>' + res.gradeClass.department.name + '</em>'
 							}
 						}, {
 							field: 'operate',title: '操作',align:'center',toolbar: '#teacherOpBar',unresize: true
@@ -78,7 +83,146 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
 
                         });
                     } else if(obj.event === 'edit'){
-                        layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                        layer.open({
+                        	type: 1,
+                            fix: false, //不固定
+                            maxmin: true,
+                            shadeClose: true,
+                            area: [600 + 'px', 500 + 'px'],
+                            shade: 0.4,
+                            title: "编辑",
+                            content: $('#editForm'),
+                            success: function () {
+                            $.ajax({
+                                url: remoteUrl+"department",
+                                type: 'get',//method请求方式，get或者post
+                                dataType: 'json',//预期服务器返回的数据类型
+                                contentType: "application/json; charset=utf-8",
+                                success: function (res) {//res为相应体,function为回调函数
+                                    var result = res.result;
+                                    var i = 0;
+                                    var op = "";
+                                    $('#L_department').html("");
+                                    $('#L_department').append('<option value="">请选择</option>');
+                                    for (i; i < result.length; i++) {
+                                        op += '<option value=' + result[i].id + '>' + result[i].name + '</option>';
+                                    }
+                                    $('#L_department').append(op);
+                                    $('#L_department').find('option[value=' + data.gradeClass.department.id + ']').attr("selected", true);
+                                    form.render();
+
+                                }
+                            });
+                            $.ajax({
+                                url: remoteUrl+"grade_class/getbyDepartment/" + data.gradeClass.department.id,
+                                type: 'get',//method请求方式，get或者post
+                                dataType: 'json',//预期服务器返回的数据类型
+                                contentType: "application/json; charset=utf-8",
+                                async: false,
+                                success: function (res) {//res为相应体,function为回调函数
+                                    var result = res.result;
+                                    var i = 0;
+                                    var op = "";
+                                    $('#L_gradeclass').html("");
+                                    for (i; i < result.length; i++) {
+                                        op += '<option value=' + result[i].id + '>' + result[i].name + '</option>';
+                                    }
+                                    $('#L_gradeclass').append(op);
+                                    $('#L_gradeclass').find('option[value=' + data.gradeClass.id + ']').attr("selected", true);
+                                    form.render();
+                                }
+                            });
+                            form.on('select(department)', function (data) {
+                                $.ajax({
+                                    url: remoteUrl+"grade_class/getbyDepartment/" + data.value,
+                                    type: 'get',//method请求方式，get或者post
+                                    dataType: 'json',//预期服务器返回的数据类型
+                                    contentType: "application/json; charset=utf-8",
+                                    async: false,
+                                    success: function (res) {//res为相应体,function为回调函数
+                                        var result = res.result;
+                                        var i = 0;
+                                        var op = "";
+                                        $('#L_gradeclass').html("");
+                                        for (i; i < result.length; i++) {
+                                            op += '<option value=' + result[i].id + '>' + result[i].name + '</option>';
+                                        }
+                                        $('#L_gradeclass').append(op);
+                                        form.render();
+                                    }
+                                });
+
+                            });
+                            $('#L_userno').val(data.user.number);
+                            $('#L_age').val(data.age);
+                            $('#L_identity').val(data.idNumber);
+                            $('#L_email').val(data.email);
+                            $('#L_phone').val(data.phoneNumber);
+                            $('#L_username').val(data.user.username);
+                            $('#L_birthday').val(data.birthday);
+                            $('#L_sex').val(data.sex);
+
+
+                            //监听提交
+                            form.on('submit(update)', function (dataField) {
+
+                                var datas = dataField.field;
+
+                                var data1 = {
+                                    "id": data.id,
+                                    "user":
+                                        {
+                                            "id": data.user.id,
+                                            "number": $('#L_number').val(),
+                                            "username": $('#L_username').val(),
+                                            "password": $('#L_pass').val()
+                                        },
+                                    "age": $('#L_age').val(),
+                                    "sex": $("input[type='radio']:checked").val(),
+                                    "birthday": $('#date').val(),
+                                    "phone": $('#L_phone').val(),
+                                    "email": $('#L_email').val(),
+                                    'idNumber': $('#L_identity').val(),
+                                    'birthday': $('#date').val(),
+                                    "gradeClass": {
+                                        "id": datas.grade_class,
+                                        "department": {
+                                            "id": datas.department
+                                        }
+                                    }
+
+                                };
+
+                                $.ajax({
+                                    url: remoteUrl+"teacher/update",
+                                    type: 'put',//method请求方式，get或者post
+                                    dataType: 'json',//预期服务器返回的数据类型
+                                    contentType: "application/json; charset=utf-8",
+                                    data: JSON.stringify(data1),
+                                    success: function (res) {//res为相应体,function为回调函数
+                                        if (res.status === 200) {
+                                            layer.alert("增加成功", {
+                                                icon: 6
+                                            }, function () {
+                                                // 获得frame索引
+                                                var index = parent.layer.getFrameIndex(window.name);
+                                                //关闭当前frame
+                                                parent.layer.close(index);
+                                            });
+                                        } else {
+                                            layer.msg(res.message);
+                                        }
+
+
+                                    }
+                                });
+
+
+                            });
+
+
+                        }
+                    })
                     }
                 });
             }

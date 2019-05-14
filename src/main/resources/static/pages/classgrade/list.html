@@ -49,11 +49,38 @@
 			</div>
 			<table class="layui-hide" id="gradeclassList" lay-filter="gradeclassbar"></table>
 			<script type="text/html" id="gradeclassOpBar">
-				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
 				<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 			</script>
+			<div id="editForm" style="display: none">
+				<form class="layui-form">
+					<div class="layui-form-item">
+						<label for="gradeclassname" class="layui-form-label">
+							<span class="we-red">*</span>专业名称
+						</label>
+						<div class="layui-input-inline">
+							<input type="text" id="gradeclassname" name="gradeclassname" required="" lay-verify="required" autocomplete="off" class="layui-input">
+						</div>
+					</div>
 
+					<div class="layui-form-item" pane>
+						<label  class="layui-form-label">
+							<span for="L_department" class="we-red">*</span>隶属学院
+						</label>
+						<div class="layui-input-inline">
+							<select id="L_department" name="department" lay-verify="required" lay-filter="department" >
+
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label for="gradeclassdesc" class="layui-form-label">职能描述</label>
+						<div class="layui-input-block">
+							<textarea placeholder="请输入内容" id="gradeclassdesc" name="gradeclassdesc" class="layui-textarea" lay-verify="detail|required"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
 
 		</div>
 		<script>
@@ -121,7 +148,39 @@
 
                                     });
                                 } else if(obj.event === 'edit'){
-                                    layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                                    layer.open({
+                                        type: 1,
+                                        fix: false, //不固定
+                                        maxmin: true,
+                                        shadeClose: true,
+                                        area: [600 + 'px', 500 + 'px'],
+                                        shade: 0.4,
+                                        title: "编辑",
+                                        content: $('#editForm'),
+                                        success: function () {
+                                            //加载部门信息
+                                            $.ajax({
+                                                url: remoteUrl+"department",
+                                                type: 'get',//method请求方式，get或者post
+                                                dataType: 'json',//预期服务器返回的数据类型
+                                                contentType: "application/json; charset=utf-8",
+                                                async: false,
+                                                success: function (res) {//res为相应体,function为回调函数
+                                                    var result = res.result;
+                                                    var i = 0;
+                                                    var op = "";
+                                                    $('#L_department').append('<option value="">请选择</option>');
+                                                    for (i; i < result.length; i++) {
+                                                        op += '<option value=' + result[i].id + '>' + result[i].name + '</option>';
+                                                    }
+                                                    $('#L_department').append(op);
+                                                    $('#L_department').find('option[value=' + data.department.id + ']').attr("selected", true);
+                                                    form.render();
+                                                }
+                                            });
+                                            $("#gradeclassname").val(data.name);
+                                            $("#gradeclassdesc").val(data.detail);
+                                        }})
                                 }
                             });
                         }

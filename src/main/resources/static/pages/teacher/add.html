@@ -9,13 +9,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<link rel="stylesheet" href="../../static/css/font.css">
 		<link rel="stylesheet" href="../../static/css/weadmin.css">
-		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-		<!--[if lt IE 9]>
 		<script src="../../static/js/common.js" charset="utf-8"></script>
-
 		<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-	    <![endif]-->
+		<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
 	</head>
 
 	<body>
@@ -128,7 +124,7 @@
 		</div>
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 
-		<script>
+		<script type="text/javascript">
 
 			layui.extend({
 				admin: '{/}../../static/js/admin'
@@ -235,7 +231,13 @@
                             {
                                 "number": $('#L_userno').val(),
                                 "username": $('#L_username').val(),
-                                "password":  $('#L_pass').val()
+                                "password":  $('#L_pass').val(),
+								"roles":[
+								    	{
+								    	    "id": 3//教师角色ID
+										}
+								    ],
+								"status": 1//设置为生效状态
                             },
 						"birthday":$('#L_birthday').val(),
                         "sex": $("input[name='sex']:checked").val(),
@@ -250,7 +252,7 @@
                         }
 					};
 
-				    alert(JSON.stringify(data));
+
                     $.ajax({
                         url: remoteUrl+"teacher",
                         type: 'post',//method请求方式，get或者post

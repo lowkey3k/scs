@@ -6,5 +6,8 @@
  **/
 var remoteUrl="http://localhost:9001/";
 $(function(){
-    $(".we-search").css("display","none");
+    $("#search").css("display","none");
 });
+
+
+

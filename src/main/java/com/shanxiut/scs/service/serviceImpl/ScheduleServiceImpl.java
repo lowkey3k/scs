@@ -1,6 +1,10 @@
 package com.shanxiut.scs.service.serviceImpl;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.shanxiut.scs.common.exception.RestException;
 import com.shanxiut.scs.common.response.ResponseMessage;
+import com.shanxiut.scs.common.validator.Assert;
 import com.shanxiut.scs.dao.ScheduleDao;
 import com.shanxiut.scs.entity.Schedule;
 import com.shanxiut.scs.entity.Student;
@@ -12,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +24,7 @@ import java.util.List;
  * Created by hliu on 2019/3/9.
  */
 @Service
-public class ScheduleServiceImpl extends SuperServiceImpl<Long,ScheduleDao,Schedule> implements ScheduleService{
+public class ScheduleServiceImpl extends SuperServiceImpl<Long, ScheduleDao, Schedule> implements ScheduleService {
 
     @Autowired
     private StudentService studentService;
@@ -29,33 +34,39 @@ public class ScheduleServiceImpl extends SuperServiceImpl<Long,ScheduleDao,Sched
 
     @Override
     public ResponseMessage<Schedule> chooseSchedule(Schedule schedule) {
-        Schedule schedule1 = getDao().getOne(schedule.getId());
-        if(schedule1==null) throw new ObjectNotFoundException(null,"排课信息不存在");
-        List<Student> studentOnTable = schedule1.getStudents();
-        for(Student stu : studentOnTable){
-            if(stu.getId().equals(schedule.getStudents().get(0).getId()))
-                return ResponseMessage.error("您已选择该课程，请勿重复选择！");
-        }
-        List<Student> students = schedule.getStudents();
-        List<Student> students1 = schedule1.getStudents();
-        for (int i = 0; i < students.size(); i++) {
-            Student student;
-            try {
-                student = studentService.getDao().getOne(students.get(i).getId());
+        //
+        Schedule noSchedule = getDao().getOne(schedule.getId());
+        //校验排课信息是否存在
+        Assert.isNull(noSchedule, "排课信息不存在");
+        List<Student> students = noSchedule.getStudents();
+        List<Student> studentList = schedule.getStudents();
 
-            } catch (NumberFormatException e) {
-                continue;
-            }
-            if (student != null) {
-                students1.add(student);
-            }else{
-               return ResponseMessage.error("当前用户不是学生角色，不能选择课程");
+        Assert.isEmpty(studentList, "没有要选择课程的学生。。。");
+
+        if (CollectionUtil.isNotEmpty(students)) {
+            for (Student stu : students) {
+                if (stu.getId().equals(studentList.get(0).getId()))
+                    return ResponseMessage.error("您已选择该课程，请勿重复选择！");
             }
         }
-        //将课程中实际选课人数增1
-        this.getDao().save(schedule1);
+        Schedule save=new Schedule();
+        for (Student student : studentList) {
+            Student stu;
+            //如果不做此判断，这里的stu会是一个未知的对象地址，并且不是null，
+            if (studentService.getDao().existsById(student.getId())){
+                stu = studentService.getDao().getOne(student.getId());
+            }else {
+                return ResponseMessage.error("你不是学生");
+            }
+            if (ObjectUtil.isNotNull(stu)) {
+                students.add(stu);
+
+            }
+            //将课程中实际选课人数增1
+        }
+        save = this.getDao().save(noSchedule);
         this.getDao().flush();
-        return ResponseMessage.ok();
+        return ResponseMessage.ok(save);
     }
 
     @Override

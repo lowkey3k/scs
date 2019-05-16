@@ -1,5 +1,6 @@
 package com.shanxiut.scs.common.validator;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.shanxiut.scs.common.exception.RestException;
 import org.apache.commons.lang.StringUtils;
 
@@ -17,6 +18,11 @@ public abstract class Assert {
 
     public static void isNull(Object object, String message) {
         if (object == null) {
+            throw new RestException(message);
+        }
+    }
+    public static void isEmpty(Iterable iterable, String message) {
+        if (CollectionUtil.isEmpty(iterable)) {
             throw new RestException(message);
         }
     }

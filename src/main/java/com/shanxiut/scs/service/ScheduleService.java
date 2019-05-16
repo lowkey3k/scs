@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ScheduleService extends SuperService<Schedule,Long> {
 
-    public ResponseMessage chooseSchedule(Schedule schedule);
+    public ResponseMessage<Schedule> chooseSchedule(Schedule schedule);
 
     public List<Schedule> findScheduleByStudentID(Long studentID);
 

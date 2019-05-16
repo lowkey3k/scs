@@ -69,7 +69,8 @@ public class ShiroConfig {
 
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
-        filterChainDefinitionMap.put("/index/logout", "logout");
+
+//        filterChainDefinitionMap.put("/login.html", "logout");
         // 过滤链
         filterChainDefinitionMap.put("/static/css/**", "anon");
         filterChainDefinitionMap.put("/static/fonts/**", "anon");
@@ -96,21 +97,12 @@ public class ShiroConfig {
 //        filterChainDefinitionMap.put("/favicon.ico", "anon");
 //        filterChainDefinitionMap.put("/admin/mylogin", "anon");
 //*/
-//        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "authc");
         /**
          * anon:所有url都都可以匿名访问;
          * authc: 需要认证才能进行访问;
          * user:配置记住我或认证通过可以访问；
          */
-//        filterChainDefinitionMap.put("/**", "authc");
-
-//        filterChainDefinitionMap.put("/student", "anon");
-//        filterChainDefinitionMap.put("/course", "anon");
-//        filterChainDefinitionMap.put("/department", "anon");
-//        filterChainDefinitionMap.put("/grade_class", "anon");
-//        filterChainDefinitionMap.put("/teacher", "anon");
-//        filterChainDefinitionMap.put("/schedule", "anon");
-//        filterChainDefinitionMap.put("/access_log", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }

@@ -21,6 +21,7 @@ public abstract class Assert {
             throw new RestException(message);
         }
     }
+
     public static void isEmpty(Iterable iterable, String message) {
         if (CollectionUtil.isEmpty(iterable)) {
             throw new RestException(message);

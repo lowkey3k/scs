@@ -56,6 +56,10 @@ public class Teacher extends SuperEntity<Teacher>{
     @JoinColumn(name = "department")
     private Department department;
 
+    @ManyToOne(optional=false,cascade={CascadeType.MERGE})
+    @JoinColumn(name="grade_class")
+    private GradeClass gradeClass;
+
     @ManyToMany(mappedBy="teachers")
     @JsonIgnore
     private List<Course> courses;

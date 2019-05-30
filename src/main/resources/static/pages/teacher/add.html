@@ -9,13 +9,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<link rel="stylesheet" href="../../static/css/font.css">
 		<link rel="stylesheet" href="../../static/css/weadmin.css">
-		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-		<!--[if lt IE 9]>
 		<script src="../../static/js/common.js" charset="utf-8"></script>
-
 		<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-	    <![endif]-->
+		<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
 	</head>
 
 	<body>
@@ -29,7 +25,7 @@
 						<input type="text" id="L_userno" name="userno" lay-verify="required|nikename" autocomplete="off" class="layui-input">
 					</div>
 					<div class="layui-form-mid layui-word-aux">
-						请设置至少5个字符，将会成为您唯一的登录名
+						唯一的登录名
 					</div>
 				</div>
 
@@ -48,6 +44,15 @@
 					</label>
 					<div class="layui-input-inline">
 						<input type="text" id="L_birthday" name="birthday" lay-verify="required|date" autocomplete="off" placeholder="yyyy-MM-dd" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label for="L_age" class="layui-form-label">
+						<span class="we-red">*</span>年龄
+					</label>
+					<div class="layui-input-inline">
+						<input type="text" id="L_age" name="age" lay-verify="required|number|readonly" autocomplete="off"
+							   class="layui-input" readonly>
 					</div>
 				</div>
 
@@ -105,9 +110,12 @@
 					<div class="layui-input-inline">
 						<input type="text"id="L_identity" name="identity" lay-verify="identity|required" placeholder="" autocomplete="off" class="layui-input">
 					</div>
+					<div class="layui-form-mid layui-word-aux">
+						初始密码为身份证号后6位
+					</div>
 				</div>
 
-				<div class="layui-form-item" pane>
+				<div class="layui-form-item layui-hide" pane>
 					<label for="L_pass" class="layui-form-label">
                   <span class="we-red">*</span>密码
               </label>
@@ -115,7 +123,7 @@
 						<input type="password" id="L_pass" name="pass" lay-verify="required|pass|readonly" autocomplete="off" class="layui-input" readonly>
 					</div>
 					<div class="layui-form-mid layui-word-aux">
-						第一次添加默认密码为身份证号后6位，6到16个字符
+						初始密码为身份证号后6位
 					</div>
 				</div>
 
@@ -128,7 +136,7 @@
 		</div>
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 
-		<script>
+		<script type="text/javascript">
 
 			layui.extend({
 				admin: '{/}../../static/js/admin'
@@ -146,7 +154,13 @@
 
                 //日期
                 laydate.render({
-                    elem: '#L_birthday'
+                    elem: '#L_birthday',
+					done:function(value,date,endDate){
+                      var curYear =  new Date().toLocaleDateString().split("/")[0];
+                      var chooseYear = date.year;
+                      var age = curYear-chooseYear;
+                      $('input[name="age"]').val(age);
+                    }
                 });
 				//加载部门信息
                 $.ajax({
@@ -228,6 +242,8 @@
                     $('input[name="pass"]').val($('input[name="identity"]').val().substr(12,6));
                 });
 
+
+
 				//监听提交
 				form.on('submit(add)', function(data) {
 				    var data = {
@@ -235,9 +251,16 @@
                             {
                                 "number": $('#L_userno').val(),
                                 "username": $('#L_username').val(),
-                                "password":  $('#L_pass').val()
+                                "password":  $('#L_pass').val(),
+								"roles":[
+								    	{
+								    	    "id": 3//教师角色ID
+										}
+								    ],
+								"status": 1//设置为生效状态
                             },
 						"birthday":$('#L_birthday').val(),
+                        "age":$('#L_age').val(),
                         "sex": $("input[name='sex']:checked").val(),
                         "phoneNumber": $('#L_phone').val(),
                         "email": $('#L_email').val(),
@@ -250,7 +273,7 @@
                         }
 					};
 
-				    alert(JSON.stringify(data));
+
                     $.ajax({
                         url: remoteUrl+"teacher",
                         type: 'post',//method请求方式，get或者post

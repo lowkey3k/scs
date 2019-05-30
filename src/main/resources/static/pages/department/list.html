@@ -15,6 +15,8 @@
 	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
 	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
 	    <![endif]-->
+		<script src="../../static/js/jquery-1.11.1.min.js"></script>
+		<script src="../../static/js/common.js" charset="utf-8"></script>
 	</head>
 
 	<body>
@@ -28,15 +30,8 @@
 				<i class="layui-icon" style="line-height:30px">ဂ</i></a>
 		</div>
 		<div class="weadmin-body">
-			<div class="layui-row">
+			<div class="layui-row" id="search">
 				<form class="layui-form layui-col-md12 we-search">
-					<div class="layui-inline">
-						<input class="layui-input" placeholder="开始日" name="start" id="start">
-					</div>
-					<div class="layui-inline">
-						<input class="layui-input" placeholder="截止日" name="end" id="end">
-					</div>
-
 					<div class="layui-inline">
 						<input type="text" name="username" placeholder="请输入学院名称" autocomplete="off" class="layui-input">
 					</div>
@@ -52,6 +47,27 @@
 				<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 			</script>
+			<div id="editForm" style="display: none">
+				<form class="layui-form">
+					<div class="layui-form-item">
+						<label for="departmentName" class="layui-form-label">
+							<span class="we-red">*</span>学院名称
+						</label>
+						<div class="layui-input-inline">
+							<input type="text" id="departmentName" name="departmentName"  lay-verify="required|name" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">
+							<span class="we-red">*</span>职能描述
+						</label>
+						<div class="layui-input-block">
+							<textarea id="departmentDetail" name="departmentDetail"  lay-verify="required"  placeholder="请输入内容" class="layui-textarea"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
 
 		</div>
 		<script>
@@ -115,7 +131,19 @@
 
                                     });
                                 } else if(obj.event === 'edit'){
-                                    layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                                    layer.open({
+                                        type: 1,
+                                        fix: false, //不固定
+                                        maxmin: true,
+                                        shadeClose: true,
+                                        area: [600 + 'px', 500 + 'px'],
+                                        shade: 0.4,
+                                        title: "编辑",
+                                        content: $('#editForm'),
+                                        success: function () {
+                                            $("#departmentName").val(data.name);
+                                            $("#departmentDetail").val(data.detail);
+									}})
                                 }
                             });
                         }

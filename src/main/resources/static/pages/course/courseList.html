@@ -11,12 +11,11 @@
 		<link rel="stylesheet" href="../../static/css/font.css">
 		<link rel="stylesheet" href="../../static/css/weadmin.css">
 		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-		<!--[if lt IE 9]>
 	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
 	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+		<script src="../../static/js/jquery-1.11.1.min.js"></script>
 		  <script src="../../static/js/common.js" charset="utf-8"></script>
 
-		<![endif]-->
 		<style type="text/css">
 			.layui-form-switch {
 				width: 55px;
@@ -40,7 +39,7 @@
 				<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
 		</div>
 		<div class="weadmin-body">
-			<div class="layui-row">
+			<div class="layui-row" id="search">
 				<form class="layui-form layui-col-md12 we-search">
 					课程搜索:
 					<div class="layui-inline">
@@ -61,7 +60,57 @@
 
 			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 		</div>
+		<div id="editForm" style="display: none;">
+			<form class="layui-form">
+				<div class="layui-form-item">
+					<label for="L_courseName" class="layui-form-label">
+						<span class="we-red">*</span>课程名称
+					</label>
+					<div class="layui-input-inline">
+						<input type="text" id="L_courseName" name="username" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
 
+				<div class="layui-form-item">
+					<label for="L_courseHour" class="layui-form-label">
+						<span class="we-red">*</span>课程学时
+					</label>
+					<div class="layui-input-inline">
+						<input type="text" id="L_courseHour" name="courseHour" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label for="L_courseScore" class="layui-form-label">
+						<span class="we-red">*</span>课程学分
+					</label>
+					<div class="layui-input-inline">
+						<input type="text" id="L_courseScore" name="courseScore" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item" pane>
+					<label  class="layui-form-label">
+						<span for="L_startTerm" class="we-red">*</span>开课学期
+					</label>
+					<div class="layui-input-inline">
+						<select id="L_startTerm" name="startTerm" lay-verify="required" >
+							<option value="1">1</option>
+							<option value="2">2</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label for="L_chooseNumber" class="layui-form-label">
+						<span class="we-red">*</span>选课人数
+					</label>
+					<div class="layui-input-inline">
+						<input type="text" id="L_chooseNumber" name="chooseNumber" lay-verify="required" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+			</form>
+		</div>
 		<script>
             layui.extend({
                 admin: '{/}../../static/js/admin'
@@ -77,8 +126,6 @@
                     type: "GET",
                     contentType: "application/json;charset=utf-8",
                     success: function (json) {
-                        alert(json.result);
-                        alert(JSON.stringify(json));
                         if (json.result == "") {
                             json.result = {};
                         } else {
@@ -131,7 +178,22 @@
 
                                     });
                                 } else if(obj.event === 'edit'){
-                                    layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                                    layer.open({
+                                        type: 1,
+                                        fix: false, //不固定
+                                        maxmin: true,
+                                        shadeClose: true,
+                                        area: [600 + 'px', 500 + 'px'],
+                                        shade: 0.4,
+                                        title: "编辑",
+                                        content: $('#editForm'),
+                                        success: function () {
+                                            $("#L_courseName").val(data.courseName);
+                                            $("#L_courseHour").val(data.courseHour);
+                                            $("#L_courseScore").val(data.courseScore);
+                                            $("#L_startTerm").val(data.startTerm);
+                                            $("#L_chooseNumber").val(data.chooseNumber);
+										}})
                                 }
                             });
                         }

@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="./static/css/font.css">
 		<link rel="stylesheet" href="./static/css/weadmin.css">
 		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-
+		<script src="../../static/js/jquery-1.11.1.min.js"></script>
 	</head>
 
 	<body>
@@ -25,17 +25,17 @@
 			</div>
 			<ul class="layui-nav right" lay-filter="">
 				<li class="layui-nav-item">
-					<a href="javascript:;">Admin</a>
+					<a href="javascript:;" id="loginname">Admin</a>
 					<dl class="layui-nav-child">
 						<!-- 二级菜单 -->
 						<dd>
-							<a onclick="WeAdminShow('个人信息','./person/introduce.html')">个人信息</a>
+							<a onclick="WeAdminShow('个人信息','pages/person/introduce.html')">个人信息</a>
 						</dd>
 						<dd>
 							<a onclick="WeAdminShow('切换帐号','./login.html')">切换帐号</a>
 						</dd>
 						<dd>
-							<a class="loginout" onclick="logout()">退出</a>
+							<a id="loginout">退出</a>
 						</dd>
 					</dl>
 				</li>
@@ -62,13 +62,13 @@
 								</a>
 							</li>
 
-                            <li>
+                            <!--<li>
                                 <a _href="./pages/student/add.html">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>学生添加</cite>
 
                                 </a>
-                            </li>
+                            </li>-->
 						</ul>
 					</li>
 
@@ -123,12 +123,12 @@
 									<cite>教师列表</cite>
 								</a>
 							</li>
-							<li>
+							<!--<li>
 								<a _href="./pages/teacher/add.html">
 									<i class="iconfont">&#xe6a7;</i>
 									<cite>教师添加</cite>
 								</a>
-							</li>
+							</li>-->
 						</ul>
 					</li>
 					<li id="course" style="display: none">
@@ -165,12 +165,12 @@
 									<cite>学院列表</cite>
 								</a>
 							</li>
-                            <li>
+                            <!--<li>
                                 <a _href="./pages/department/add.html">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>学院添加</cite>
                                 </a>
-                            </li>
+                            </li>-->
 						</ul>
 					</li>
 					<li id="gradeClass" style="display: none">
@@ -186,12 +186,12 @@
 									<cite>班级列表</cite>
 								</a>
 							</li>
-                            <li>
+                           <!-- <li>
                                 <a _href="./pages/classgrade/add.html">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>班级列表</cite>
+                                    <cite>班级添加</cite>
                                 </a>
-                            </li>
+                            </li>-->
 						</ul>
 					</li>
 					<li id="auth" style="display: none">
@@ -240,54 +240,54 @@
 									<cite>日志统计</cite>
 								</a>
 							</li>
-							<li>
-								<a _href="./pages/echarts/echarts2.html">
-									<i class="iconfont">&#xe6a7;</i>
-									<cite>柱状图</cite>
-								</a>
-							</li>
-							<li>
-								<a _href="./pages/echarts/echarts3.html">
-									<i class="iconfont">&#xe6a7;</i>
-									<cite>地图</cite>
-								</a>
-							</li>
-							<li>
-								<a _href="./pages/echarts/echarts4.html">
-									<i class="iconfont">&#xe6a7;</i>
-									<cite>饼图</cite>
-								</a>
-							</li>
-							<li>
-								<a _href="./pages/echarts/echarts5.html">
-									<i class="iconfont">&#xe6a7;</i>
-									<cite>雷达图</cite>
-								</a>
-							</li>
-							<li>
-								<a _href="./pages/echarts/echarts6.html">
-									<i class="iconfont">&#xe6a7;</i>
-									<cite>k线图</cite>
-								</a>
-							</li>
-							<li>
-								<a _href="./pages/echarts/echarts7.html">
-									<i class="iconfont">&#xe6a7;</i>
-									<cite>热力图</cite>
-								</a>
-							</li>
-							<li>
-								<a _href="./pages/echarts/echarts8.html">
-									<i class="iconfont">&#xe6a7;</i>
-									<cite>仪表图</cite>
-								</a>
-							</li>
-							<li>
-								<a _href="./pages/echarts/echarts9.html">
-									<i class="iconfont">&#xe6a7;</i>
-									<cite>地图DIY实例</cite>
-								</a>
-							</li>
+							<!--<li>
+                                    <a _href="./pages/echarts/echarts2.html">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>柱状图</cite>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a _href="./pages/echarts/echarts3.html">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>地图</cite>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a _href="./pages/echarts/echarts4.html">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>饼图</cite>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a _href="./pages/echarts/echarts5.html">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>雷达图</cite>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a _href="./pages/echarts/echarts6.html">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>k线图</cite>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a _href="./pages/echarts/echarts7.html">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>热力图</cite>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a _href="./pages/echarts/echarts8.html">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>仪表图</cite>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a _href="./pages/echarts/echarts9.html">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>地图DIY实例</cite>
+                                    </a>
+                                </li>-->
 						</ul>
 					</li>
 				</ul>
@@ -341,8 +341,11 @@
 						window.location.href=remoteUrl+'login.html';
 						return false;
 					}
+
 				   //控制页面权限
                     var user=JSON.parse(sessionStorage.getItem("scs_user"));
+                	$("#loginname").html(user.username);
+                	$("#loginout").click(logout);
 					var roles=user.roles;
 					var names=[];
 					for (var i=0;i<roles.length;i++){
@@ -362,33 +365,31 @@
                             $("#department").css("display","block");
                             $("#gradeClass").css("display","block");
                             $("#auth").css("display","block");
+                            $("#course").css("display","block");
 						}
                     });
 
-
-
-				function logout() {
-                    $.ajax({
-                        url: remoteUrl+"index/logout",
-                        type: 'post',//method请求方式，get或者post
-                        dataType: 'json',//预期服务器返回的数据类型
-                        contentType: "application/json; charset=utf-8",
-                        success: function (res) {//res为相应体,function为回调函数
-                            if (res.status === 200) {
-                                sessionStorage.removeItem("scs_user");
-
-                                window.location.href=remoteUrl+"login.html";
-                            } else {
-                                layer.msg(res.message);
-                            }
-
-                        }
-                    });
-
-
-                }
 			});
+			function logout() {
+				$.ajax({
+					url: remoteUrl+"index/logout",
+					type: 'post',//method请求方式，get或者post
+					dataType: 'json',//预期服务器返回的数据类型
+					contentType: "application/json; charset=utf-8",
+					success: function (res) {//res为相应体,function为回调函数
+						if (res.status === 200) {
+							sessionStorage.removeItem("scs_user");
 
+							window.location.href=remoteUrl+"login.html";
+						} else {
+							layer.msg(res.message);
+						}
+
+					}
+				});
+
+
+			}
 		</script>
 	</body>
 	<!--Tab菜单右键弹出菜单-->

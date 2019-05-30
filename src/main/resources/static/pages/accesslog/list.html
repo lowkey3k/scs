@@ -16,6 +16,8 @@
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="../../static/js/jquery-1.11.1.min.js"></script>
+    <script src="../../static/js/common.js" charset="utf-8"></script>
 </head>
 
 <body>
@@ -30,7 +32,7 @@
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
 <div class="weadmin-body">
-    <div class="layui-row">
+    <div class="layui-row" id="search">
         <form class="layui-form layui-col-md12 we-search">
             <!--<div class="layui-inline">-->
                 <!--<input class="layui-input" placeholder="开始日" name="start" id="start">-->
@@ -86,7 +88,7 @@
                             },{
                                 field: 'url', title: '请求url',width:80
                             },{
-                                field: 'createTimeStr', title: '请求时间',
+                                field: 'createTimeStr', title: '请求时间',sort:true
                             }, {
                                 field: 'method', title: '请求方法',
                             }, {

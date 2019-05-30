@@ -13,5 +13,9 @@ import java.util.List;
  **/
 public interface RoleService extends SuperService<Role,Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     List<RoleVO>  selectOwnerRoleByUserId(Long id);
 }
